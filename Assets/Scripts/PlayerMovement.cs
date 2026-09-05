@@ -229,18 +229,13 @@ public class PlayerMovement : MonoBehaviour
         // purely the hands-off baseline, so releasing everything is what makes it fall.
         float vertical = velocity.y;
 
-        if (moveDirection.sqrMagnitude > 0.0001f)
-        {
-            // Easing toward a target rather than adding acceleration means levelling the camera
-            // out of a dive actually arrests the descent -- with no gravity there is nothing
-            // else to bleed off that downward momentum.
-            float targetVertical = moveDirection.y * airMaxSpeed;
-            vertical = Mathf.MoveTowards(vertical, targetVertical, airAcceleration * verticalFollowStrength * dt);
-        }
-        else
-        {
-            vertical -= gravity * dt;
-        }
+        // Easing toward a target rather than adding acceleration means levelling the camera
+        // out of a dive actually arrests the descent -- with no gravity there is nothing
+        // else to bleed off that downward momentum.
+        float targetVertical = moveDirection.y * airMaxSpeed;
+        vertical = Mathf.MoveTowards(vertical, targetVertical, airAcceleration * verticalFollowStrength * dt);
+        vertical -= gravity * dt * (5 - Mathf.Min(5, horizontal.magnitude));
+        
 
         vertical = Mathf.Max(vertical, -maxFallSpeed);
 
