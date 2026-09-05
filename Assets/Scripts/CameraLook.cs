@@ -60,6 +60,9 @@ public class CameraLook : MonoBehaviour
     /// <summary>Full camera right, pitch included.</summary>
     public Vector3 Right => transform.right;
 
+    /// <summary>Camera up -- the normal of the plane Forward and Right span.</summary>
+    public Vector3 Up => transform.up;
+
     /// <summary>Camera forward flattened onto the horizontal plane. Use this to make movement camera-relative.</summary>
     public Vector3 PlanarForward
     {

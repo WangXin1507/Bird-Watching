@@ -23,27 +23,39 @@ public class PlayerMovement : MonoBehaviour
     [Header("Air movement (shared)")]
     [SerializeField] private float airAcceleration = 20f;
     [SerializeField] private float airFriction = 4f;
-    [Tooltip("Airborne WASD follows the camera's pitch too, so looking up and holding W climbs. Off = movement stays flat.")]
-    [SerializeField] private bool followCameraPitchInAir = true;
+    [Tooltip("Horizontal speed cap while airborne.")]
+    [SerializeField] private float airMaxSpeed = 9f;
     [Tooltip("Multiplier on air acceleration for the vertical part of that input -- how sharply it climbs or noses over.")]
     [SerializeField] private float verticalFollowStrength = 1f;
+    [SerializeField] private float gravity = 24f;
+    [SerializeField] private float maxFallSpeed = 20f;
 
     [Header("Takeoff")]
     [Tooltip("Upward speed given by a single Rise press while grounded. This is the only way into the air.")]
     [SerializeField] private float takeoffSpeed = 8f;
     [Tooltip("Seconds the ground check is ignored after a takeoff, so the launch isn't swallowed on the same frame.")]
     [SerializeField] private float takeoffGroundGrace = 0.15f;
-
-    [Header("Flight")]
-    [Tooltip("Downward acceleration while airborne. Steering with the camera is what overcomes it.")]
-    [SerializeField] private float gravity = 24f;
-    [SerializeField] private float maxFallSpeed = 20f;
-    [Tooltip("Horizontal speed cap while airborne.")]
-    [SerializeField] private float airMaxSpeed = 9f;
+    [Tooltip("Upward speed when flight starts by walking off a ledge instead of by pressing Rise. 0 = just fall into it.")]
+    [SerializeField] private float cliffLaunchSpeed = 0f;
 
     [Header("Facing")]
     [Tooltip("Turn the body to face the direction it is actually travelling, not the direction being pressed.")]
     [SerializeField] private bool rotateTowardVelocity = true;
+    [Tooltip("Degrees per second the body turns toward its velocity. Smoothing this out is what kills the frame-to-frame jitter.")]
+    [SerializeField] private float turnSpeed = 720f;
+    [Tooltip("Below this speed the facing is left alone, so the bird doesn't chase noise while nearly stopped.")]
+    [SerializeField] private float minTurnSpeed = 0.4f;
+    [Tooltip("Roll the body into its turns, the way a bird drops a wing to bank.")]
+    [SerializeField] private bool bankIntoTurns = true;
+    [Tooltip("Degrees of roll per degree of turn still to go.")]
+    [SerializeField] private float bankPerDegree = 1f;
+    [Tooltip("Hard cap on how far the body rolls.")]
+    [SerializeField] private float maxBankAngle = 35f;
+    [Tooltip("Degrees per second the roll eases in and back out. Lower = lazier wings.")]
+    [SerializeField] private float bankSpeed = 180f;
+    [SerializeField] private bool bankWhileGrounded = false;
+    [Tooltip("Airborne WASD follows the camera's pitch too, so looking up and holding W climbs. Off = movement stays flat.")]
+    [SerializeField] private bool followCameraPitchInAir = true;
 
     [Header("Ground check")]
     [SerializeField] private LayerMask groundMask = ~0;
@@ -60,6 +72,9 @@ public class PlayerMovement : MonoBehaviour
     private bool takeoffQueued;
     private bool subscribed;
     private float groundCheckSuppressedUntil;
+    private bool wasGrounded;
+    private Quaternion facingRotation = Quaternion.identity;
+    private float bankAngle;
     private CameraLook cameraLook;
     private MovementState State => state;
     private bool IsGrounded => isGrounded;
@@ -71,6 +86,7 @@ public class PlayerMovement : MonoBehaviour
         PlayerID.playerMovement = this;
         
         rb = GetComponent<Rigidbody>();
+        facingRotation = transform.rotation;
         rb.useGravity = false;
         rb.freezeRotation = true;
         rb.interpolation = RigidbodyInterpolation.Interpolate;
@@ -120,11 +136,16 @@ public class PlayerMovement : MonoBehaviour
         {
             // Consumed either way: a press made mid-air must not fire on the next landing.
             takeoffQueued = false;
-            if (isGrounded) Takeoff();
+            if (isGrounded) BeginFlight(takeoffSpeed);
         }
 
         moveDirection = ReadMoveDirection();
         planarMoveDirection = new Vector3(moveDirection.x, 0f, moveDirection.z);
+
+        // Leaving the ground any other way -- walking off a ledge -- starts flight on the same
+        // terms as a Rise press, so there is never a state where the bird is falling uncontrolled.
+        if (wasGrounded && !isGrounded && Time.time >= groundCheckSuppressedUntil) BeginFlight(cliffLaunchSpeed);
+        wasGrounded = isGrounded;
 
         MovementState next = EvaluateState();
         if (next != state)
@@ -145,7 +166,7 @@ public class PlayerMovement : MonoBehaviour
                 break;
         }
 
-        if (rotateTowardVelocity) FaceVelocity();
+        if (rotateTowardVelocity) FaceVelocity(dt);
     }
 
     // ---------------------------------------------------------------- states
@@ -162,13 +183,20 @@ public class PlayerMovement : MonoBehaviour
         return MovementState.Flying;
     }
 
-    /// <summary>One-shot launch out of the grounded states. Airborne from here on, the camera does the climbing.</summary>
-    private void Takeoff()
+    /// <summary>
+    /// The single entry point into flight. A Rise press and walking off a ledge both come
+    /// through here, so the two behave identically apart from the launch speed.
+    /// </summary>
+    private void BeginFlight(float launchSpeed)
     {
-        Vector3 velocity = rb.linearVelocity;
-        rb.linearVelocity = new Vector3(velocity.x, Mathf.Max(velocity.y, takeoffSpeed), velocity.z);
+        if (launchSpeed > 0f)
+        {
+            Vector3 velocity = rb.linearVelocity;
+            rb.linearVelocity = new Vector3(velocity.x, Mathf.Max(velocity.y, launchSpeed), velocity.z);
+        }
 
         isGrounded = false;
+        wasGrounded = false;
         groundCheckSuppressedUntil = Time.time + takeoffGroundGrace;
     }
 
@@ -216,7 +244,17 @@ public class PlayerMovement : MonoBehaviour
 
         vertical = Mathf.Max(vertical, -maxFallSpeed);
 
-        rb.linearVelocity = new Vector3(horizontal.x, vertical, horizontal.z);
+        Vector3 result = new Vector3(horizontal.x, vertical, horizontal.z);
+
+        // The per-axis caps above leave diagonal flight running at ~1.4x, so the combined
+        // speed is clamped too -- Air Max Speed is top speed in any direction. Only clamped
+        // while under power: a hands-off fall belongs to gravity and Max Fall Speed.
+        if (moveDirection.sqrMagnitude > 0.0001f && result.magnitude > airMaxSpeed)
+        {
+            result = result.normalized * airMaxSpeed;
+        }
+
+        rb.linearVelocity = result;
     }
 
     // ---------------------------------------------------------------- helpers
@@ -279,12 +317,57 @@ public class PlayerMovement : MonoBehaviour
         return Vector3.ClampMagnitude(direction, 1f);
     }
 
-    private void FaceVelocity()
+    /// <summary>
+    /// Turns the body toward its own velocity, eased at turnSpeed so single-frame wobble in the
+    /// velocity doesn't show up as jitter. The target is projected onto the camera plane -- the
+    /// same plane WASD moves along -- and that plane's normal is used as the up vector, so the
+    /// body can only rotate within it. Roll never enters the quaternion, which is what used to
+    /// make near-vertical velocity snap the model around.
+    /// </summary>
+    private void FaceVelocity(float dt)
     {
-        Vector3 velocity = rb.linearVelocity;
+        CameraLook cam = ActiveCamera;
 
-        if (rotateTowardVelocity)
-            transform.LookAt(transform.position + velocity, Vector3.up);
+        // Grounded movement is flat, so its plane is the ground; airborne it is the camera's own.
+        Vector3 planeNormal = (cam != null && followCameraPitchInAir && !isGrounded)
+            ? cam.Up
+            : Vector3.up;
+
+        Vector3 facing = Vector3.ProjectOnPlane(rb.linearVelocity, planeNormal);
+        if (facing.sqrMagnitude < minTurnSpeed * minTurnSpeed)
+        {
+            // Still unwind any roll left over from the last turn, even while drifting too
+            // slowly to steer -- otherwise the body can be parked mid-bank.
+            ApplyBank(0f, dt);
+            return;
+        }
+
+        facing.Normalize();
+        Quaternion target = Quaternion.LookRotation(facing, planeNormal);
+
+        // How far there is left to turn, and which way. The roll leans into that and unwinds
+        // as it closes, so the body is upright again the moment it settles on the heading.
+        Vector3 current = Vector3.ProjectOnPlane(facingRotation * Vector3.forward, planeNormal);
+        float turnRemaining = current.sqrMagnitude > 0.0001f
+            ? Vector3.SignedAngle(current.normalized, facing, planeNormal)
+            : 0f;
+
+        // Tracked unbanked so the roll never feeds back into the heading -- rotating toward a
+        // target from an already-rolled rotation would spend the turn budget undoing the roll.
+        facingRotation = Quaternion.RotateTowards(facingRotation, target, turnSpeed * dt);
+
+        bool allowBank = bankIntoTurns && (bankWhileGrounded || !isGrounded);
+        ApplyBank(allowBank ? -turnRemaining * bankPerDegree : 0f, dt);
+    }
+
+    /// <summary>Eases the roll toward a target and writes the banked rotation to the Rigidbody.</summary>
+    private void ApplyBank(float targetBank, float dt)
+    {
+        targetBank = Mathf.Clamp(targetBank, -maxBankAngle, maxBankAngle);
+        bankAngle = Mathf.MoveTowards(bankAngle, targetBank, bankSpeed * dt);
+
+        // Local Z is the body's forward axis, so rolling about it is the wing drop.
+        rb.MoveRotation(facingRotation * Quaternion.AngleAxis(bankAngle, Vector3.forward));
     }
 
     private bool CheckGrounded()
@@ -303,5 +386,11 @@ public class PlayerMovement : MonoBehaviour
         verticalFollowStrength = Mathf.Max(0f, verticalFollowStrength);
         takeoffSpeed = Mathf.Max(0f, takeoffSpeed);
         takeoffGroundGrace = Mathf.Max(0f, takeoffGroundGrace);
+        cliffLaunchSpeed = Mathf.Max(0f, cliffLaunchSpeed);
+        turnSpeed = Mathf.Max(0f, turnSpeed);
+        minTurnSpeed = Mathf.Max(0f, minTurnSpeed);
+        bankPerDegree = Mathf.Max(0f, bankPerDegree);
+        maxBankAngle = Mathf.Clamp(maxBankAngle, 0f, 89f);
+        bankSpeed = Mathf.Max(0f, bankSpeed);
     }
 }

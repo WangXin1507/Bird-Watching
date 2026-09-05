@@ -423,6 +423,14 @@ PrefabInstance:
       propertyPath: gravity
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 5005193030343223388, guid: 55242ecff7c19f7428695d905be0e6f9, type: 3}
+      propertyPath: maxBankAngle
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 5005193030343223388, guid: 55242ecff7c19f7428695d905be0e6f9, type: 3}
+      propertyPath: bankPerDegree
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8493531706250860071, guid: 55242ecff7c19f7428695d905be0e6f9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.41
