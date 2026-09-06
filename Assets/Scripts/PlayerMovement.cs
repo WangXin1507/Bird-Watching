@@ -388,4 +388,9 @@ public class PlayerMovement : MonoBehaviour
         maxBankAngle = Mathf.Clamp(maxBankAngle, 0f, 89f);
         bankSpeed = Mathf.Max(0f, bankSpeed);
     }
+
+    public MovementState GetState()
+    {
+        return State;
+    }
 }
