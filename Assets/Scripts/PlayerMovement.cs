@@ -234,7 +234,7 @@ public class PlayerMovement : MonoBehaviour
         // else to bleed off that downward momentum.
         float targetVertical = moveDirection.y * airMaxSpeed;
         vertical = Mathf.MoveTowards(vertical, targetVertical, airAcceleration * verticalFollowStrength * dt);
-        vertical -= gravity * dt * (5 - Mathf.Min(5, horizontal.magnitude));
+        vertical -= gravity * dt * (10 - Mathf.Min(10, horizontal.magnitude))/4f;
         
 
         vertical = Mathf.Max(vertical, -maxFallSpeed);
