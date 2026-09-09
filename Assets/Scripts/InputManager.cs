@@ -1,10 +1,6 @@
-using System;
-using NUnit.Framework.Constraints;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.EnhancedTouch;
-using Touch = UnityEngine.Touch;
 
 public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
 {
