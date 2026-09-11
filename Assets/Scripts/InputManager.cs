@@ -25,6 +25,9 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
     public event UnityAction HoldClicked;
     public event UnityAction HoldReleased;
     
+    public event UnityAction DiveClicked;
+    public event UnityAction DiveReleased;
+    
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -97,6 +100,18 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
         else if (context.canceled)
         {
             HoldReleased?.Invoke();
+        }
+    }
+    
+    public void OnDive(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            DiveClicked?.Invoke();
+        }
+        else if (context.canceled)
+        {
+            DiveReleased?.Invoke();
         }
     }
 }
