@@ -119,37 +119,33 @@ public class PlayerInteraction : MonoBehaviour
             holding.TryGetComponent<Rigidbody>(out heldRb);
             holding.TryGetComponent<Collider>(out heldCollider);
 
-            if (grabbable.isDragged)
+            if (PlayerID.playerMovement.GetState() == PlayerMovement.MovementState.Flying)
             {
-                _Drag();
-                return;
-            }
-            else// Not draggable and is flying, hold in feet
-            {
-                IgnorePlayerCollision(true);
-
-                if (PlayerID.playerMovement.GetState() == PlayerMovement.MovementState.Flying)
-                {
-                    _Hold(feetPos);
-                }
-                else
+                if (!grabbable.isDragged)
                 {
                     _Hold(mouthPos);
                 }
+            }
+            else if (grabbable.isDragged)
+            {
+                _Drag();
+            }
+            else// Not draggable and is not flying, hold in feet
+            {
+                _Hold(feetPos);
             }
         }
     }
 
     void _Hold(Transform pos)
     {
-        if (!heldRb || !pos) return;
+        if (!heldRb /*|| !pos*/) return;
 
         IgnorePlayerCollision(true);
 
         heldRb.isKinematic = true;
         heldRb.useGravity = false;
 
-        // not changing with parent for some reason?
         //heldRb.transform.SetParent(pos, false);
         heldRb.transform.SetParent(transform, false);
         heldRb.transform.localPosition = Vector3.zero;
@@ -186,7 +182,7 @@ public class PlayerInteraction : MonoBehaviour
         dragJoint.spring = dragSpring;
         dragJoint.damper = dragDamper;
         dragJoint.minDistance = 0f;
-        dragJoint.maxDistance = 0.05f;
+        dragJoint.maxDistance = 0.25f;
     }
 
     private void StopHolding()
@@ -198,7 +194,7 @@ public class PlayerInteraction : MonoBehaviour
 
         IgnorePlayerCollision(false);
 
-        if (isDragging)
+        if (isDragging) // Stop dragging
         {
             if (dragJoint)
             {
@@ -212,7 +208,7 @@ public class PlayerInteraction : MonoBehaviour
                 heldRb.linearVelocity = releaseVelocity;
             }
         }
-        else if (heldRb)
+        else if (heldRb) // Drop any held object
         {
             heldRb.transform.SetParent(null, true);
 
