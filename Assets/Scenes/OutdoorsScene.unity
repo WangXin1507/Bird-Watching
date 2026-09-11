@@ -407,6 +407,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &732899861 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 438636485032400929, guid: 55242ecff7c19f7428695d905be0e6f9, type: 3}
+  m_PrefabInstance: {fileID: 1032415360}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &795982177
 GameObject:
   m_ObjectHideFlags: 0
@@ -569,9 +574,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2175892325222162732, guid: 55242ecff7c19f7428695d905be0e6f9, type: 3}
+      propertyPath: feetPos
+      value: 
+      objectReference: {fileID: 732899861}
     - target: {fileID: 3499795164953936946, guid: 55242ecff7c19f7428695d905be0e6f9, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 3618269365840730707, guid: 55242ecff7c19f7428695d905be0e6f9, type: 3}
+      propertyPath: m_Name
+      value: FeetPos
       objectReference: {fileID: 0}
     - target: {fileID: 5005193030343223388, guid: 55242ecff7c19f7428695d905be0e6f9, type: 3}
       propertyPath: gravity
@@ -584,6 +597,10 @@ PrefabInstance:
     - target: {fileID: 5005193030343223388, guid: 55242ecff7c19f7428695d905be0e6f9, type: 3}
       propertyPath: bankPerDegree
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191308749659203796, guid: 55242ecff7c19f7428695d905be0e6f9, type: 3}
+      propertyPath: m_Name
+      value: MouthPos
       objectReference: {fileID: 0}
     - target: {fileID: 8493531706250860071, guid: 55242ecff7c19f7428695d905be0e6f9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -625,13 +642,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9013440908371488166, guid: 55242ecff7c19f7428695d905be0e6f9, type: 3}
+      propertyPath: m_Tolerance
+      value: 0.015
+      objectReference: {fileID: 0}
+    - target: {fileID: 9013440908371488166, guid: 55242ecff7c19f7428695d905be0e6f9, type: 3}
+      propertyPath: m_MaxDistance
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9013440908371488166, guid: 55242ecff7c19f7428695d905be0e6f9, type: 3}
+      propertyPath: m_MinDistance
+      value: 0.1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3499795164953936946, guid: 55242ecff7c19f7428695d905be0e6f9, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1723474378}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 55242ecff7c19f7428695d905be0e6f9, type: 3}
 --- !u!4 &1032415361 stripped
 Transform:
@@ -792,32 +818,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExampleGrabbable
   _isDragged: 0
---- !u!1 &1723474374 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3499795164953936946, guid: 55242ecff7c19f7428695d905be0e6f9, type: 3}
-  m_PrefabInstance: {fileID: 1032415360}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1723474378
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1723474374}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a34e326a9b973a54ea560391a4c80508, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerInteraction
-  mask:
-    serializedVersion: 2
-    m_Bits: 128
-  focusRadius: 2
-  maxTargets: 5
-  mouthPos: {fileID: 1032415361}
-  dragSpring: 500
-  dragDamper: 50
-  holding: {fileID: 0}
 --- !u!1 &1777622391
 GameObject:
   m_ObjectHideFlags: 0

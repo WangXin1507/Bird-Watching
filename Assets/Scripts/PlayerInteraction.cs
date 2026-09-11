@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerInteraction : MonoBehaviour
 {
@@ -11,19 +12,26 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private float focusRadius = 30.0f;
     [SerializeField] private int maxTargets = 5;
 
-    [Header("Mouth Holding")]
+    [Header("Holding")]
     [SerializeField] private Transform mouthPos;
+    [SerializeField] private Transform feetPos;
 
     [Header("Dragging")]
     [SerializeField] private float dragSpring = 500.0f;
     [SerializeField] private float dragDamper = 50.0f;
-    [SerializeField] private Transform holding;
+
+    private Collider playerCollider;
+    private Rigidbody rb;
 
     private IFocusable focusedTarget;
     private Collider[] targets;
-    private Rigidbody heldRb;
-    private bool isDragging = false;
 
+    private Transform holding;
+    private Rigidbody heldRb;
+    private Collider heldCollider;
+
+    private SpringJoint dragJoint;
+    private bool isDragging = false;
     private bool interactSubscribed;
     private bool holdSubscribed;
 
@@ -32,6 +40,8 @@ public class PlayerInteraction : MonoBehaviour
     {
         PlayerID.playerInteraction = this;
         targets = new Collider[maxTargets];
+        playerCollider = GetComponent<Collider>();
+        rb = GetComponent<Rigidbody>();
     }
 
     private void Start()
@@ -45,21 +55,15 @@ public class PlayerInteraction : MonoBehaviour
         CheckProximity(); // Check for any nearby Focusable objects
     }
 
-    private void FixedUpdate()
-    {
-        if (holding != null && heldRb != null && !isDragging)
-        {
-            heldRb.position = mouthPos.position;
-            heldRb.rotation = mouthPos.rotation;
-        }
-    }
-
     private void CheckProximity()
     {
         if (holding)
         {
-            focusedTarget?.LoseFocus();
-            focusedTarget = null;
+            if (focusedTarget != null)
+            {
+                focusedTarget.LoseFocus();
+                focusedTarget = null;
+            }
             return;
         }
 
@@ -68,6 +72,7 @@ public class PlayerInteraction : MonoBehaviour
         IFocusable closest = null;
         float minDistance = float.MaxValue;
 
+        // Calculate closest focusables
         for (int i = 0; i < count; i++)
         {
             if (targets[i] != null && targets[i].TryGetComponent<IFocusable>(out var focusable))
@@ -97,90 +102,134 @@ public class PlayerInteraction : MonoBehaviour
             interactable.Interact();
         }
     }
+
     private void TryHold()
     {
         // If there is an object in the mouth
         if (holding)
         {
-            LetGo();
+            StopHolding();
+            return;
         }
         else if (focusedTarget is IGrabbable grabbable)
         {
             holding = grabbable.Grab(); // return Transform of grabbable
+            if (!holding) return;
+
+            holding.TryGetComponent<Rigidbody>(out heldRb);
+            holding.TryGetComponent<Collider>(out heldCollider);
 
             if (grabbable.isDragged)
             {
-                isDragging = true;
-
-                if (holding.TryGetComponent<Rigidbody>(out Rigidbody rb))
-                {
-                    // Create a joint for the player to drag
-
-                    SpringJoint dragJoint = gameObject.AddComponent<SpringJoint>();
-                    dragJoint.connectedBody = rb;
-                    dragJoint.autoConfigureConnectedAnchor = false;
-
-                    // Closest point of the object to attach the joint to
-                    Vector3 worldClosestPoint = Vector3.zero;
-                    if (holding.TryGetComponent<Collider>(out Collider col))
-                    {
-                        worldClosestPoint = col.ClosestPoint(transform.position);
-                    }
-                    else
-                    {
-                        worldClosestPoint = rb.position;
-                    }
-
-                    dragJoint.anchor = Vector3.zero;
-                    dragJoint.connectedAnchor = rb.transform.InverseTransformPoint(worldClosestPoint);
-                    dragJoint.spring = dragSpring;
-                    dragJoint.damper = dragDamper;
-                }
+                _Drag();
+                return;
             }
-            else // Not draggable; hold in mouth
+            else// Not draggable and is flying, hold in feet
             {
-                if (holding.TryGetComponent<Rigidbody>(out heldRb))
+                IgnorePlayerCollision(true);
+
+                if (PlayerID.playerMovement.GetState() == PlayerMovement.MovementState.Flying)
                 {
-                    heldRb.isKinematic = true;
-                    heldRb.detectCollisions = false;
+                    _Hold(feetPos);
                 }
-
-                // Clear local positioning of object
-                holding.transform.localPosition = Vector3.zero;
-                holding.transform.localRotation = Quaternion.identity;
-
-                // Position for holding is set in FixedUpdate, I didn't want to mess with reparenting
+                else
+                {
+                    _Hold(mouthPos);
+                }
             }
-            
         }
     }
 
-    private void LetGo()
+    void _Hold(Transform pos)
     {
-        if (holding == null) return;
+        if (!heldRb || !pos) return;
+
+        IgnorePlayerCollision(true);
+
+        heldRb.isKinematic = true;
+        heldRb.useGravity = false;
+
+        // not changing with parent for some reason?
+        //heldRb.transform.SetParent(pos, false);
+        heldRb.transform.SetParent(transform, false);
+        heldRb.transform.localPosition = Vector3.zero;
+        heldRb.transform.localRotation = Quaternion.identity;
+    }
+
+    private void _Drag()
+    {
+        if (!heldRb) return;
+
+        isDragging = true;
+
+        SpringJoint existingJoint = heldRb.GetComponent<SpringJoint>();
+        if (existingJoint)
+        {
+            Destroy(existingJoint);
+        }
+
+        dragJoint = heldRb.gameObject.AddComponent<SpringJoint>();
+        dragJoint.autoConfigureConnectedAnchor = false;
+
+        Vector3 attachPoint = heldRb.position; 
+        if (heldCollider)
+        { 
+            attachPoint = heldCollider.ClosestPoint(transform.position);
+        }
+        dragJoint.anchor = heldRb.transform.InverseTransformPoint(attachPoint);
+
+        if (rb) {
+            dragJoint.connectedBody = rb;
+            dragJoint.connectedAnchor = rb.transform.InverseTransformPoint(transform.position);
+        }
+
+        dragJoint.spring = dragSpring;
+        dragJoint.damper = dragDamper;
+        dragJoint.minDistance = 0f;
+        dragJoint.maxDistance = 0.05f;
+    }
+
+    private void StopHolding()
+    {
+        if (!holding) return;
+
+        Vector3 releaseVelocity = Vector3.zero;
+        if (rb) releaseVelocity = rb.linearVelocity;
+
+        IgnorePlayerCollision(false);
 
         if (isDragging)
         {
-            Destroy(gameObject.GetComponent<SpringJoint>());
-            isDragging = false;
-        }
-        else
-        {
-            if (holding.TryGetComponent<Rigidbody>(out Rigidbody rb))
+            if (dragJoint)
             {
-                rb.isKinematic = false;
-                rb.detectCollisions = true;
-
-                if (TryGetComponent<Rigidbody>(out Rigidbody playerRb))
-                {
-                    rb.linearVelocity = playerRb.linearVelocity;
-                }
+                dragJoint.connectedBody = null;
+                Destroy(dragJoint);
+                dragJoint = null;
             }
 
+            if (heldRb)
+            {
+                heldRb.linearVelocity = releaseVelocity;
+            }
+        }
+        else if (heldRb)
+        {
+            heldRb.transform.SetParent(null, true);
+
+            heldRb.isKinematic = false;
+            heldRb.useGravity = true;
+            heldRb.linearVelocity = releaseVelocity;
         }
 
+        isDragging = false;
+        heldCollider = null;
         heldRb = null;
         holding = null;
+    }
+    void IgnorePlayerCollision(bool value)
+    {
+        if (!playerCollider || !heldCollider) return;
+        Physics.IgnoreCollision(playerCollider, heldCollider, value);
     }
 
     // Subscribe and unsubscribe from inputs, copied from PlayerMovement
