@@ -1,5 +1,71 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2183049175628394011
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6183049175628394012}
+  - component: {fileID: 3183049175628394013}
+  - component: {fileID: 4183049175628394014}
+  m_Layer: 0
+  m_Name: Camera Target
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6183049175628394012
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2183049175628394011}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.99}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8493531706250860071}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3183049175628394013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2183049175628394011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2808397ee0499ec42850c8dc3945e9b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BirdWatchingCamera.CameraTarget
+--- !u!114 &4183049175628394014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2183049175628394011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1479dc6ec04fea34996aa682d7d4233a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BirdWatchingCamera.CameraLook
+  horizontalSensitivity: 1.5
+  verticalSensitivity: 1.5
+  invertY: 0
+  scaleByDeltaTime: 0
+  minPitch: -80
+  maxPitch: 80
+  clampYaw: 0
+  minYaw: -90
+  maxYaw: 90
 --- !u!1 &3499795164953936946
 GameObject:
   m_ObjectHideFlags: 0
@@ -14,7 +80,7 @@ GameObject:
   - component: {fileID: 7575912060067520574}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -33,6 +99,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1620861891657745535}
+  - {fileID: 6183049175628394012}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &361104461681394276
@@ -80,21 +147,21 @@ MonoBehaviour:
   airAcceleration: 20
   airFriction: 4
   airMaxSpeed: 9
-  verticalFollowStrength: 1
-  gravity: 24
-  maxFallSpeed: 20
-  takeoffSpeed: 8
+  riseAcceleration: 40
+  maxRiseSpeed: 8
+  diveAcceleration: 60
+  maxDiveSpeed: 35
+  verticalStopAcceleration: 60
   takeoffGroundGrace: 0.15
-  cliffLaunchSpeed: 0
+  gravity: 10
+  maxFallSpeed: 20
   rotateTowardVelocity: 1
   turnSpeed: 720
   minTurnSpeed: 0.4
-  bankIntoTurns: 1
-  bankPerDegree: 1
-  maxBankAngle: 35
+  maxPitchAngle: 45
+  bankPerDegree: 5
+  maxBankAngle: 60
   bankSpeed: 180
-  bankWhileGrounded: 0
-  followCameraPitchInAir: 1
   groundMask:
     serializedVersion: 2
     m_Bits: 55

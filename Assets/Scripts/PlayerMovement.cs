@@ -1,4 +1,6 @@
 using UnityEngine;
+using BirdWatchingCamera;
+using UnityEngine.Events;
 
 /// <summary>
 /// State-machine movement for the bird. Attach to the player root alongside a Rigidbody
@@ -9,6 +11,9 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
 {
+    public UnityEvent OnTakeFlight;
+    public UnityEvent OnLand;
+
     public enum MovementState
     {
         GroundedIdle,
@@ -168,6 +173,8 @@ public class PlayerMovement : MonoBehaviour
         // The grace window keeps the ground check from re-grounding the bird on the frame it launches.
         isGrounded = Time.time >= groundCheckSuppressedUntil && CheckGrounded();
 
+        if (isGrounded && !wasGrounded) OnLand?.Invoke();
+
         if (takeoffQueued)
         {
             // Consumed either way: a press made mid-air must not fire on the next landing.
@@ -233,6 +240,8 @@ public class PlayerMovement : MonoBehaviour
         isGrounded = false;
         wasGrounded = false;
         groundCheckSuppressedUntil = Time.time + takeoffGroundGrace;
+        
+        OnTakeFlight?.Invoke();
     }
 
     private void EnterState(MovementState entered) { }
