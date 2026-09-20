@@ -81,21 +81,21 @@ MonoBehaviour:
   airAcceleration: 20
   airFriction: 4
   airMaxSpeed: 9
-  verticalFollowStrength: 1
+  riseAcceleration: 40
+  maxRiseSpeed: 8
+  diveAcceleration: 60
+  maxDiveSpeed: 35
+  verticalStopAcceleration: 60
+  takeoffGroundGrace: 0.15
   gravity: 24
   maxFallSpeed: 20
-  takeoffSpeed: 8
-  takeoffGroundGrace: 0.15
-  cliffLaunchSpeed: 0
   rotateTowardVelocity: 1
   turnSpeed: 720
   minTurnSpeed: 0.4
-  bankIntoTurns: 1
+  maxPitchAngle: 45
   bankPerDegree: 1
   maxBankAngle: 35
   bankSpeed: 180
-  bankWhileGrounded: 0
-  followCameraPitchInAir: 1
   groundMask:
     serializedVersion: 2
     m_Bits: 55
@@ -121,8 +121,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0.45, z: 0}
+  m_Size: {x: 0.3098873, y: 0.3621317, z: 0.27787086}
+  m_Center: {x: 0.062696636, y: 0.2256544, z: 0.03048329}
 --- !u!114 &2175892325222162732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,15 +202,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: af6bd58bb3fb0dd42a8c61818616b63e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: af6bd58bb3fb0dd42a8c61818616b63e, type: 3}
       propertyPath: m_LocalScale.y
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: af6bd58bb3fb0dd42a8c61818616b63e, type: 3}
       propertyPath: m_LocalScale.z
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: af6bd58bb3fb0dd42a8c61818616b63e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -218,7 +218,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: af6bd58bb3fb0dd42a8c61818616b63e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.49300003
+      value: 0.369
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: af6bd58bb3fb0dd42a8c61818616b63e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -260,6 +260,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: crow_blockout_walk
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: af6bd58bb3fb0dd42a8c61818616b63e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -285,15 +289,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 6bf3aed3d3b00534dbe612c51e175c23, type: 3}
       propertyPath: m_LocalScale.x
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6bf3aed3d3b00534dbe612c51e175c23, type: 3}
       propertyPath: m_LocalScale.y
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6bf3aed3d3b00534dbe612c51e175c23, type: 3}
       propertyPath: m_LocalScale.z
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6bf3aed3d3b00534dbe612c51e175c23, type: 3}
       propertyPath: m_LocalPosition.x
@@ -301,7 +305,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6bf3aed3d3b00534dbe612c51e175c23, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.12699996
+      value: 0.205
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6bf3aed3d3b00534dbe612c51e175c23, type: 3}
       propertyPath: m_LocalPosition.z
