@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 361104461681394276}
   - component: {fileID: 5005193030343223388}
   - component: {fileID: 7575912060067520574}
+  - component: {fileID: 2175892325222162732}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -122,6 +123,27 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0.45, z: 0}
+--- !u!114 &2175892325222162732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3499795164953936946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a34e326a9b973a54ea560391a4c80508, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInteraction
+  mask:
+    serializedVersion: 2
+    m_Bits: 128
+  focusRadius: 1.5
+  maxTargets: 5
+  mouthPos: {fileID: 0}
+  feetPos: {fileID: 0}
+  dragSpring: 500
+  dragDamper: 50
 --- !u!1 &9128812016563177885
 GameObject:
   m_ObjectHideFlags: 0
