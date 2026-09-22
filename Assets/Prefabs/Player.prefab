@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7575912060067520574}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -80,21 +80,21 @@ MonoBehaviour:
   airAcceleration: 20
   airFriction: 4
   airMaxSpeed: 9
-  verticalFollowStrength: 1
+  riseAcceleration: 40
+  maxRiseSpeed: 8
+  diveAcceleration: 60
+  maxDiveSpeed: 35
+  verticalStopAcceleration: 60
+  takeoffGroundGrace: 0.15
   gravity: 24
   maxFallSpeed: 20
-  takeoffSpeed: 8
-  takeoffGroundGrace: 0.15
-  cliffLaunchSpeed: 0
   rotateTowardVelocity: 1
   turnSpeed: 720
   minTurnSpeed: 0.4
-  bankIntoTurns: 1
+  maxPitchAngle: 45
   bankPerDegree: 1
   maxBankAngle: 35
   bankSpeed: 180
-  bankWhileGrounded: 0
-  followCameraPitchInAir: 1
   groundMask:
     serializedVersion: 2
     m_Bits: 55
