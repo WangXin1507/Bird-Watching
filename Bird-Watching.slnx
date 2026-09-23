@@ -1,7 +1,11 @@
 ﻿<Solution>
+  <Project Path="Unity.Importer.csproj" />
+  <Project Path="Unity.Importer.USD.csproj" />
   <Project Path="FMODUnityEditor.csproj" />
   <Project Path="FMODUnity.csproj" />
   <Project Path="Assembly-CSharp-Editor.csproj" />
+  <Project Path="Unity.Importer.USD.Editor.csproj" />
+  <Project Path="Unity.Importer.Editor.csproj" />
   <Project Path="FMODUnityResonance.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Sirenix.OdinInspector.Modules.UnityMathematics.csproj" />
