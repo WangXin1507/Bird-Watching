@@ -3,6 +3,7 @@
   <Project Path="Unity.Importer.USD.csproj" />
   <Project Path="FMODUnityEditor.csproj" />
   <Project Path="FMODUnity.csproj" />
+  <Project Path="Assembly-CSharp-firstpass.csproj" />
   <Project Path="Assembly-CSharp-Editor.csproj" />
   <Project Path="Unity.Importer.USD.Editor.csproj" />
   <Project Path="Unity.Importer.Editor.csproj" />
@@ -11,5 +12,4 @@
   <Project Path="Sirenix.OdinInspector.Modules.UnityMathematics.csproj" />
   <Project Path="FMODUnityResonanceEditor.csproj" />
   <Project Path="FMODUnityHaptics.csproj" />
-  <Project Path="Assembly-CSharp-firstpass.csproj" />
 </Solution>
