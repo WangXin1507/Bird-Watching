@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e8d9dd9c4f455445a27fc1b6fcb134f, type: 3}
   m_Name: InFlightCamData
   m_EditorClassIdentifier: Assembly-CSharp::BirdCameraData
-  vertcialFov: 120
-  offset: {x: 0, y: 0, z: -2}
-  damping: {x: 0.1, y: 0, z: 0.3}
-  cameraDistance: 2
+  vertcialFov: 105
+  cameraDistance: 1
+  screenPosition: {x: 0, y: 0.15}
+  deadZoneEnabled: 1
+  deadZoneSize: {x: 0.1, y: 0.1}
+  aimTargetOffset: {x: 0, y: 0, z: 0}

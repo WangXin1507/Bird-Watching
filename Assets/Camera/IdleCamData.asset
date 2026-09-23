@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: IdleCamData
   m_EditorClassIdentifier: Assembly-CSharp::BirdCameraData
   vertcialFov: 85
-  offset: {x: 0, y: 0, z: -1.7}
-  damping: {x: 0, y: 0, z: 0}
-  cameraDistance: 2
+  cameraDistance: 0.6
+  screenPosition: {x: 0, y: 0.3}
+  deadZoneEnabled: 0
+  deadZoneSize: {x: 0.2, y: 0.2}
+  aimTargetOffset: {x: 0, y: 0.05, z: 0}

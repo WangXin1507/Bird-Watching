@@ -330,9 +330,9 @@ public class PlayerMovement : MonoBehaviour
     }
 
     /// <summary>
-    /// Input rotated into camera space and flattened. W is always "away from the camera"
-    /// whatever the yaw, and the camera's pitch is deliberately discarded -- height is the
-    /// two buttons' job, so looking up or down never moves the bird vertically.
+    /// Input rotated into the rendered camera's view. W is always the direction the camera
+    /// is looking, flattened onto the ground plane. Pitch is discarded so looking up or down
+    /// never moves the bird vertically -- height is Rise and Dive.
     /// </summary>
     private Vector3 ReadMoveDirection()
     {
@@ -342,8 +342,26 @@ public class PlayerMovement : MonoBehaviour
         if (input.sqrMagnitude < 0.0001f) return Vector3.zero;
 
         CameraLook cam = ActiveCamera;
-        Vector3 forward = cam != null ? cam.PlanarForward : Vector3.forward;
-        Vector3 right = cam != null ? cam.PlanarRight : Vector3.right;
+        Vector3 forward;
+        Vector3 right;
+        if (cam != null)
+        {
+            forward = cam.PlanarForward;
+            right = cam.PlanarRight;
+        }
+        else if (Camera.main != null)
+        {
+            forward = Camera.main.transform.forward;
+            forward.y = 0f;
+            forward = forward.sqrMagnitude > 0.0001f ? forward.normalized : Vector3.forward;
+            right = Camera.main.transform.right;
+            right.y = 0f;
+            right = right.sqrMagnitude > 0.0001f ? right.normalized : Vector3.right;
+        }
+        else
+        {
+            return Vector3.zero;
+        }
 
         Vector3 direction = forward * input.y + right * input.x;
         return Vector3.ClampMagnitude(direction, 1f);

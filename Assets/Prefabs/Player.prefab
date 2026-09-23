@@ -75,20 +75,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1acc37245ae23de41b8ce60ad15baa4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  groundAcceleration: 45
-  groundFriction: 35
-  groundMaxSpeed: 6
-  airAcceleration: 20
-  airFriction: 4
-  airMaxSpeed: 9
-  riseAcceleration: 40
-  maxRiseSpeed: 8
-  diveAcceleration: 60
-  maxDiveSpeed: 35
-  verticalStopAcceleration: 60
+  OnTakeFlight:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: BirdWatchingCamera.MainCamera, Assembly-CSharp
+        m_MethodName: EnableFlightProfile
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnLand:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: BirdWatchingCamera.MainCamera, Assembly-CSharp
+        m_MethodName: EnableIdleProfile
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  groundAcceleration: 10
+  groundFriction: 5
+  groundMaxSpeed: 2
+  airAcceleration: 10
+  airFriction: 2
+  airMaxSpeed: 3
+  riseAcceleration: 2
+  maxRiseSpeed: 2.5
+  diveAcceleration: 10
+  maxDiveSpeed: 5
+  verticalStopAcceleration: 20
   takeoffGroundGrace: 0.15
-  gravity: 24
-  maxFallSpeed: 20
+  gravity: 5
+  maxFallSpeed: 1
   rotateTowardVelocity: 1
   turnSpeed: 720
   minTurnSpeed: 0.4
@@ -99,9 +129,9 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 55
-  groundCheckRadius: 0.3
-  groundCheckOffset: 0.4
-  groundCheckDistance: 0.5
+  groundCheckRadius: 0.2
+  groundCheckOffset: 0.3
+  groundCheckDistance: 0.25
 --- !u!65 &7575912060067520574
 BoxCollider:
   m_ObjectHideFlags: 0

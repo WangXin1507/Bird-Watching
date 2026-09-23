@@ -11,7 +11,6 @@ namespace BirdWatchingCamera
             if (camera == null) return;
 
             camera.Follow = transform;
-            camera.LookAt = transform;
         }
 
         void OnDrawGizmos()
