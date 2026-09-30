@@ -14,11 +14,12 @@ public class ItemSpawner : Interactable
             GameObject newItem = Instantiate(itemBase);
             newItem.name = item.itemName;
 
-            ItemComponent itemComponent = newItem.GetComponent<ItemComponent>();
-            itemComponent.data = item;
-
             //MeshFilter meshFilter = newItem.GetComponent<MeshFilter>();
             //meshFilter.mesh = item.itemMesh;
+            //newItem.GetComponent<MeshRenderer>().material = item.itemMaterial;
+
+            ItemComponent itemComponent = newItem.GetComponent<ItemComponent>();
+            itemComponent.data = item;
 
             PlayerID.playerInteraction.ForceHold(newItem.transform);
         }

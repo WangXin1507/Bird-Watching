@@ -154,6 +154,10 @@ MonoBehaviour:
   acceptableItems:
   - {fileID: 11400000, guid: 44d3085a8cfd76c4999ec22e5a8b7ce0, type: 2}
   - {fileID: 11400000, guid: e796b118469669b449d1fe7769a0e884, type: 2}
+  desiredItems:
+  - {fileID: 11400000, guid: 44d3085a8cfd76c4999ec22e5a8b7ce0, type: 2}
+  - {fileID: 11400000, guid: e796b118469669b449d1fe7769a0e884, type: 2}
+  - {fileID: 11400000, guid: 44d3085a8cfd76c4999ec22e5a8b7ce0, type: 2}
   totalItems: 3
 --- !u!65 &148815031
 BoxCollider:
@@ -1194,6 +1198,75 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 55
   collisionRadius: 0.2
+--- !u!1001 &1901643909
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: e796b118469669b449d1fe7769a0e884, type: 2}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: itemBase
+      value: 
+      objectReference: {fileID: 2135342556}
+    - target: {fileID: 1664936575164219032, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: m_Name
+      value: RedFlowerSpawner
+      objectReference: {fileID: 0}
+    - target: {fileID: 1664936575164219032, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3949101070929478161, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 3949101070929478161, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3949101070929478161, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 4.66386
+      objectReference: {fileID: 0}
+    - target: {fileID: 3949101070929478161, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3949101070929478161, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3949101070929478161, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3949101070929478161, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3949101070929478161, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3949101070929478161, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3949101070929478161, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
 --- !u!1 &1987697910
 GameObject:
   m_ObjectHideFlags: 0
@@ -1439,7 +1512,7 @@ PrefabInstance:
       objectReference: {fileID: 2135342556}
     - target: {fileID: 1664936575164219032, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
       propertyPath: m_Name
-      value: ItemSpawner
+      value: BlueFlowerSpawner
       objectReference: {fileID: 0}
     - target: {fileID: 1664936575164219032, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
       propertyPath: m_Layer
@@ -1451,7 +1524,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3949101070929478161, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.66
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 3949101070929478161, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1504,4 +1577,5 @@ SceneRoots:
   - {fileID: 1697277657}
   - {fileID: 2567438958284576456}
   - {fileID: 5598380982144019725}
+  - {fileID: 1901643909}
   - {fileID: 148815034}
