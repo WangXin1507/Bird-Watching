@@ -3751,7 +3751,7 @@ PlayableDirector:
   m_Enabled: 1
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: 7a0f4bf7a11d97140b69b8fe6fca8afd, type: 2}
-  m_InitialState: 1
+  m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
@@ -5646,12 +5646,14 @@ MonoBehaviour:
   receiverType: 0
   questOutcome: {fileID: 11400000, guid: ebdf5a05291cea84ebc54aaadad375fa, type: 2}
   executionStrategy:
-    rid: -2
+    rid: 8442906397989929120
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+    - rid: 8442906397989929120
+      type: {class: CutsceneExecution, ns: BirdWatching.Quests, asm: Assembly-CSharp}
+      data:
+        playableDirector: {fileID: 1616391427}
 --- !u!1 &2121828611
 GameObject:
   m_ObjectHideFlags: 0

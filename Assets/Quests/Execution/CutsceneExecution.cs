@@ -1,16 +1,17 @@
 using UnityEngine;
+using UnityEngine.Playables;
 
-public class CutsceneExecution : MonoBehaviour
+namespace BirdWatching.Quests
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public class CutsceneExecution : IQuestExecutionStrategy
     {
-        
-    }
+        [Tooltip("Insert your timeline here")]
+        public PlayableDirector playableDirector;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        protected override void OnInitialize()
+        {
+            base.OnInitialize();
+            playableDirector.Play();
+        }
     }
 }
