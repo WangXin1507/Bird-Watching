@@ -5,7 +5,7 @@ public class PlayerInteraction : MonoBehaviour
 {
     [Header("Detection")]
     [SerializeField] private LayerMask mask = ~0;
-    [SerializeField] private float focusRadius = 50.0f;
+    [SerializeField] private float focusRadius = 30.0f;
     [SerializeField] private int maxTargets = 5;
 
     [Header("Holding")]
