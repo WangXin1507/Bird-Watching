@@ -5,6 +5,9 @@ using UnityEngine.InputSystem;
 public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
 {
     public static InputManager Instance { get; private set; }
+    public bool moveInputEnabled;
+    public bool lookInputEnabled;
+    public bool interactionEnabled;
     
     private InputSystem_Actions inputActions;
     private InputSystem_Actions.PlayerActions playerInput;
@@ -28,6 +31,13 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
     public event UnityAction DiveClicked;
     public event UnityAction DiveReleased;
     
+    public void LockInputs(bool moveInput, bool lookInput, bool interactInput)
+    {
+        moveInputEnabled = moveInput;
+        lookInputEnabled = lookInput;
+        interactionEnabled = interactInput;
+    }
+
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -59,16 +69,28 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
 
     public void OnMovement(InputAction.CallbackContext context)
     {
+        if (!moveInputEnabled)
+        {
+            return;
+        }
         movementVector = context.ReadValue<Vector2>();
     }
 
     public void OnLook(InputAction.CallbackContext context)
     {
+        if (!lookInputEnabled)
+        {
+            return;
+        }
         lookVector = context.ReadValue<Vector2>();
     }
 
     public void OnRise(InputAction.CallbackContext context)
     {
+        if (!moveInputEnabled)
+        {
+            return;
+        }
         if (context.performed)
         {
             RiseClicked?.Invoke();
@@ -81,6 +103,10 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
 
     public void OnInteract(InputAction.CallbackContext context)
     {
+        if (!interactionEnabled)
+        {
+            return;
+        }
         if (context.performed)
         {
             InteractClicked?.Invoke();
@@ -93,6 +119,10 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
 
     public void OnHold(InputAction.CallbackContext context)
     {
+        if (!interactionEnabled)
+        {
+            return;
+        }
         if (context.performed)
         {
             HoldClicked?.Invoke();
