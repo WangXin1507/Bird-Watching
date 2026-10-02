@@ -5,9 +5,9 @@ using UnityEngine.InputSystem;
 public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
 {
     public static InputManager Instance { get; private set; }
-    public bool moveInputEnabled;
-    public bool lookInputEnabled;
-    public bool interactionEnabled;
+    public bool moveInputEnabled = true;
+    public bool lookInputEnabled = true;
+    public bool interactionEnabled = true;
     
     private InputSystem_Actions inputActions;
     private InputSystem_Actions.PlayerActions playerInput;
@@ -54,6 +54,8 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
         playerInput = inputActions.Player;
         playerInput.Enable();
         playerInput.AddCallbacks(this);
+
+        LockInputs(true, true, true);
     }
 
     private void OnDestroy()
