@@ -1,26 +1,30 @@
+using FMOD.Studio;
 using FMODUnity;
-using Sirenix.OdinInspector;
-using System.Collections.Generic;
 using UnityEngine;
 
-[DefaultExecutionOrder(-100)]
 public class AudioManager : MonoBehaviour
 {
-    public List<EventReference> audioRefs;
+    static EventInstance currentMusicTrack;
 
-    public void PlayeOneShot(EventReference audioRef)
-    {
-        RuntimeManager.PlayOneShot(audioRef);
-    }
+    public static void PlayOneShot(EventReference audio, Vector3 position = default) => RuntimeManager.PlayOneShot(audio, position);
 
-#if UNITY_EDITOR
-    [Button]
-    public void RefreshEventReferenceList()
+    public static void PlayOneShotAttached(EventReference audio, GameObject target) => RuntimeManager.PlayOneShotAttached(audio, target);
+
+    public static void PlayTrack(EventReference audio)
     {
-        foreach (var editorRefs in EventManager.Events)
+        if (currentMusicTrack.isValid())
         {
-            audioRefs.Add(EventReference.Find(editorRefs.Path));
+            currentMusicTrack.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            currentMusicTrack.release();
         }
+
+        var instance = RuntimeManager.CreateInstance(audio);
+        instance.start();
     }
-#endif
+
+    void OnDestroy()
+    {
+        currentMusicTrack.stop(FMOD.Studio.STOP_MODE.IMMEDIATE); 
+        currentMusicTrack.release();    
+    }
 }
