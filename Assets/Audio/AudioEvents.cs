@@ -5,12 +5,39 @@ using FMODUnity;
 
 public static class AudioEvents
 {
-    public static readonly EventReference Test = new EventReference
+    public static class Bird
+    {
+        public static readonly EventReference Bird_Flight_SFX = new EventReference
+        {
+#if UNITY_EDITOR
+            Path = "event:/Bird/Bird Flight SFX",
+#endif
+            Guid = FMOD.GUID.Parse("{b3853a5a-d05c-4522-9627-f6a39210e6ba}")
+        };
+
+        public static readonly EventReference Bird_Footstep_SFX = new EventReference
+        {
+#if UNITY_EDITOR
+            Path = "event:/Bird/Bird Footstep SFX",
+#endif
+            Guid = FMOD.GUID.Parse("{e4099834-aa0c-4bf7-8d43-ffa8fc268d5a}")
+        };
+
+        public static readonly EventReference Bird_Takeoff_SFX = new EventReference
+        {
+#if UNITY_EDITOR
+            Path = "event:/Bird/Bird Takeoff SFX",
+#endif
+            Guid = FMOD.GUID.Parse("{da1e7c2d-e552-4ead-b76d-9c508915fa9e}")
+        };
+    }
+
+    public static readonly EventReference TEST_SFX = new EventReference
     {
 #if UNITY_EDITOR
-        Path = "event:/Test",
+        Path = "event:/TEST SFX",
 #endif
-        Guid = FMOD.GUID.Parse("{d168b65e-e6c9-4a1c-94ac-3e9b802d9f3e}")
+        Guid = FMOD.GUID.Parse("{968a1429-90f8-4043-9391-5a624a926f3d}")
     };
 }
 
