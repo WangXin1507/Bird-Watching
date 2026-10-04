@@ -85,7 +85,9 @@ namespace BirdWatching.Quests
         {
             if (InputManager.Instance == null) return;
 
-            InputManager.Instance.LockInputs(false, false, false);
+            // Leave move and look alone. PlayerSplinePositionOverride is what
+            // takes over the bird; a camera-only cutscene must not freeze leftover velocity.
+            InputManager.Instance.LockInputs(true, true, false);
         }
 
         void EnableInput()

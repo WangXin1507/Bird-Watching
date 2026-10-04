@@ -451,7 +451,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 85
+  field of view: 60.000004
   orthographic: 0
   orthographic size: 10
   m_Depth: -1
@@ -477,8 +477,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 212829033}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.13884766, y: -0.0000000089535215, z: -0.0000000012553348, w: 0.99031377}
-  m_LocalPosition: {x: -2.067, y: 4.890424, z: -17.268229}
+  m_LocalRotation: {x: -0.0260941, y: 0.9738908, z: 0.16219129, w: 0.15668413}
+  m_LocalPosition: {x: -3.377, y: 3.46, z: -12.862}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -507,8 +507,8 @@ MonoBehaviour:
     Enabled: 0
     DefaultMode: 2
   DefaultBlend:
-    Style: 1
-    Time: 2
+    Style: 0
+    Time: 0
     CustomCurve:
       serializedVersion: 2
       m_Curve: []
@@ -3855,14 +3855,19 @@ PlayableDirector:
     value: {fileID: 2121828613}
   - key: {fileID: -6902936287018149153, guid: 7a0f4bf7a11d97140b69b8fe6fca8afd, type: 2}
     value: {fileID: 1118241931}
+  - key: {fileID: 7213743741828229064, guid: 7a0f4bf7a11d97140b69b8fe6fca8afd, type: 2}
+    value: {fileID: 1710434187}
   m_ExposedReferences:
     m_References:
     - 01b8e7585ea464240a744feffa934470: {fileID: 1670123977}
     - f5be373e30777a048bc4cfa3adf22370: {fileID: 1670123977}
     - b52e6e278a3960c4c98265d1cae219cd: {fileID: 910475487}
     - 379206d77bac5804c993e3a3e81d65e9: {fileID: 0}
+    - e4da883b6e66e364ab2b9d57b769ac7c: {fileID: 2121828615}
+    - 012b95e5a6c4b0449b7b8e9620397004: {fileID: 1670123977}
     - fbb8479d6879d094a828b7dec297ead0: {fileID: 212829033}
     - 0b8f24b88392c83468d01ba6c929180c: {fileID: 2121828615}
+    - 24f9711b19f74f64296eb797fc39ca50: {fileID: 910475487}
 --- !u!1 &1670123973
 GameObject:
   m_ObjectHideFlags: 0
@@ -3944,8 +3949,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineCamera
   Priority:
-    Enabled: 0
-    m_Value: 239
+    Enabled: 1
+    m_Value: 100
   OutputChannel: 1
   StandbyUpdate: 0
   m_StreamingVersion: 20241001
@@ -4234,6 +4239,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1710434185}
   - component: {fileID: 1710434186}
+  - component: {fileID: 1710434187}
   m_Layer: 0
   m_Name: Player Spline
   m_TagString: Untagged
@@ -4336,6 +4342,19 @@ MonoBehaviour:
       m_Data: []
   m_Knots:
     m_KnotsLink: []
+--- !u!114 &1710434187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1710434184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9feca4b2855aed41981e2cf9e58a70c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerSplinePositionOverride
+  spline: {fileID: 1710434186}
 --- !u!1 &1782049213
 GameObject:
   m_ObjectHideFlags: 0

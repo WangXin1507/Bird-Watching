@@ -33,9 +33,23 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
     
     public void LockInputs(bool moveInput, bool lookInput, bool interactInput)
     {
+        bool moveWasEnabled = moveInputEnabled;
         moveInputEnabled = moveInput;
         lookInputEnabled = lookInput;
         interactionInputEnabled = interactInput;
+
+        if (!moveInputEnabled)
+        {
+            movementVector = Vector2.zero;
+            if (moveWasEnabled)
+            {
+                RiseReleased?.Invoke();
+                DiveReleased?.Invoke();
+            }
+        }
+
+        if (!lookInputEnabled)
+            lookVector = Vector2.zero;
     }
 
     private void Awake()
@@ -137,6 +151,10 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
     
     public void OnDive(InputAction.CallbackContext context)
     {
+        if (!moveInputEnabled)
+        {
+            return;
+        }
         if (context.performed)
         {
             DiveClicked?.Invoke();

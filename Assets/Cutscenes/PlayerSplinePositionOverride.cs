@@ -96,8 +96,9 @@ public class PlayerSplinePositionOverride : MonoBehaviour
         movement.Place(new Vector3(position.x, position.y, position.z), rotation);
     }
 
-    void EndOverride()
+    public void EndOverride()
     {
+        runId++;
         if (!active) return;
 
         active = false;
@@ -110,8 +111,6 @@ public class PlayerSplinePositionOverride : MonoBehaviour
 
     void OnDisable()
     {
-        // Bump the run so an in-flight move does not restore twice, then release the player.
-        runId++;
         EndOverride();
     }
 }
