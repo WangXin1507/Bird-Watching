@@ -9,14 +9,12 @@ using FMOD.Studio;
 
 namespace BirdWatching.Audio
 {
-
     public class ConversationPlayer : MonoBehaviour
     {
         public static ConversationPlayer Instance;
 
         public List<ConversationObject> conversations = new();
-
-        [SerializeField] TextMeshProUGUI subtitles;
+        public ConversationCharacter character;
 
         Coroutine subtitleRoutine = null;
         ConversationObject curConvo;
@@ -56,8 +54,7 @@ namespace BirdWatching.Audio
 
             RuntimeManager.StudioSystem.setParameterByName("PhoneVoice", 0);
 
-            subtitles.text = "";
-            subtitles.enabled = false;
+            character.HideCharacterSpeech();
             subtitleRoutine = null;
         }
 
@@ -72,12 +69,10 @@ namespace BirdWatching.Audio
             curConvo = newConvo;
             lineInConvo = startingIndex;
 
-            subtitles.enabled = true;
-
             for (; lineInConvo < curConvo.lines.Count; lineInConvo++)
             {
                 var line = curConvo.lines[lineInConvo];
-                subtitles.text = line.text;
+                character.SetCharacterSpeech(null, line.text);
 
                 RuntimeManager.StudioSystem.setParameterByName("PhoneVoice", line.isFromPhone ? 1 : 0);
 
@@ -96,7 +91,7 @@ namespace BirdWatching.Audio
             }
             Instance = this;
 
-            subtitles.text = "";
+            character.HideCharacterSpeech();
         }
     }
 }

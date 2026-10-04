@@ -89,6 +89,8 @@ public class PlayerMovement : MonoBehaviour
     private Quaternion facingRotation = Quaternion.identity;
     private float bankAngle;
     private CameraLook cameraLook;
+    private bool controlSuspended;
+    private bool kinematicBeforeSuspend;
 
     private MovementState State => state;
     private bool IsGrounded => isGrounded;
@@ -168,6 +170,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (controlSuspended) return;
+
         float dt = Time.fixedDeltaTime;
 
         // The grace window keeps the ground check from re-grounding the bird on the frame it launches.
@@ -455,5 +459,45 @@ public class PlayerMovement : MonoBehaviour
     public MovementState GetState()
     {
         return State;
+    }
+
+    /// <summary>
+    /// Hands the body to a scripted move. Physics and input steering stay off until this is cleared,
+    /// and the kinematic flag is put back the way it was.
+    /// </summary>
+    public void SetControlSuspended(bool suspended)
+    {
+        if (suspended == controlSuspended) return;
+
+        controlSuspended = suspended;
+        takeoffQueued = false;
+        riseHeld = false;
+        diveHeld = false;
+
+        if (suspended)
+        {
+            kinematicBeforeSuspend = rb.isKinematic;
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            rb.isKinematic = true;
+        }
+        else
+        {
+            rb.isKinematic = kinematicBeforeSuspend;
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
+    }
+
+    /// <summary>
+    /// Puts the bird at a pose and treats that rotation as its facing, so steering does not
+    /// snap it back to the heading it had before the scripted move.
+    /// </summary>
+    public void Place(Vector3 position, Quaternion rotation)
+    {
+        facingRotation = rotation;
+        bankAngle = 0f;
+        rb.position = position;
+        rb.rotation = rotation;
     }
 }

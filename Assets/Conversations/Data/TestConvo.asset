@@ -13,14 +13,18 @@ MonoBehaviour:
   m_Name: TestConvo
   m_EditorClassIdentifier: Assembly-CSharp::ConversationObject
   lines:
-  - speaker: 
-    text: 
+  - speaker: Simon 1
+    text: hi :)
     isFromPhone: 0
-    timeStamp: 0
+    timeStamp: 1.52
+  - speaker: Simon 2
+    text: oh hi, what's up with you?
+    isFromPhone: 0
+    timeStamp: 4.34
   audio:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: 1430653633
+      Data2: 1309797724
+      Data3: -1076269902
+      Data4: 651645033
+    Path: event:/Conversation/TEST CONVO

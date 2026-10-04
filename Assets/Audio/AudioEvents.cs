@@ -32,6 +32,17 @@ public static class AudioEvents
         };
     }
 
+    public static class Conversation
+    {
+        public static readonly EventReference TEST_CONVO = new EventReference
+        {
+#if UNITY_EDITOR
+            Path = "event:/Conversation/TEST CONVO",
+#endif
+            Guid = FMOD.GUID.Parse("{55460ac1-ed5c-4e11-b26c-d9bf6950d726}")
+        };
+    }
+
     public static readonly EventReference TEST_SFX = new EventReference
     {
 #if UNITY_EDITOR

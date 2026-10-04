@@ -21,10 +21,4 @@ public class AudioManager : MonoBehaviour
         var instance = RuntimeManager.CreateInstance(audio);
         instance.start();
     }
-
-    void OnDestroy()
-    {
-        currentMusicTrack.stop(FMOD.Studio.STOP_MODE.IMMEDIATE); 
-        currentMusicTrack.release();    
-    }
 }

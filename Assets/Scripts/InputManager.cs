@@ -7,7 +7,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
     public static InputManager Instance { get; private set; }
     public bool moveInputEnabled = true;
     public bool lookInputEnabled = true;
-    public bool interactionEnabled = true;
+    public bool interactionInputEnabled = true;
     
     private InputSystem_Actions inputActions;
     private InputSystem_Actions.PlayerActions playerInput;
@@ -35,7 +35,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
     {
         moveInputEnabled = moveInput;
         lookInputEnabled = lookInput;
-        interactionEnabled = interactInput;
+        interactionInputEnabled = interactInput;
     }
 
     private void Awake()
@@ -105,7 +105,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
 
     public void OnInteract(InputAction.CallbackContext context)
     {
-        if (!interactionEnabled)
+        if (!interactionInputEnabled)
         {
             return;
         }
@@ -121,7 +121,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
 
     public void OnHold(InputAction.CallbackContext context)
     {
-        if (!interactionEnabled)
+        if (!interactionInputEnabled)
         {
             return;
         }
