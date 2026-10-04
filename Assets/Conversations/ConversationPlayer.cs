@@ -1,13 +1,13 @@
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using System.Collections;
 using FMODUnity;
 using FMOD.Studio;
+using UnityEngine.Events;
 
 // NOTE TO SELF: TODO Create global param in fmod
 
-namespace BirdWatching.Audio
+namespace BirdWatching.Conversation
 {
     public class ConversationPlayer : MonoBehaviour
     {
@@ -15,6 +15,8 @@ namespace BirdWatching.Audio
 
         public List<ConversationObject> conversations = new();
         public ConversationCharacter character;
+
+        [HideInInspector] public UnityEvent<ConversationObject> OnConversationFinishes = new();
 
         Coroutine subtitleRoutine = null;
         ConversationObject curConvo;
@@ -26,7 +28,7 @@ namespace BirdWatching.Audio
             StopCurrentConversation();
 
             currentConvoAudioInstance = RuntimeManager.CreateInstance(convo.audio);
-            subtitleRoutine = StartCoroutine(StartSubtitles(convo));
+            subtitleRoutine = StartCoroutine(StartConversationSequence(convo));
         }
 
         public void SkipConversationLine()
@@ -36,7 +38,7 @@ namespace BirdWatching.Audio
                 return;
             }
             StopCoroutine(subtitleRoutine);
-            subtitleRoutine = StartCoroutine(StartSubtitles(curConvo, ++lineInConvo));
+            subtitleRoutine = StartCoroutine(StartConversationSequence(curConvo, ++lineInConvo));
         }
 
         public void StopCurrentConversation()
@@ -58,8 +60,13 @@ namespace BirdWatching.Audio
             subtitleRoutine = null;
         }
 
-        IEnumerator StartSubtitles(ConversationObject newConvo, int startingIndex = 0)
+        IEnumerator StartConversationSequence(ConversationObject newConvo, int startingIndex = 0)
         {
+            if (newConvo.startDelay > 0)
+            {
+                yield return new WaitForSeconds(newConvo.startDelay);
+            }
+
             if (currentConvoAudioInstance.isValid())
             {
                 currentConvoAudioInstance.start();
@@ -80,7 +87,9 @@ namespace BirdWatching.Audio
                 lastTime = line.timeStamp;
             }
 
+            var finished = curConvo;
             StopCurrentConversation();
+            OnConversationFinishes.Invoke(finished);
         }
 
         void Awake()

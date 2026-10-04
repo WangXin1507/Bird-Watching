@@ -28,3 +28,4 @@ MonoBehaviour:
       Data3: -1076269902
       Data4: 651645033
     Path: event:/Conversation/TEST CONVO
+  startDelay: 1.5

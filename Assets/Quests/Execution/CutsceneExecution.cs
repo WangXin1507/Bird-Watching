@@ -1,5 +1,7 @@
+using BirdWatching.Conversation;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Playables;
 
 namespace BirdWatching.Quests
@@ -8,6 +10,7 @@ namespace BirdWatching.Quests
     {
         [Tooltip("Insert your timeline here")]
         public PlayableDirector playableDirector;
+        public ConversationObject conversationObject;
 
         protected override void OnInitialize()
         {
@@ -17,47 +20,65 @@ namespace BirdWatching.Quests
 
         protected override void OnDeactivate()
         {
-            if (playableDirector != null && playableDirector.state == PlayState.Playing)
-            {
-                playableDirector.Stop();
-            }
-
+            StopCutscene();
             EnableInput();
         }
 
         async UniTaskVoid PlayCutscene()
         {
-            if (playableDirector == null || playableDirector.playableAsset == null)
+            if (conversationObject == null || ConversationPlayer.Instance == null)
             {
-                Debug.LogError("PlayableDirector is not assigned on CutsceneExecution.");
+                Debug.LogError("ConversationObject / ConversationPlayer is not assigned on CutsceneExecution.");
                 return;
             }
 
             DisableInput();
+
+            UnityAction<ConversationObject> onConversationFinished = null;
+
             try
             {
-                playableDirector.time = 0;
-                playableDirector.Play();
-                await WaitUntilStopped(playableDirector);
+                var conversationDone = new UniTaskCompletionSource();
+                onConversationFinished = finished =>
+                {
+                    if (finished == conversationObject)
+                    {
+                        conversationDone.TrySetResult();
+                    }
+                };
+                ConversationPlayer.Instance.OnConversationFinishes.AddListener(onConversationFinished);
+                ConversationPlayer.Instance.PlayConversation(conversationObject);
+
+                if (playableDirector != null && playableDirector.playableAsset != null)
+                {
+                    playableDirector.time = 0;
+                    playableDirector.Play();
+                }
+
+                await conversationDone.Task;
             }
             finally
             {
+                if (onConversationFinished != null && ConversationPlayer.Instance != null)
+                {
+                    ConversationPlayer.Instance.OnConversationFinishes.RemoveListener(onConversationFinished);
+                }
+                StopCutscene();
                 EnableInput();
             }
         }
 
-        static UniTask WaitUntilStopped(PlayableDirector director)
+        void StopCutscene()
         {
-            var completion = new UniTaskCompletionSource();
-
-            void OnStopped(PlayableDirector _)
+            if (playableDirector != null && playableDirector.state == PlayState.Playing)
             {
-                director.stopped -= OnStopped;
-                completion.TrySetResult();
+                playableDirector.Stop();
             }
 
-            director.stopped += OnStopped;
-            return completion.Task;
+            if (ConversationPlayer.Instance != null)
+            {
+                ConversationPlayer.Instance.StopCurrentConversation();
+            }
         }
 
         void DisableInput()

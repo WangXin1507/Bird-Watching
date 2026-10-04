@@ -2339,7 +2339,7 @@ Transform:
   m_GameObject: {fileID: 910475484}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.80446833, z: 0, w: 0.5939956}
-  m_LocalPosition: {x: -6.8011293, y: -1.4340001, z: 1.6094313}
+  m_LocalPosition: {x: -6.80113, y: -1.4340003, z: 1.6094322}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5743,6 +5743,7 @@ MonoBehaviour:
       type: {class: CutsceneExecution, ns: BirdWatching.Quests, asm: Assembly-CSharp}
       data:
         playableDirector: {fileID: 1616391427}
+        conversationObject: {fileID: 11400000, guid: 1f406d52c8eb61041ac0d9d968853cf3, type: 2}
 --- !u!1 &2121828611
 GameObject:
   m_ObjectHideFlags: 0

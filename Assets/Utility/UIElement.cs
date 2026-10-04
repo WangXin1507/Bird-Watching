@@ -23,7 +23,10 @@ public class UIElement : MonoBehaviour
     void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
-        ApplyImmediate(showOnAwake);
+        if (showOnAwake)
+        {
+            ApplyImmediate(true);
+        }
     }
 
     async UniTaskVoid Fade(float targetAlpha, float duration)

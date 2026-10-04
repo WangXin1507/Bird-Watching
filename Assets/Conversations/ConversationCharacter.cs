@@ -2,30 +2,34 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ConversationCharacter : MonoBehaviour
+namespace BirdWatching.Conversation
 {
-    [SerializeField] Image image;
-    [SerializeField] TextMeshProUGUI text;
-    UIElement element;
-
-    public void SetCharacterSpeech(Sprite portrait, string text, float duration = 0)
+    [RequireComponent(typeof(UIElement))]
+    public class ConversationCharacter : MonoBehaviour
     {
-        image.sprite = portrait;
-        this.text.text = text;
+        [SerializeField] Image image;
+        [SerializeField] TextMeshProUGUI text;
+        UIElement element;
 
-        element.Show(duration);
-    }
+        public void SetCharacterSpeech(Sprite portrait, string text, float duration = 0)
+        {
+            image.sprite = portrait;
+            this.text.text = text;
 
-    public void HideCharacterSpeech()
-    {
-        image.sprite = null;
-        text.text = "";
+            element.Show(duration);
+        }
 
-        element.Hide();
-    }
+        public void HideCharacterSpeech()
+        {
+            image.sprite = null;
+            text.text = "";
 
-    void Awake()
-    {
-        element = GetComponent<UIElement>();
+            element.Hide();
+        }
+
+        void Awake()
+        {
+            element = GetComponent<UIElement>();
+        }
     }
 }

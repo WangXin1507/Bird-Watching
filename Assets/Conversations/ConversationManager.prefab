@@ -189,7 +189,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1870812936356252940}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -353,6 +353,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8584228566913842726}
   - component: {fileID: 4221948660907795676}
+  - component: {fileID: 6929709301260315180}
+  - component: {fileID: 8520362194970975151}
   m_Layer: 5
   m_Name: Speaker 1
   m_TagString: Untagged
@@ -395,6 +397,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ConversationCharacter
   image: {fileID: 5836213290622039883}
   text: {fileID: 6947849025614906294}
+--- !u!225 &6929709301260315180
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3508561881103095417}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &8520362194970975151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3508561881103095417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92045ec95a5c26540830d5f12b6b2cbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIElement
+  showOnAwake: 0
 --- !u!1 &3569008748190453841
 GameObject:
   m_ObjectHideFlags: 0
@@ -518,7 +545,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BirdWatching.Audio.ConversationPlayer
   conversations:
   - {fileID: 11400000, guid: 1f406d52c8eb61041ac0d9d968853cf3, type: 2}
-  character: {fileID: 0}
+  character: {fileID: 4221948660907795676}
+  OnConversationFinishes:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8303328789662790736
 GameObject:
   m_ObjectHideFlags: 0
