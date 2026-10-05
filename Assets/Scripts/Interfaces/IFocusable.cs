@@ -2,7 +2,8 @@ using UnityEngine;
 
 public interface IFocusable
 {
-    bool CanFocus();
+    bool enabled { get; set; }
+
     void GainFocus();
     void LoseFocus();
 }

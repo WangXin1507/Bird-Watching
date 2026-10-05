@@ -3,22 +3,13 @@ using UnityEngine.EventSystems;
 
 public class PlayerInteraction : MonoBehaviour
 {
-    // TODO: slow player movement & force rotation when dragging (maybe stick to ground)
-    //       figure out mouth positioning
-    //       flight grabbing
-
     [Header("Detection")]
     [SerializeField] private LayerMask mask = ~0;
-    [SerializeField] private float focusRadius = 30.0f;
+    [SerializeField] private float focusRadius = 50.0f;
     [SerializeField] private int maxTargets = 5;
 
     [Header("Holding")]
     [SerializeField] private Transform mouthPos;
-    [SerializeField] private Transform feetPos;
-
-    [Header("Dragging")]
-    [SerializeField] private float dragSpring = 500.0f;
-    [SerializeField] private float dragDamper = 50.0f;
 
     private Collider playerCollider;
     private Rigidbody rb;
@@ -26,12 +17,10 @@ public class PlayerInteraction : MonoBehaviour
     private IFocusable focusedTarget;
     private Collider[] targets;
 
-    private Transform holding;
+    public Transform holding;
     private Rigidbody heldRb;
     private Collider heldCollider;
 
-    private SpringJoint dragJoint;
-    private bool isDragging = false;
     private bool interactSubscribed;
     private bool holdSubscribed;
 
@@ -57,15 +46,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private void CheckProximity()
     {
-        if (holding)
-        {
-            if (focusedTarget != null)
-            {
-                focusedTarget.LoseFocus();
-                focusedTarget = null;
-            }
-            return;
-        }
+        //if (holding && focusedTarget is IGrabbable) return;
 
         int count = Physics.OverlapSphereNonAlloc(transform.position, focusRadius, targets, mask);
 
@@ -75,10 +56,14 @@ public class PlayerInteraction : MonoBehaviour
         // Calculate closest focusables
         for (int i = 0; i < count; i++)
         {
-            if (targets[i] != null && targets[i].TryGetComponent<IFocusable>(out var focusable))
+            if (targets[i] != null)
             {
-                if (focusable.CanFocus())
+                if (holding != null && (targets[i].transform == holding)) continue;
+
+                if (targets[i].TryGetComponent<IFocusable>(out var focusable))
                 {
+                    if (!focusable.enabled) continue;
+
                     float dist = Vector3.Distance(transform.position, targets[i].transform.position);
                     if (dist < minDistance)
                     {
@@ -93,11 +78,11 @@ public class PlayerInteraction : MonoBehaviour
         {
             focusedTarget?.LoseFocus();
             focusedTarget = closest;
-            focusedTarget?.GainFocus(); // Gain focus can handle user prompting, like a shader
         }
 
         for (int i = 0; i < targets.Length; i++) targets[i] = null;
     }
+
     private void TryInteract()
     {
         if (focusedTarget is IInteractable interactable)
@@ -111,7 +96,7 @@ public class PlayerInteraction : MonoBehaviour
         // If there is an object in the mouth
         if (holding)
         {
-            StopHolding();
+            _StopHolding();
             return;
         }
         else if (focusedTarget is IGrabbable grabbable)
@@ -122,73 +107,48 @@ public class PlayerInteraction : MonoBehaviour
             holding.TryGetComponent<Rigidbody>(out heldRb);
             holding.TryGetComponent<Collider>(out heldCollider);
 
-            if (PlayerID.playerMovement.GetState() == PlayerMovement.MovementState.Flying)
+            if (!(PlayerID.playerMovement.GetState() == PlayerMovement.MovementState.Flying))
             {
-                if (!grabbable.isDragged)
-                {
-                    _Hold(mouthPos);
-                }
-            }
-            else if (grabbable.isDragged)
-            {
-                _Drag();
-            }
-            else// Not draggable and is not flying, hold in feet
-            {
-                _Hold(feetPos);
+                _Hold(mouthPos);
             }
         }
     }
 
+    public bool ForceHold(Transform newHold)
+    {
+        if (holding) return false;
+
+        holding = newHold;
+        newHold.TryGetComponent<Rigidbody>(out heldRb);
+        newHold.TryGetComponent<Collider>(out heldCollider);
+        _Hold(mouthPos);
+        return true;
+    }
+
+    public void ForceRemove()
+    {
+        heldCollider = null;
+        heldRb = null;
+        holding = null;
+    }
+
     void _Hold(Transform pos)
     {
-        if (!heldRb /*|| !pos*/) return;
+        if (!heldRb) return;
 
         IgnorePlayerCollision(true);
 
         heldRb.isKinematic = true;
         heldRb.useGravity = false;
 
-        //heldRb.transform.SetParent(pos, false);
+        IGrabbable grabbable = heldRb.GetComponent<IGrabbable>();
+
         heldRb.transform.SetParent(transform, false);
-        heldRb.transform.localPosition = Vector3.zero;
-        heldRb.transform.localRotation = Quaternion.identity;
+        heldRb.transform.position = pos.position;
+        heldRb.transform.localRotation = grabbable.grabHandle.localRotation;
     }
 
-    private void _Drag()
-    {
-        if (!heldRb) return;
-
-        isDragging = true;
-
-        SpringJoint existingJoint = heldRb.GetComponent<SpringJoint>();
-        if (existingJoint)
-        {
-            Destroy(existingJoint);
-        }
-
-        dragJoint = heldRb.gameObject.AddComponent<SpringJoint>();
-        dragJoint.autoConfigureConnectedAnchor = false;
-
-        Vector3 attachPoint = heldRb.position; 
-        if (heldCollider)
-        { 
-            attachPoint = heldCollider.ClosestPoint(transform.position);
-        }
-        dragJoint.anchor = heldRb.transform.InverseTransformPoint(attachPoint);
-
-        if (rb) {
-            dragJoint.connectedBody = rb;
-            dragJoint.connectedAnchor = rb.transform.InverseTransformPoint(transform.position);
-        }
-
-        dragJoint.spring = dragSpring;
-        dragJoint.damper = dragDamper;
-        dragJoint.minDistance = 0f;
-        dragJoint.maxDistance = 0.25f;
-    }
-
-    private void StopHolding()
+    private void _StopHolding()
     {
         if (!holding) return;
 
@@ -197,21 +157,7 @@ public class PlayerInteraction : MonoBehaviour
 
         IgnorePlayerCollision(false);
 
-        if (isDragging) // Stop dragging
-        {
-            if (dragJoint)
-            {
-                dragJoint.connectedBody = null;
-                Destroy(dragJoint);
-                dragJoint = null;
-            }
-
-            if (heldRb)
-            {
-                heldRb.linearVelocity = releaseVelocity;
-            }
-        }
-        else if (heldRb) // Drop any held object
+        if (heldRb) // Drop any held object
         {
             heldRb.transform.SetParent(null, true);
 
@@ -220,7 +166,6 @@ public class PlayerInteraction : MonoBehaviour
             heldRb.linearVelocity = releaseVelocity;
         }
 
-        isDragging = false;
         heldCollider = null;
         heldRb = null;
         holding = null;
