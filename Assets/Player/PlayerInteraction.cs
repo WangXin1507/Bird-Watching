@@ -77,11 +77,14 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (targets[i] != null && targets[i].TryGetComponent<IFocusable>(out var focusable))
             {
-                float dist = Vector3.Distance(transform.position, targets[i].transform.position);
-                if (dist < minDistance)
+                if (focusable.CanFocus())
                 {
-                    minDistance = dist;
-                    closest = focusable;
+                    float dist = Vector3.Distance(transform.position, targets[i].transform.position);
+                    if (dist < minDistance)
+                    {
+                        minDistance = dist;
+                        closest = focusable;
+                    }
                 }
             }
         }

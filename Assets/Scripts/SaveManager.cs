@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -6,13 +7,14 @@ using UnityEngine;
 public class SaveData
 {
     public Vector3 birdPosition = Vector3.zero;
+    public List<string> unlockedTranscriptIds = new List<string>();
 }
 
 public class SaveManager : MonoBehaviour
 {
-    public static SaveManager instance;
+    public static SaveManager Instance;
     
-    private SaveData data;
+    public SaveData data;
     private string savePath;
 
     [SerializeField] private float autosaveTimer = 60f;
@@ -21,13 +23,13 @@ public class SaveManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance != null && instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(this.gameObject);
             return;
         }
 
-        instance = this;
+        Instance = this;
         savePath = Path.Combine(Application.persistentDataPath, "playerSave.json");
         if (autosaveOnStart)
             StartCoroutine(AutoSave(autosaveTimer));
@@ -55,6 +57,7 @@ public class SaveManager : MonoBehaviour
         string jsonText = File.ReadAllText(savePath);
 
         SaveData loadedData = JsonUtility.FromJson<SaveData>(jsonText);
+        data = loadedData;
     }
 
     [ContextMenu("Reset Save")]
@@ -67,5 +70,7 @@ public class SaveManager : MonoBehaviour
     private IEnumerator AutoSave(float seconds)
     {
         yield return new WaitForSeconds(seconds);
+        Save();
+        StartCoroutine(AutoSave(autosaveTimer));
     }
 }

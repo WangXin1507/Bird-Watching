@@ -116,7 +116,7 @@ MonoBehaviour:
   diveAcceleration: 10
   maxDiveSpeed: 5
   verticalStopAcceleration: 20
-  takeoffGroundGrace: 0.15
+  takeoffGroundGrace: 0.5
   gravity: 5
   maxFallSpeed: 1
   rotateTowardVelocity: 1

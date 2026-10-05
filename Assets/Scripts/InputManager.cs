@@ -28,6 +28,9 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
     public event UnityAction DiveClicked;
     public event UnityAction DiveReleased;
     
+    public event UnityAction JournalClicked;
+    public event UnityAction JournalReleased;
+    
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -112,6 +115,18 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
         else if (context.canceled)
         {
             DiveReleased?.Invoke();
+        }
+    }
+
+    public void OnJournal(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            JournalClicked?.Invoke();
+        }
+        else if (context.canceled)
+        {
+            JournalReleased?.Invoke();
         }
     }
 }
