@@ -1,11 +1,13 @@
 using BirdWatching.Conversation;
 using Cysharp.Threading.Tasks;
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Playables;
 
 namespace BirdWatching.Quests
 {
+    [Serializable]
     public class CutsceneExecution : IQuestExecutionStrategy
     {
         [Tooltip("Insert your timeline here")]
@@ -33,7 +35,7 @@ namespace BirdWatching.Quests
                 return;
             }
 
-            DisableInput();
+            DisableInput(); Cursor.lockState = CursorLockMode.Confined; Cursor.visible = false;
 
             UnityAction<ConversationObject> onConversationFinished = null;
 
@@ -86,8 +88,6 @@ namespace BirdWatching.Quests
         {
             if (InputManager.Instance == null) return;
 
-            // Leave move and look alone. PlayerSplinePositionOverride is what
-            // takes over the bird; a camera-only cutscene must not freeze leftover velocity.
             InputManager.Instance.LockInputs(true, true, false);
         }
 

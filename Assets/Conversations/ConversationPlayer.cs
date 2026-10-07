@@ -219,7 +219,7 @@ namespace BirdWatching.Conversation
             }
 
             // Cutscenes lock interaction, so read the action directly.
-            if (InputManager.Instance.Actions.Player.Interact.WasPerformedThisFrame())
+            if (InputManager.Instance.Actions.Player.Rise.WasPerformedThisFrame())
             {
                 SkipConversationLine();
             }
