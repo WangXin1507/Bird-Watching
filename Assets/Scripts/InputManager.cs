@@ -5,6 +5,9 @@ using UnityEngine.InputSystem;
 public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
 {
     public static InputManager Instance { get; private set; }
+    public bool moveInputEnabled = true;
+    public bool lookInputEnabled = true;
+    public bool interactionInputEnabled = true;
     
     private InputSystem_Actions inputActions;
     private InputSystem_Actions.PlayerActions playerInput;
@@ -27,10 +30,31 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
     
     public event UnityAction DiveClicked;
     public event UnityAction DiveReleased;
-    
+
     public event UnityAction JournalClicked;
     public event UnityAction JournalReleased;
-    
+
+    public void LockInputs(bool moveInput, bool lookInput, bool interactInput)
+    {
+        bool moveWasEnabled = moveInputEnabled;
+        moveInputEnabled = !moveInput;
+        lookInputEnabled = !lookInput;
+        interactionInputEnabled = !interactInput;
+
+        if (!moveInputEnabled)
+        {
+            movementVector = Vector2.zero;
+            if (moveWasEnabled)
+            {
+                RiseReleased?.Invoke();
+                DiveReleased?.Invoke();
+            }
+        }
+
+        if (!lookInputEnabled)
+            lookVector = Vector2.zero;
+    }
+
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -47,6 +71,8 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
         playerInput = inputActions.Player;
         playerInput.Enable();
         playerInput.AddCallbacks(this);
+
+        LockInputs(false, false, false);
     }
 
     private void OnDestroy()
@@ -62,16 +88,28 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
 
     public void OnMovement(InputAction.CallbackContext context)
     {
+        if (!moveInputEnabled)
+        {
+            return;
+        }
         movementVector = context.ReadValue<Vector2>();
     }
 
     public void OnLook(InputAction.CallbackContext context)
     {
+        if (!lookInputEnabled)
+        {
+            return;
+        }
         lookVector = context.ReadValue<Vector2>();
     }
 
     public void OnRise(InputAction.CallbackContext context)
     {
+        if (!moveInputEnabled)
+        {
+            return;
+        }
         if (context.performed)
         {
             RiseClicked?.Invoke();
@@ -84,6 +122,10 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
 
     public void OnInteract(InputAction.CallbackContext context)
     {
+        if (!interactionInputEnabled)
+        {
+            return;
+        }
         if (context.performed)
         {
             InteractClicked?.Invoke();
@@ -96,6 +138,10 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
 
     public void OnHold(InputAction.CallbackContext context)
     {
+        if (!interactionInputEnabled)
+        {
+            return;
+        }
         if (context.performed)
         {
             HoldClicked?.Invoke();
@@ -108,6 +154,10 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
     
     public void OnDive(InputAction.CallbackContext context)
     {
+        if (!moveInputEnabled)
+        {
+            return;
+        }
         if (context.performed)
         {
             DiveClicked?.Invoke();
