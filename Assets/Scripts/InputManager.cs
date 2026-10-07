@@ -30,7 +30,10 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
     
     public event UnityAction DiveClicked;
     public event UnityAction DiveReleased;
-    
+
+    public event UnityAction JournalClicked;
+    public event UnityAction JournalReleased;
+
     public void LockInputs(bool moveInput, bool lookInput, bool interactInput)
     {
         bool moveWasEnabled = moveInputEnabled;
@@ -162,6 +165,18 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
         else if (context.canceled)
         {
             DiveReleased?.Invoke();
+        }
+    }
+
+    public void OnJournal(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            JournalClicked?.Invoke();
+        }
+        else if (context.canceled)
+        {
+            JournalReleased?.Invoke();
         }
     }
 }

@@ -111,7 +111,13 @@ public class PlayerMovement : MonoBehaviour
 
     // Start runs after every Awake, so InputManager.Instance exists by then. OnEnable also
     // tries, to cover this component being toggled back on later; the flag stops double-subscribing.
-    private void Start() => SubscribeToInput();
+    private void Start()
+    {
+        SubscribeToInput();
+        transform.position = SaveManager.Instance.data.birdPosition;
+        Debug.Log(SaveManager.Instance.data.birdPosition);
+        Debug.Log(transform.position);
+    }
 
     private void OnEnable() => SubscribeToInput();
 

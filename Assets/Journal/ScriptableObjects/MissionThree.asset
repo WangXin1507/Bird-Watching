@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4f2ac694fdc2ff4ca34f0b6164dd15c, type: 3}
+  m_Name: MissionThree
+  m_EditorClassIdentifier: Assembly-CSharp::MissionData
+  missionName: Mission Three
+  missionPicture: {fileID: 0}
+  trinket: {fileID: 0}
+  transcripts:
+  - transcriptId: 72f52fda-af6b-44c5-b791-5780425a0131
+    title: Diary Entry One
+    text: awdawdawdawdawdawd
+  - transcriptId: 304ff270-01a7-4c2f-9570-e252983ceb93
+    title: 
+    text: awdawdawd
