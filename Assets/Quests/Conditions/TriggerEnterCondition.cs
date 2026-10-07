@@ -1,8 +1,10 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
 namespace BirdWatching.Quests.Util
 {
+    [Serializable]
     public class TriggerEnterCondition : IQuestConditionStrategy
     {
         [Tooltip("Assign the collider that will trigger this condition. It must be set as a trigger.")]
