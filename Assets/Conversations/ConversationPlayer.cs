@@ -1,9 +1,11 @@
-using System.Collections.Generic;
-using UnityEngine;
 using System.Collections;
-using FMODUnity;
+using System.Collections.Generic;
 using FMOD.Studio;
+using FMODUnity;
+using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 // NOTE TO SELF: TODO Create global param in fmod
 
@@ -22,10 +24,17 @@ namespace BirdWatching.Conversation
         ConversationObject curConvo;
         int lineInConvo = 0;
         EventInstance currentConvoAudioInstance;
+        bool skipRequested;
+        Button skipButton;
 
         public void PlayConversation(ConversationObject convo)
         {
             StopCurrentConversation();
+
+            if (convo == null)
+            {
+                return;
+            }
 
             currentConvoAudioInstance = RuntimeManager.CreateInstance(convo.audio);
             subtitleRoutine = StartCoroutine(StartConversationSequence(convo));
@@ -37,34 +46,32 @@ namespace BirdWatching.Conversation
             {
                 return;
             }
-            StopCoroutine(subtitleRoutine);
-            subtitleRoutine = StartCoroutine(StartConversationSequence(curConvo, ++lineInConvo));
+
+            skipRequested = true;
         }
 
         public void StopCurrentConversation()
         {
+            skipRequested = false;
+
             if (subtitleRoutine != null)
             {
                 StopCoroutine(subtitleRoutine);
+                subtitleRoutine = null;
             }
 
-            if (currentConvoAudioInstance.isValid())
-            {
-                currentConvoAudioInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-                currentConvoAudioInstance.release();
-            }
-
-            RuntimeManager.StudioSystem.setParameterByName("PhoneVoice", 0);
-
-            character.HideCharacterSpeech();
-            subtitleRoutine = null;
+            CleanupConversationPlayback();
         }
 
-        IEnumerator StartConversationSequence(ConversationObject newConvo, int startingIndex = 0)
+        IEnumerator StartConversationSequence(ConversationObject newConvo)
         {
+            curConvo = newConvo;
+            skipRequested = false;
+
             if (newConvo.startDelay > 0)
             {
-                yield return new WaitForSeconds(newConvo.startDelay);
+                yield return WaitForSecondsOrSkip(newConvo.startDelay);
+                skipRequested = false;
             }
 
             if (currentConvoAudioInstance.isValid())
@@ -73,23 +80,110 @@ namespace BirdWatching.Conversation
             }
 
             float lastTime = 0;
-            curConvo = newConvo;
-            lineInConvo = startingIndex;
+            var lines = curConvo.lines;
 
-            for (; lineInConvo < curConvo.lines.Count; lineInConvo++)
+            for (lineInConvo = 0; lines != null && lineInConvo < lines.Count; lineInConvo++)
             {
-                var line = curConvo.lines[lineInConvo];
+                var line = lines[lineInConvo];
                 character.SetCharacterSpeech(null, line.text);
 
                 RuntimeManager.StudioSystem.setParameterByName("PhoneVoice", line.isFromPhone ? 1 : 0);
 
-                yield return new WaitForSeconds(line.timeStamp - lastTime);
+                skipRequested = false;
+                yield return WaitForSecondsOrSkip(line.timeStamp - lastTime);
+
+                if (skipRequested)
+                {
+                    skipRequested = false;
+                    bool hasNextLine = lineInConvo < lines.Count - 1;
+                    if (hasNextLine)
+                    {
+                        SeekConversationAudio(line.timeStamp);
+                    }
+                }
+
                 lastTime = line.timeStamp;
             }
 
             var finished = curConvo;
-            StopCurrentConversation();
+            subtitleRoutine = null;
+            CleanupConversationPlayback();
             OnConversationFinishes.Invoke(finished);
+        }
+
+        void CleanupConversationPlayback()
+        {
+            skipRequested = false;
+
+            if (currentConvoAudioInstance.isValid())
+            {
+                currentConvoAudioInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+                currentConvoAudioInstance.release();
+                currentConvoAudioInstance.clearHandle();
+            }
+
+            RuntimeManager.StudioSystem.setParameterByName("PhoneVoice", 0);
+
+            if (character != null)
+            {
+                character.HideCharacterSpeech();
+            }
+        }
+
+        IEnumerator WaitForSecondsOrSkip(float duration)
+        {
+            float remaining = Mathf.Max(0f, duration);
+            while (remaining > 0f && !skipRequested)
+            {
+                remaining -= Time.deltaTime;
+                yield return null;
+            }
+        }
+
+        void SeekConversationAudio(float timeSeconds)
+        {
+            if (!currentConvoAudioInstance.isValid())
+            {
+                return;
+            }
+
+            int positionMs = Mathf.Max(0, Mathf.RoundToInt(timeSeconds * 1000f));
+            currentConvoAudioInstance.setTimelinePosition(positionMs);
+
+            if (currentConvoAudioInstance.getChannelGroup(out var group) == FMOD.RESULT.OK)
+            {
+                SeekChannelGroup(group, (uint)positionMs);
+            }
+        }
+
+        static void SeekChannelGroup(FMOD.ChannelGroup group, uint positionMs)
+        {
+            if (!group.hasHandle())
+            {
+                return;
+            }
+
+            if (group.getNumChannels(out int channelCount) == FMOD.RESULT.OK)
+            {
+                for (int i = 0; i < channelCount; i++)
+                {
+                    if (group.getChannel(i, out var channel) == FMOD.RESULT.OK)
+                    {
+                        channel.setPosition(positionMs, FMOD.TIMEUNIT.MS);
+                    }
+                }
+            }
+
+            if (group.getNumGroups(out int nestedCount) == FMOD.RESULT.OK)
+            {
+                for (int i = 0; i < nestedCount; i++)
+                {
+                    if (group.getGroup(i, out var nested) == FMOD.RESULT.OK)
+                    {
+                        SeekChannelGroup(nested, positionMs);
+                    }
+                }
+            }
         }
 
         void Awake()
@@ -100,7 +194,49 @@ namespace BirdWatching.Conversation
             }
             Instance = this;
 
-            character.HideCharacterSpeech();
+            if (character == null)
+            {
+                character = GetComponentInChildren<ConversationCharacter>(true);
+            }
+
+            skipButton = GetComponentInChildren<Button>(true);
+            if (skipButton != null)
+            {
+                skipButton.onClick.AddListener(SkipConversationLine);
+            }
+
+            if (character != null)
+            {
+                character.HideCharacterSpeech();
+            }
+        }
+
+        void Update()
+        {
+            if (subtitleRoutine == null || InputManager.Instance == null)
+            {
+                return;
+            }
+
+            // Cutscenes lock interaction, so read the action directly.
+            if (InputManager.Instance.Actions.Player.Rise.WasPerformedThisFrame())
+            {
+                SkipConversationLine();
+            }
+        }
+
+        void OnDestroy()
+        {
+            if (skipButton != null)
+            {
+                skipButton.onClick.RemoveListener(SkipConversationLine);
+            }
+
+            if (Instance == this)
+            {
+                StopCurrentConversation();
+                Instance = null;
+            }
         }
     }
 }
