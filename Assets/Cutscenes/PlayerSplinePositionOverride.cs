@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Splines;
 
+[DefaultExecutionOrder(10)]
 public class PlayerSplinePositionOverride : MonoBehaviour
 {
     public SplineContainer spline;
@@ -48,7 +49,7 @@ public class PlayerSplinePositionOverride : MonoBehaviour
             PlayerID.playerMovement.SetControlSuspended(true);
         }
 
-        input.LockInputs(false, disableFreeLook, false);
+        input.LockInputs(true, !disableFreeLook, true);
         FollowSpline(++runId, Mathf.Max(0f, duration)).Forget();
     }
 
@@ -106,7 +107,7 @@ public class PlayerSplinePositionOverride : MonoBehaviour
             PlayerID.playerMovement.SetControlSuspended(false);
 
         if (InputManager.Instance != null)
-            InputManager.Instance.LockInputs(savedMove, savedLook, savedInteract);
+            InputManager.Instance.LockInputs(!savedMove, !savedLook, !savedInteract);
     }
 
     void OnDisable()
