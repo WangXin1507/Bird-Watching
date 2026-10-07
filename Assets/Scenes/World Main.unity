@@ -68656,81 +68656,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3745754139378678193, guid: 7b945834a0911864f9023aee8044449d, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -30.56
+    - target: {fileID: 1766955432099731760, guid: 7b945834a0911864f9023aee8044449d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3745754139378678193, guid: 7b945834a0911864f9023aee8044449d, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3745754139378678193, guid: 7b945834a0911864f9023aee8044449d, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 17.02
-      objectReference: {fileID: 0}
-    - target: {fileID: 5428147382112990662, guid: 7b945834a0911864f9023aee8044449d, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -31.132236
-      objectReference: {fileID: 0}
-    - target: {fileID: 5428147382112990662, guid: 7b945834a0911864f9023aee8044449d, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9.280424
-      objectReference: {fileID: 0}
-    - target: {fileID: 5428147382112990662, guid: 7b945834a0911864f9023aee8044449d, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 17.02
-      objectReference: {fileID: 0}
-    - target: {fileID: 5428147382112990662, guid: 7b945834a0911864f9023aee8044449d, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7002604
-      objectReference: {fileID: 0}
-    - target: {fileID: 5428147382112990662, guid: 7b945834a0911864f9023aee8044449d, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.09818044
-      objectReference: {fileID: 0}
-    - target: {fileID: 5428147382112990662, guid: 7b945834a0911864f9023aee8044449d, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.70025486
-      objectReference: {fileID: 0}
-    - target: {fileID: 5428147382112990662, guid: 7b945834a0911864f9023aee8044449d, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.09817967
-      objectReference: {fileID: 0}
-    - target: {fileID: 5599381319472943117, guid: 7b945834a0911864f9023aee8044449d, type: 3}
-      propertyPath: m_TagString
-      value: MainCamera
+    - target: {fileID: 5911040306061566480, guid: 7b945834a0911864f9023aee8044449d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6436297551269534160, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_Name
       value: Game Logic
       objectReference: {fileID: 0}
-    - target: {fileID: 8618902038380974585, guid: 7b945834a0911864f9023aee8044449d, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -31.513723
-      objectReference: {fileID: 0}
-    - target: {fileID: 8618902038380974585, guid: 7b945834a0911864f9023aee8044449d, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9.400706
-      objectReference: {fileID: 0}
-    - target: {fileID: 8618902038380974585, guid: 7b945834a0911864f9023aee8044449d, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 17.019997
-      objectReference: {fileID: 0}
-    - target: {fileID: 8618902038380974585, guid: 7b945834a0911864f9023aee8044449d, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.70676637
-      objectReference: {fileID: 0}
-    - target: {fileID: 8618902038380974585, guid: 7b945834a0911864f9023aee8044449d, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.022030206
-      objectReference: {fileID: 0}
-    - target: {fileID: 8618902038380974585, guid: 7b945834a0911864f9023aee8044449d, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.70676076
-      objectReference: {fileID: 0}
-    - target: {fileID: 8618902038380974585, guid: 7b945834a0911864f9023aee8044449d, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.022030031
+    - target: {fileID: 7153313733511172673, guid: 7b945834a0911864f9023aee8044449d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
