@@ -68656,21 +68656,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1766955432099731760, guid: 7b945834a0911864f9023aee8044449d, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5911040306061566480, guid: 7b945834a0911864f9023aee8044449d, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6436297551269534160, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_Name
       value: Game Logic
-      objectReference: {fileID: 0}
-    - target: {fileID: 7153313733511172673, guid: 7b945834a0911864f9023aee8044449d, type: 3}
-      propertyPath: m_Enabled
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

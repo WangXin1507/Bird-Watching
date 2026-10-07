@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1870395389292977662}
   - component: {fileID: 5018813939872842922}
   - component: {fileID: 3310170043842018986}
+  - component: {fileID: 6419082170575608204}
   m_Layer: 0
   m_Name: Input Manager
   m_TagString: Untagged
@@ -97,6 +98,24 @@ MonoBehaviour:
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
   m_ScrollDeltaPerTick: 6
+--- !u!114 &6419082170575608204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4924810153127397341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c887e36692a3044baf4bc691758a14a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveManager
+  data:
+    birdPosition: {x: 0, y: 0, z: 0}
+    unlockedTranscriptIds: []
+  autosaveTimer: 60
+  autosaveOnStart: 1
+  loadOnStart: 1
 --- !u!1 &5599381319472943117
 GameObject:
   m_ObjectHideFlags: 0
@@ -860,6 +879,10 @@ PrefabInstance:
     - target: {fileID: 3237970853869231076, guid: 322f6b1fd579b53449f104d3795fe420, type: 3}
       propertyPath: m_Name
       value: JournalUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 7238933780336909734, guid: 322f6b1fd579b53449f104d3795fe420, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
