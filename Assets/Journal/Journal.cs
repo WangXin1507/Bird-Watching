@@ -29,14 +29,14 @@ public class Journal : MonoBehaviour
         OnTranscriptUnlocked?.Invoke();
     }
 
-    public bool IsTranscriptUnlocked(TranscriptEntry transcript)
+    public bool IsTranscriptUnlocked(ATranscriptEntry transcript)
     {
         return transcript != null && unlockedTranscriptIds.Contains(transcript.TranscriptId);
     }
     
     public bool IsTranscriptUnlocked(MissionData mission, int transcriptIndex)
     {
-        TranscriptEntry transcript = mission.Transcripts[transcriptIndex];
+        ATranscriptEntry transcript = mission.Transcripts[transcriptIndex];
         return transcript != null && unlockedTranscriptIds.Contains(transcript.TranscriptId);
     }
 
@@ -45,7 +45,7 @@ public class Journal : MonoBehaviour
         return mission != null && mission.Transcripts.Any(IsTranscriptUnlocked);
     }
 
-    public IEnumerable<TranscriptEntry> GetUnlockedTranscripts(MissionData mission)
+    public IEnumerable<ATranscriptEntry> GetUnlockedTranscripts(MissionData mission)
     {
         if (mission == null) return Enumerable.Empty<TranscriptEntry>();
         return mission.Transcripts.Where(IsTranscriptUnlocked);
@@ -67,7 +67,7 @@ public class Journal : MonoBehaviour
         return true;
     }
 
-    public bool UnlockTranscript(MissionData mission, TranscriptEntry transcript)
+    public bool UnlockTranscript(MissionData mission, ATranscriptEntry transcript)
     {
         if (!ValidateMission(mission)) return false;
 
@@ -82,7 +82,7 @@ public class Journal : MonoBehaviour
         SaveManager.Instance.data.unlockedTranscriptIds = unlockedTranscriptIds.ToList();
         return true;
     }
-
+    
     public void UnlockTranscripts(MissionData mission, IEnumerable<int> transcriptIndices)
     {
         if (!ValidateMission(mission)) return;
@@ -116,7 +116,7 @@ public class Journal : MonoBehaviour
         return false;
     }
 
-    private bool TryUnlock(MissionData mission, TranscriptEntry transcript)
+    private bool TryUnlock(MissionData mission, ATranscriptEntry transcript)
     {
         if (transcript == null || !unlockedTranscriptIds.Add(transcript.TranscriptId))
             return false;

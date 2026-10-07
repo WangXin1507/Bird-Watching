@@ -14,7 +14,6 @@ public class JournalUI : MonoBehaviour
         public Button button;
         [Tooltip("Optional. Set to the button's label to show the transcript title on it.")]
         public TMP_Text buttonLabel;
-        public TMP_Text text;
     }
     
     [Header("Page Content")]
@@ -36,12 +35,20 @@ public class JournalUI : MonoBehaviour
 
     private readonly List<MissionData> pages = new List<MissionData>();
     private int currentPage;
+    private ATranscriptEntry currentOpen;
+    private bool openedTranscript = false;
 
     private void Awake()
     {
         leftArrow.onClick.AddListener(PreviousPage);
         rightArrow.onClick.AddListener(NextPage);
         Journal.Instance.OnTranscriptUnlocked += Refresh;
+        
+        for (int i = 0; i < transcriptSlots.Count; i++)
+        {
+            int slotIndex = i; // capture a copy for the lambda
+            transcriptSlots[i].button.onClick.AddListener(() => OpenTranscriptInSlot(slotIndex));
+        }
     }
 
     private void Start()
@@ -60,6 +67,12 @@ public class JournalUI : MonoBehaviour
 
     public void OnJournalClicked()
     {
+        if (openedTranscript)
+        {
+            currentOpen.CloseUI();
+            return;
+        }
+        
         if (gameObject.GetComponent<Canvas>().enabled)
         {
             CloseJournal();
@@ -174,13 +187,12 @@ public class JournalUI : MonoBehaviour
         for (int i = 0; i < transcriptSlots.Count; i++)
         {
             TranscriptSlot slot = transcriptSlots[i];
-            TranscriptEntry transcript = i < mission.Transcripts.Count ? mission.Transcripts[i] : null;
+            ATranscriptEntry transcript = i < mission.Transcripts.Count ? mission.Transcripts[i] : null;
             bool visible = transcript != null && Journal.Instance.IsTranscriptUnlocked(transcript);
 
             SetSlotVisible(slot, visible);
             if (!visible) continue;
 
-            slot.text.text = transcript.Text;
             if (slot.buttonLabel != null)
                 slot.buttonLabel.text = transcript.Title;
         }
@@ -195,6 +207,27 @@ public class JournalUI : MonoBehaviour
     private static void SetSlotVisible(TranscriptSlot slot, bool visible)
     {
         slot.button.gameObject.SetActive(visible);
-        slot.text.gameObject.SetActive(visible);
+    }
+    
+    private void OpenTranscriptInSlot(int slotIndex)
+    {
+        if (!HasPages) return;
+
+        MissionData mission = pages[currentPage];
+        if (slotIndex >= mission.Transcripts.Count) return;
+
+        ATranscriptEntry transcript = mission.Transcripts[slotIndex];
+        if (transcript == null || !Journal.Instance.IsTranscriptUnlocked(transcript)) return;
+
+        transcript.OpenUI();
+        openedTranscript = true;
+        currentOpen = transcript;
+        transcript.OnTranscriptClosed.AddListener(TranscriptClosed);
+    }
+
+    private void TranscriptClosed()
+    {
+        openedTranscript = false;
+        currentOpen.OnTranscriptClosed.RemoveListener(TranscriptClosed);
     }
 }

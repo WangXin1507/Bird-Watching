@@ -7,5 +7,6 @@ public class DiaryInteractable : Interactable
     public override void Interact()
     {
         DiaryUI.Instance.DrawAndOpenDiaryUI(diaryData);
+        Journal.Instance.UnlockTranscript(diaryData.mission, diaryData);
     }
 }

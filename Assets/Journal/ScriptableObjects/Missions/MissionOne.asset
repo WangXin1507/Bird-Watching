@@ -10,15 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e4f2ac694fdc2ff4ca34f0b6164dd15c, type: 3}
-  m_Name: MissionTwo
+  m_Name: MissionOne
   m_EditorClassIdentifier: Assembly-CSharp::MissionData
-  missionName: Mission Two
+  missionName: Mission One
   missionPicture: {fileID: 0}
   trinket: {fileID: 0}
   transcripts:
-  - transcriptId: 72f52fda-af6b-44c5-b791-5780425a0131
-    title: Diary Entry One
-    text: awdawdawdawdawdawd
-  - transcriptId: 304ff270-01a7-4c2f-9570-e252983ceb93
-    title: 
-    text: awdawdawd
+  - {fileID: 11400000, guid: 740ac8e5b0f4df846adea70d73d47b2f, type: 2}
+  - {fileID: 11400000, guid: 30973316005616d46b404dae003a9658, type: 2}

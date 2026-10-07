@@ -9,6 +9,9 @@ using UnityEngine.UI;
 public class DiaryUI : MonoBehaviour
 {
     public static DiaryUI Instance;
+    
+    private DiaryData _diaryData;
+    private bool backToGame;
 
     [SerializeField] private TMP_Text leftText;
     [SerializeField] private TMP_Text rightText;
@@ -25,8 +28,10 @@ public class DiaryUI : MonoBehaviour
         Instance = this;
     }
 
-    public void DrawAndOpenDiaryUI(DiaryData context)
+    public void DrawAndOpenDiaryUI(DiaryData context, bool back = true)
     {
+        backToGame = back;
+        
         PlayerID.LockMovement();
         Cursor.lockState = CursorLockMode.None;
         
@@ -46,14 +51,21 @@ public class DiaryUI : MonoBehaviour
             rightImage.enabled = true;
             rightText.enabled = false;
         }
+        
+        _diaryData = context;
     }
     
-    public void CloseJournal()
+    public void CloseDiary()
     {
-        PlayerID.UnlockMovement();
+        if (backToGame)
+        {
+            PlayerID.UnlockMovement();
         
-        Cursor.lockState = CursorLockMode.Locked;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
         
         gameObject.GetComponent<Canvas>().enabled = false;
+
+        _diaryData.OnTranscriptClosed?.Invoke();
     }
 }
