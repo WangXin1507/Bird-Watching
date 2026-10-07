@@ -20,6 +20,7 @@ namespace BirdWatching.Quests
 
         protected override void OnDeactivate()
         {
+            base.OnDeactivate();
             StopCutscene();
             EnableInput();
         }
@@ -94,7 +95,7 @@ namespace BirdWatching.Quests
         {
             if (InputManager.Instance == null) return;
 
-            InputManager.Instance.LockInputs(true, true, true);
+            InputManager.Instance.LockInputs(false, false, false);
         }
     }
 }

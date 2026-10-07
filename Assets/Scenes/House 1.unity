@@ -451,7 +451,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 60.000004
+  field of view: 85
   orthographic: 0
   orthographic size: 10
   m_Depth: -1
@@ -477,8 +477,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 212829033}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0260941, y: 0.9738908, z: 0.16219129, w: 0.15668413}
-  m_LocalPosition: {x: -3.377, y: 3.46, z: -12.862}
+  m_LocalRotation: {x: -0.13884746, y: -0.000000028324235, z: -0.0000000039712136, w: 0.99031377}
+  m_LocalPosition: {x: -2.067, y: 0.64142346, z: -17.268229}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1870,7 +1870,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3745754139378678193, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.21
+      value: -0.039
       objectReference: {fileID: 0}
     - target: {fileID: 3745754139378678193, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1898,7 +1898,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5428147382112990662, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.390424
+      value: 0.14142346
       objectReference: {fileID: 0}
     - target: {fileID: 5428147382112990662, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1914,11 +1914,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5428147382112990662, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 1.2370108e-15
+      value: -0.000000028324232
       objectReference: {fileID: 0}
     - target: {fileID: 5428147382112990662, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 2.1594593e-16
+      value: -0.000000003971213
       objectReference: {fileID: 0}
     - target: {fileID: 6436297551269534160, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_Name
@@ -1930,7 +1930,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8618902038380974585, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.510706
+      value: 0.26170582
       objectReference: {fileID: 0}
     - target: {fileID: 8618902038380974585, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1942,15 +1942,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8618902038380974585, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.031155145
+      value: -0.031155165
       objectReference: {fileID: 0}
     - target: {fileID: 8618902038380974585, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -4.1240494e-16
+      value: -0.000000002312894
       objectReference: {fileID: 0}
     - target: {fileID: 8618902038380974585, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -3.7354934e-16
+      value: -7.209363e-11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3950,7 +3950,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineCamera
   Priority:
     Enabled: 1
-    m_Value: 100
+    m_Value: 10
   OutputChannel: 1
   StandbyUpdate: 0
   m_StreamingVersion: 20241001

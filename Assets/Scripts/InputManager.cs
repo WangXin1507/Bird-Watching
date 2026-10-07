@@ -34,9 +34,9 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
     public void LockInputs(bool moveInput, bool lookInput, bool interactInput)
     {
         bool moveWasEnabled = moveInputEnabled;
-        moveInputEnabled = moveInput;
-        lookInputEnabled = lookInput;
-        interactionInputEnabled = interactInput;
+        moveInputEnabled = !moveInput;
+        lookInputEnabled = !lookInput;
+        interactionInputEnabled = !interactInput;
 
         if (!moveInputEnabled)
         {
@@ -69,7 +69,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
         playerInput.Enable();
         playerInput.AddCallbacks(this);
 
-        LockInputs(true, true, true);
+        LockInputs(false, false, false);
     }
 
     private void OnDestroy()
