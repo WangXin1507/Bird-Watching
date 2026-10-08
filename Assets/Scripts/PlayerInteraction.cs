@@ -5,7 +5,7 @@ public class PlayerInteraction : MonoBehaviour
 {
     [Header("Detection")]
     [SerializeField] private LayerMask mask = ~0;
-    [SerializeField] private float focusRadius = 30.0f;
+    [SerializeField] private float focusRadius = 0.25f;
     [SerializeField] private int maxTargets = 5;
 
     [Header("Holding")]
@@ -46,8 +46,6 @@ public class PlayerInteraction : MonoBehaviour
 
     private void CheckProximity()
     {
-        //if (holding && focusedTarget is IGrabbable) return;
-
         int count = Physics.OverlapSphereNonAlloc(transform.position, focusRadius, targets, mask);
 
         IFocusable closest = null;
@@ -56,21 +54,19 @@ public class PlayerInteraction : MonoBehaviour
         // Calculate closest focusables
         for (int i = 0; i < count; i++)
         {
-            if (targets[i] != null)
+            Collider col = targets[i];
+            if (col == null) continue;
+
+            if (holding != null && col.transform == holding) continue;
+            if (!col.TryGetComponent<IFocusable>(out var focusable)) continue;
+            if (!focusable.enabled) continue;
+            if (holding != null && focusable is IGrabbable) continue;
+
+            float dist = Vector3.Distance(transform.position, col.transform.position);
+            if (dist < minDistance)
             {
-                if (holding != null && (targets[i].transform == holding)) continue;
-
-                if (targets[i].TryGetComponent<IFocusable>(out var focusable))
-                {
-                    if (!focusable.enabled) continue;
-
-                    float dist = Vector3.Distance(transform.position, targets[i].transform.position);
-                    if (dist < minDistance)
-                    {
-                        minDistance = dist;
-                        closest = focusable;
-                    }
-                }
+                minDistance = dist;
+                closest = focusable;
             }
         }
 
@@ -143,7 +139,7 @@ public class PlayerInteraction : MonoBehaviour
 
         IGrabbable grabbable = heldRb.GetComponent<IGrabbable>();
 
-        heldRb.transform.SetParent(transform, false);
+        heldRb.transform.SetParent(transform, true);
         heldRb.transform.position = pos.position;
         heldRb.transform.localRotation = grabbable.grabHandle.localRotation;
     }

@@ -3,6 +3,7 @@ using NUnit.Framework;
 using Sirenix.Utilities;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.UI;
 using UnityEngine;
 
 public class ItemCollector : Interactable
@@ -42,9 +43,8 @@ public class ItemCollector : Interactable
                             Debug.Log(data);
                         }
 
-                        playerItem.SetParent(transform, false);
-                        //playerItem.localPosition = Vector3.zero;
-                        //playerItem.localRotation = Quaternion.identity;
+                        playerItem.SetParent(transform, true);
+                        playerItem.transform.position = transform.position;
 
                         PlayerID.playerInteraction.ForceRemove();
                     }
@@ -60,6 +60,7 @@ public class ItemCollector : Interactable
                 else
                 {
                     Debug.Log("Content doesn't match");
+                    Eject();
                 }
             }
         }
@@ -93,6 +94,34 @@ public class ItemCollector : Interactable
         }
 
         return true;
+    }
+
+    private void Eject()
+    {
+        Vector3 direction = (PlayerID.playerMovement.transform.position - transform.position).normalized;
+        direction.y = 0;
+
+        foreach (GameObject obj in currentItems)
+        {
+            obj.GetComponent<IFocusable>().enabled = true;
+            obj.transform.SetParent(null, true);
+
+            Vector3 randomPos = Random.insideUnitSphere * 0.2f;
+            randomPos.y = Mathf.Abs(randomPos.y);
+            obj.transform.position = transform.position + randomPos;
+
+
+            Rigidbody rb = obj.GetComponent<Rigidbody>();
+            rb.isKinematic = false;
+            rb.useGravity = true;
+
+            Vector3 spread = Quaternion.Euler(Random.Range(-10.0f, 10.0f), Random.Range(0.0f, 10.0f), 0) * direction;
+            Vector3 finalForce = (spread * 0.5f) + (Vector3.up);
+            rb.AddForce(finalForce, ForceMode.Impulse);
+        }
+
+        currentItems.Clear();
+        currentItemData.Clear();
     }
 
     private void _GiveItem()
