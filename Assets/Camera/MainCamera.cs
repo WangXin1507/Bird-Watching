@@ -2,7 +2,7 @@ using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
-using DG.Tweening;
+using PrimeTween;
 
 namespace BirdWatchingCamera
 {
@@ -23,7 +23,59 @@ namespace BirdWatchingCamera
         private CinemachineOrbitalFollow orbital;
         private CinemachineRotationComposer composer;
 
-        public void UpdateCameraProfile(BirdCameraData newProfile, float duration = 1f)
+        /// <summary>Snapshot of the camera values a profile drives, read from a BirdCameraData or another CinemachineCamera.</summary>
+        struct CameraProfile
+        {
+            public float verticalFov;
+            public bool hasDistance;
+            public float cameraDistance;
+            public bool hasComposition;
+            public Vector2 screenPosition;
+            public bool deadZoneEnabled;
+            public Vector2 deadZoneSize;
+            public Vector3 aimTargetOffset;
+
+            public static CameraProfile FromData(BirdCameraData data)
+            {
+                return new CameraProfile
+                {
+                    verticalFov = data.vertcialFov,
+                    hasDistance = true,
+                    cameraDistance = data.cameraDistance,
+                    hasComposition = true,
+                    screenPosition = data.screenPosition,
+                    deadZoneEnabled = data.deadZoneEnabled,
+                    deadZoneSize = data.deadZoneSize,
+                    aimTargetOffset = data.aimTargetOffset,
+                };
+            }
+
+            public static CameraProfile FromCamera(CinemachineCamera camera)
+            {
+                CameraProfile profile = new() { verticalFov = camera.Lens.FieldOfView };
+
+                CinemachineOrbitalFollow sourceOrbital = camera.GetComponent<CinemachineOrbitalFollow>();
+                if (sourceOrbital != null)
+                {
+                    profile.hasDistance = true;
+                    profile.cameraDistance = sourceOrbital.Radius;
+                }
+
+                CinemachineRotationComposer sourceComposer = camera.GetComponent<CinemachineRotationComposer>();
+                if (sourceComposer != null)
+                {
+                    profile.hasComposition = true;
+                    profile.screenPosition = sourceComposer.Composition.ScreenPosition;
+                    profile.deadZoneEnabled = sourceComposer.Composition.DeadZone.Enabled;
+                    profile.deadZoneSize = sourceComposer.Composition.DeadZone.Size;
+                    profile.aimTargetOffset = sourceComposer.TargetOffset;
+                }
+
+                return profile;
+            }
+        }
+
+        public void UpdateCameraProfile(BirdCameraData newProfile, float duration = 3f)
         {
             if (newProfile == null)
             {
@@ -31,14 +83,23 @@ namespace BirdWatchingCamera
                 return;
             }
 
-            SelectCamera(CurrentCameraDataIndex);
-            if (Instance == null)
+            if (!EnsureLiveCamera()) return;
+
+            ApplyProfile(CameraProfile.FromData(newProfile), Application.isPlaying ? duration : 0f);
+        }
+
+        /// <summary>Tweens the live camera to match another CinemachineCamera's settings. The live camera stays active.</summary>
+        public void MatchCamera(CinemachineCamera source, float duration = 1f)
+        {
+            if (source == null)
             {
-                Debug.LogWarning("No CinemachineCamera found under MainCamera.", this);
+                Debug.LogWarning("Source CinemachineCamera is missing.", this);
                 return;
             }
 
-            ApplyProfile(newProfile, Application.isPlaying ? duration : 0f);
+            if (!EnsureLiveCamera() || source == Instance) return;
+
+            ApplyProfile(CameraProfile.FromCamera(source), Application.isPlaying ? duration : 0f);
         }
 
         public void EnableFlightProfile()
@@ -57,12 +118,12 @@ namespace BirdWatchingCamera
 
         void Awake()
         {
-            SelectCamera(CurrentCameraDataIndex);
+            SelectLiveCamera();
         }
 
         void OnDisable()
         {
-            DOTween.Kill(this);
+            if (Application.isPlaying) Tween.StopAll(onTarget: this);
         }
 
         void OnDestroy()
@@ -73,7 +134,24 @@ namespace BirdWatchingCamera
             }
         }
 
-        void SelectCamera(int index)
+        bool EnsureLiveCamera()
+        {
+            if (Instance == null || !Instance.transform.IsChildOf(transform))
+            {
+                SelectLiveCamera();
+            }
+
+            if (Instance == null)
+            {
+                Debug.LogWarning("No CinemachineCamera found under MainCamera.", this);
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>The first CinemachineCamera child is always the one we look through; profiles only change its values.</summary>
+        void SelectLiveCamera()
         {
             CinemachineCamera[] cameras = GetComponentsInChildren<CinemachineCamera>(true);
             if (cameras.Length == 0)
@@ -84,14 +162,13 @@ namespace BirdWatchingCamera
                 return;
             }
 
-            index = Mathf.Clamp(index, 0, cameras.Length - 1);
-            Instance = cameras[index];
+            Instance = cameras[0];
             orbital = Instance.GetComponent<CinemachineOrbitalFollow>();
             composer = Instance.GetComponent<CinemachineRotationComposer>();
 
             for (int i = 0; i < cameras.Length; i++)
             {
-                SetPriority(cameras[i], i == index ? 20 : 0);
+                SetPriority(cameras[i], i == 0 ? 20 : 0);
             }
         }
 
@@ -103,9 +180,9 @@ namespace BirdWatchingCamera
             camera.Priority = priority;
         }
 
-        void ApplyProfile(BirdCameraData profile, float duration)
+        void ApplyProfile(CameraProfile profile, float duration)
         {
-            DOTween.Kill(this);
+            if (Application.isPlaying) Tween.StopAll(onTarget: this);
 
             if (duration <= 0f || !Application.isPlaying)
             {
@@ -113,19 +190,16 @@ namespace BirdWatchingCamera
                 return;
             }
 
-            if (orbital != null)
+            if (orbital != null && profile.hasDistance)
             {
-                DOTween.To(() => orbital.Radius, x => orbital.Radius = x, profile.cameraDistance, duration)
-                    .SetTarget(this);
+                Tween.Custom(this, orbital.Radius, profile.cameraDistance, duration,
+                    (target, radius) => target.orbital.Radius = radius);
             }
 
-            DOTween.To(
-                () => Instance.Lens.FieldOfView,
-                fov => SetFieldOfView(fov),
-                profile.vertcialFov,
-                duration).SetTarget(this);
+            Tween.Custom(this, Instance.Lens.FieldOfView, profile.verticalFov, duration,
+                (target, fov) => target.SetFieldOfView(fov));
 
-            if (composer == null) return;
+            if (composer == null || !profile.hasComposition) return;
 
             ScreenComposerSettings composition = composer.Composition;
             ScreenComposerSettings.DeadZoneSettings deadZone = composition.DeadZone;
@@ -133,60 +207,55 @@ namespace BirdWatchingCamera
             composition.DeadZone = deadZone;
             composer.Composition = composition;
 
-            DOTween.To(
-                () => composer.Composition.ScreenPosition,
-                screenPosition =>
+            Tween.Custom(this, composer.Composition.ScreenPosition, profile.screenPosition, duration,
+                (target, screenPosition) =>
                 {
-                    ScreenComposerSettings settings = composer.Composition;
+                    ScreenComposerSettings settings = target.composer.Composition;
                     settings.ScreenPosition = screenPosition;
-                    composer.Composition = settings;
-                },
-                profile.screenPosition,
-                duration).SetTarget(this);
+                    target.composer.Composition = settings;
+                });
 
-            DOTween.To(
-                () => composer.Composition.DeadZone.Size,
-                size =>
+            Tween.Custom(this, composer.Composition.DeadZone.Size, profile.deadZoneSize, duration,
+                (target, size) =>
                 {
-                    ScreenComposerSettings settings = composer.Composition;
+                    ScreenComposerSettings settings = target.composer.Composition;
                     ScreenComposerSettings.DeadZoneSettings zone = settings.DeadZone;
                     zone.Size = size;
                     settings.DeadZone = zone;
-                    composer.Composition = settings;
-                },
-                profile.deadZoneSize,
-                duration).SetTarget(this);
+                    target.composer.Composition = settings;
+                });
 
-            DOTween.To(() => composer.TargetOffset, x => composer.TargetOffset = x, profile.aimTargetOffset, duration)
-                .SetTarget(this);
+            Tween.Custom(this, composer.TargetOffset, profile.aimTargetOffset, duration,
+                (target, offset) => target.composer.TargetOffset = offset);
         }
 
-        void ApplyProfileImmediate(BirdCameraData profile)
+        void ApplyProfileImmediate(CameraProfile profile)
         {
-            SetFieldOfView(profile.vertcialFov);
+            SetFieldOfView(profile.verticalFov);
 
-            if (orbital != null)
+            if (orbital != null && profile.hasDistance)
             {
                 orbital.Radius = profile.cameraDistance;
             }
 
-            if (composer == null) return;
-
-            ScreenComposerSettings composition = composer.Composition;
-            composition.ScreenPosition = profile.screenPosition;
-            ScreenComposerSettings.DeadZoneSettings deadZone = composition.DeadZone;
-            deadZone.Enabled = profile.deadZoneEnabled;
-            deadZone.Size = profile.deadZoneSize;
-            composition.DeadZone = deadZone;
-            composer.Composition = composition;
-            composer.TargetOffset = profile.aimTargetOffset;
+            if (composer != null && profile.hasComposition)
+            {
+                ScreenComposerSettings composition = composer.Composition;
+                composition.ScreenPosition = profile.screenPosition;
+                ScreenComposerSettings.DeadZoneSettings deadZone = composition.DeadZone;
+                deadZone.Enabled = profile.deadZoneEnabled;
+                deadZone.Size = profile.deadZoneSize;
+                composition.DeadZone = deadZone;
+                composer.Composition = composition;
+                composer.TargetOffset = profile.aimTargetOffset;
+            }
 
 #if UNITY_EDITOR
             if (!Application.isPlaying)
             {
                 UnityEditor.EditorUtility.SetDirty(Instance);
                 if (orbital != null) UnityEditor.EditorUtility.SetDirty(orbital);
-                UnityEditor.EditorUtility.SetDirty(composer);
+                if (composer != null) UnityEditor.EditorUtility.SetDirty(composer);
             }
 #endif
         }
@@ -211,7 +280,7 @@ namespace BirdWatchingCamera
         {
             if (Instance == null)
             {
-                SelectCamera(CurrentCameraDataIndex);
+                SelectLiveCamera();
             }
         }
 
