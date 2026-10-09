@@ -12,8 +12,8 @@
   <Project Path="Unity.Importer.USD.Editor.csproj" />
   <Project Path="Unity.Importer.Editor.csproj" />
   <Project Path="FMODUnityResonance.csproj" />
-  <Project Path="Sirenix.OdinInspector.Modules.UnityMathematics.csproj" />
   <Project Path="UniTask.Editor.csproj" />
+  <Project Path="Sirenix.OdinInspector.Modules.UnityMathematics.csproj" />
   <Project Path="PrimeTween.Debug.csproj" />
   <Project Path="FMODUnityResonanceEditor.csproj" />
   <Project Path="UniTask.TextMeshPro.csproj" />

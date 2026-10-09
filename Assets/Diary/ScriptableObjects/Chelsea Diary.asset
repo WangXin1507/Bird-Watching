@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfcb6f5650c6eaf4ea7f7b2a94f0b5cc, type: 3}
+  m_Name: Chelsea Diary
+  m_EditorClassIdentifier: Assembly-CSharp::DiaryData
+  transcriptId: 6c67b7cc-b7f1-4fd5-bc43-875451294e03
+  title: Diary Entry 1
+  mission: {fileID: 11400000, guid: 8a619ff05acad9d43a566640fcd02f31, type: 2}
+  OnTranscriptClosed:
+    m_PersistentCalls:
+      m_Calls: []
+  leftTextBox: "I can\u2019t believe there are only two weeks left\u2026 Two weeks
+    left and Luke still hasn\u2019t tried to talk to me again. Which, I know! Is
+    technically my fault, because I\u2019m the one who told him we needed a break!
+    But can you blame me? I mean, we used to make plans together. But over time,
+    it\u2019s been less and less us reaching out to each other and more and more
+    just me reaching out to him. \r\n\r\nUgh, was it a mistake? Taking a break? No.
+    No, I needed a break. Trying to talk to him about it felt like an uphill battle.
+    But I still want to talk to him. Hmm no, that\u2019s not right. I want him to
+    talk to me. Reach out to me again. God, I still remember. Back in junior year,
+    when he gave me those three little flowers he\u2019d picked and asked me out.
+    And then we\u2019d make plans, and sometimes he\u2019d get me them again. Something
+    like that would be nice. Just something to show me he still wants to spend time
+    together."
+  rightTextBox: '[ Temp Text, Flower sketch sprite will display here eventually]'
+  imageToShow: {fileID: 0}
+  imageSize: {x: 0, y: 0}
