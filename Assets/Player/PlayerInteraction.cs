@@ -63,7 +63,7 @@ public class PlayerInteraction : MonoBehaviour
             if (holding != null && focusable is IGrabbable) continue;
 
             float dist = Vector3.Distance(transform.position, col.transform.position);
-            if (dist < minDistance)
+            if (dist < minDistance && focusable.CanFocus())
             {
                 minDistance = dist;
                 closest = focusable;
