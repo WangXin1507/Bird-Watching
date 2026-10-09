@@ -17,4 +17,4 @@ MonoBehaviour:
   trinket: {fileID: 0}
   transcripts:
   - {fileID: 11400000, guid: 740ac8e5b0f4df846adea70d73d47b2f, type: 2}
-  - {fileID: 11400000, guid: 30973316005616d46b404dae003a9658, type: 2}
+  - {fileID: 11400000, guid: 1f216b6bcc1b4fc49bbe1bb26e19f103, type: 2}
