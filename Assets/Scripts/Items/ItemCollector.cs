@@ -1,19 +1,26 @@
-using BirdWatching.Quests;
-using NUnit.Framework;
-using Sirenix.Utilities;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.UI;
 using UnityEngine;
 
 public class ItemCollector : Interactable
 {
     [SerializeField] private List<ItemData> acceptableItems;
     [SerializeField] private List<ItemData> desiredItems;
-    [SerializeField] private int totalItems = 0;
+    
+    private int totalItems = 0;
+    private GameObject[] slots;
+    private List<Transform> itemPositions = new List<Transform>();
 
-    private List<GameObject> currentItems = new List<GameObject>();
-    private List<ItemData> currentItemData = new List<ItemData>();
+    public void Start()
+    {
+        totalItems = desiredItems.Count;
+
+        foreach (Transform child in transform) {
+            itemPositions.Add(child);
+        }
+
+        slots = new GameObject[totalItems];
+    }
 
     public override void Interact()
     {
@@ -25,55 +32,84 @@ public class ItemCollector : Interactable
             if (!itemComponent) return;
             ItemData itemData = itemComponent.data;
 
-            if (currentItems.Count < totalItems)
+            // The item is allowed by the collector
+            if (acceptableItems.Contains(itemData))
             {
-                foreach (ItemData curr in acceptableItems)
+                int emptySlot = _FirstEmptySlotIndex();
+
+                if (emptySlot != -1)
                 {
-                    if (itemData == curr)
+                    playerItem.GetComponent<IFocusable>().enabled = false;
+                    playerItem.SetParent(transform, true);
+                    slots[emptySlot] = playerItem.gameObject;
+
+                    Transform targetSlot = itemPositions.ElementAtOrDefault(emptySlot);
+                    if (targetSlot != null)
                     {
-                        Debug.Log("Giving item to collector");
-
-                        playerItem.GetComponent<IFocusable>().enabled = false;
-
-                        currentItems.Add(playerItem.gameObject);
-                        currentItemData.Add(itemData);
-
-                        foreach (ItemData data in currentItemData)
-                        {
-                            Debug.Log(data);
-                        }
-
-                        playerItem.SetParent(transform, true);
-                        playerItem.transform.position = transform.position;
-
-                        PlayerID.playerInteraction.ForceRemove();
+                        playerItem.transform.position = targetSlot.position;
                     }
+
+                    PlayerID.playerInteraction.ForceRemove();
+
+                    // Check if the items match
+                    if (GetItemCount() >= totalItems) _EvaluateItems();
                 }
             }
-
-            if (currentItems.Count == totalItems)
+            else 
             {
-                if (_compareItemLists())
-                {
-                    Debug.Log("QUEST LOGIC GOES HERE");
-                }
-                else
-                {
-                    Debug.Log("Content doesn't match");
-                    Eject();
-                }
+                Debug.Log("Collector is full");
             }
         }
-        else if (currentItems.Count > 0) // Pop the last currentItem
+        else if (GetItemCount() > 0)
         {
             _GiveItem();
         }
     }
 
-    private bool _compareItemLists()
+    private void _EvaluateItems()
     {
-        if (currentItemData == desiredItems) return true;
-        if (currentItemData == null || desiredItems == null) return false;
+        if (_CompareItemLists())
+        {
+            Debug.Log("QUEST LOGIC GOES HERE");
+        }
+        else
+        {
+            Debug.Log("Content doesn't match");
+            DestroyItems();
+        }
+    }
+
+    private int _FirstEmptySlotIndex()
+    {
+        for (int i = 0; i < slots.Length; i++)
+        {
+            if (slots[i] == null) return i;
+        }
+        return -1;
+    }
+
+    private int GetItemCount()
+    {
+        int count = 0;
+        foreach (var obj in slots)
+        {
+            if (obj != null) count++;
+        }
+        return count;
+    }
+
+    private bool _CompareItemLists()
+    {
+        List<ItemData> currentItemData = new List<ItemData>();
+        foreach (var obj in slots)
+        {
+            if (obj != null)
+            {
+                ItemComponent comp = obj.GetComponent<ItemComponent>();
+                if (comp != null) currentItemData.Add(comp.data);
+            }
+        }
+
         if (currentItemData.Count != desiredItems.Count) return false;
 
         var counts = new Dictionary<ItemData, int>();
@@ -96,47 +132,37 @@ public class ItemCollector : Interactable
         return true;
     }
 
-    private void Eject()
+    private void DestroyItems()
     {
-        Vector3 direction = (PlayerID.playerMovement.transform.position - transform.position).normalized;
-        direction.y = 0;
-
-        foreach (GameObject obj in currentItems)
+        for (int i = 0; i < slots.Length; i++)
         {
-            obj.GetComponent<IFocusable>().enabled = true;
-            obj.transform.SetParent(null, true);
-
-            Vector3 randomPos = Random.insideUnitSphere * 0.2f;
-            randomPos.y = Mathf.Abs(randomPos.y);
-            obj.transform.position = transform.position + randomPos;
-
-
-            Rigidbody rb = obj.GetComponent<Rigidbody>();
-            rb.isKinematic = false;
-            rb.useGravity = true;
-
-            Vector3 spread = Quaternion.Euler(Random.Range(-10.0f, 10.0f), Random.Range(0.0f, 10.0f), 0) * direction;
-            Vector3 finalForce = (spread * 0.5f) + (Vector3.up);
-            rb.AddForce(finalForce, ForceMode.Impulse);
+            if (slots[i] != null)
+            {
+                Destroy(slots[i]);
+                slots[i] = null;
+            }
         }
-
-        currentItems.Clear();
-        currentItemData.Clear();
     }
 
     private void _GiveItem()
     {
-        GameObject givenItem = currentItems[currentItems.Count - 1];
-        ItemData givenData = givenItem.GetComponent<ItemComponent>().data;
-        currentItems.Remove(givenItem);
-        currentItemData.Remove(givenData);
-
-        foreach (ItemData data in currentItemData) {
-            Debug.Log(data);
+        int lastIndex = -1;
+        for (int i = slots.Length - 1; i >= 0; i--)
+        {
+            if (slots[i] != null)
+            {
+                lastIndex = i;
+                break;
+            }
         }
 
-        givenItem.GetComponent<IFocusable>().enabled = true;
+        if (lastIndex != -1)
+        {
+            GameObject givenItem = slots[lastIndex];
+            slots[lastIndex] = null;
 
-        PlayerID.playerInteraction.ForceHold(givenItem.transform);
+            givenItem.GetComponent<IFocusable>().enabled = true;
+            PlayerID.playerInteraction.ForceHold(givenItem.transform);
+        }
     }
 }
