@@ -48,6 +48,10 @@ public class ItemCollector : Interactable
                     {
                         playerItem.transform.position = targetSlot.position;
                     }
+                    else
+                    {
+                        playerItem.transform.position = transform.position;
+                    }
 
                     PlayerID.playerInteraction.ForceRemove();
 
