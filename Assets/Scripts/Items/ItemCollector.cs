@@ -6,6 +6,7 @@ public class ItemCollector : Interactable
 {
     [SerializeField] private List<ItemData> acceptableItems;
     [SerializeField] private List<ItemData> desiredItems;
+    [SerializeField] private MissionData mission;
     
     private int totalItems = 0;
     private GameObject[] slots;
@@ -74,7 +75,9 @@ public class ItemCollector : Interactable
     {
         if (_CompareItemLists())
         {
+            
             Debug.Log("QUEST LOGIC GOES HERE");
+            Journal.Instance.CompleteMission(mission);
         }
         else
         {
