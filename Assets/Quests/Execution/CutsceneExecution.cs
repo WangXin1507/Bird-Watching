@@ -13,6 +13,7 @@ namespace BirdWatching.Quests
         [Tooltip("Insert your timeline here")]
         public PlayableDirector playableDirector;
         public ConversationObject conversationObject;
+        [SerializeField] TranscriptEntry transcriptEntry;
 
         protected override void OnInitialize()
         {
@@ -68,6 +69,7 @@ namespace BirdWatching.Quests
                 }
                 StopCutscene();
                 EnableInput();
+                Journal.Instance.UnlockTranscript(transcriptEntry.mission, transcriptEntry);
             }
         }
 
