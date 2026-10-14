@@ -54311,7 +54311,7 @@ Transform:
   m_GameObject: {fileID: 1067336249}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.45446405, z: -0, w: 0.8907651}
-  m_LocalPosition: {x: -9.031124, y: -1.4410027, z: 6.043419}
+  m_LocalPosition: {x: -9.03113, y: -1.4410002, z: 6.0434303}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -69949,7 +69949,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6419082170575608204, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: loadOnStart
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6436297551269534160, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_Name
@@ -85379,7 +85379,7 @@ MonoBehaviour:
       type: {class: CutsceneExecution, ns: BirdWatching.Quests, asm: Assembly-CSharp}
       data:
         playableDirector: {fileID: 1920218651}
-        conversationObject: {fileID: 11400000, guid: 0ed3743d4d319704a813cc51e67aa74e, type: 2}
+        conversationObject: {fileID: 11400000, guid: 4b6ee03412c150445ae3155622a94dad, type: 2}
 --- !u!1 &1583242007
 GameObject:
   m_ObjectHideFlags: 0
@@ -104802,6 +104802,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 44d3085a8cfd76c4999ec22e5a8b7ce0, type: 2}
   - {fileID: 11400000, guid: e796b118469669b449d1fe7769a0e884, type: 2}
   - {fileID: 11400000, guid: 7999c4bba18c4f849a9cc3343960619a, type: 2}
+  mission: {fileID: 11400000, guid: 8a619ff05acad9d43a566640fcd02f31, type: 2}
 --- !u!136 &2010339902
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -107524,8 +107525,8 @@ Transform:
   m_GameObject: {fileID: 2079947821}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.0000014603136, z: -0, w: 1}
-  m_LocalPosition: {x: -3.574129, y: 1.2150002, z: -1.7245693}
-  m_LocalScale: {x: 1, y: 2.8, z: 4.564}
+  m_LocalPosition: {x: -4.758, y: 0.726, z: -1.77}
+  m_LocalScale: {x: 0.20825, y: 3.519811, z: 6.34824}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 776765474}
