@@ -43,6 +43,17 @@ public static class AudioEvents
         };
     }
 
+    public static class Environment
+    {
+        public static readonly EventReference BushRustle = new EventReference
+        {
+#if UNITY_EDITOR
+            Path = "event:/Environment/BushRustle",
+#endif
+            Guid = FMOD.GUID.Parse("{81d0f325-73bd-49bd-bbaa-b03250ea9a13}")
+        };
+    }
+
     public static readonly EventReference TEST_SFX = new EventReference
     {
 #if UNITY_EDITOR

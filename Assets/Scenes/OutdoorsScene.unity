@@ -152,6 +152,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemCollector
   requiredTranscripts: []
+  sfx:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   acceptableItems:
   - {fileID: 11400000, guid: 44d3085a8cfd76c4999ec22e5a8b7ce0, type: 2}
   - {fileID: 11400000, guid: e796b118469669b449d1fe7769a0e884, type: 2}
@@ -159,6 +166,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 44d3085a8cfd76c4999ec22e5a8b7ce0, type: 2}
   - {fileID: 11400000, guid: e796b118469669b449d1fe7769a0e884, type: 2}
   - {fileID: 11400000, guid: 44d3085a8cfd76c4999ec22e5a8b7ce0, type: 2}
+  mission: {fileID: 0}
 --- !u!65 &148815031
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -659,6 +667,103 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b945834a0911864f9023aee8044449d, type: 3}
+--- !u!1001 &1534595109
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 7999c4bba18c4f849a9cc3343960619a, type: 2}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: itemBase
+      value: 
+      objectReference: {fileID: 8402511910913565314, guid: 7bf0c072bc081224e870c06fc9a4fbb4, type: 3}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: maxItems
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: sfx.Path
+      value: event:/Environment/BushRustle
+      objectReference: {fileID: 0}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: sfx.Guid.Data1
+      value: -2117012699
+      objectReference: {fileID: 0}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: sfx.Guid.Data2
+      value: 1237152701
+      objectReference: {fileID: 0}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: sfx.Guid.Data3
+      value: 850438843
+      objectReference: {fileID: 0}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: sfx.Guid.Data4
+      value: 328919632
+      objectReference: {fileID: 0}
+    - target: {fileID: 1664936575164219032, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: m_Name
+      value: YellowFlowerSpawner
+      objectReference: {fileID: 0}
+    - target: {fileID: 1664936575164219032, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3949101070929478161, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3949101070929478161, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3949101070929478161, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 4.66386
+      objectReference: {fileID: 0}
+    - target: {fileID: 3949101070929478161, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3949101070929478161, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3949101070929478161, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3949101070929478161, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3949101070929478161, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3949101070929478161, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3949101070929478161, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8425789118104986441, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 23c1c853c3ea4eb498d3e01056ed1eec, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
 --- !u!1 &1657552920
 GameObject:
   m_ObjectHideFlags: 0
@@ -1252,9 +1357,29 @@ PrefabInstance:
       propertyPath: maxItems
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: sfx.Path
+      value: event:/Environment/BushRustle
+      objectReference: {fileID: 0}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: sfx.Guid.Data1
+      value: -2117012699
+      objectReference: {fileID: 0}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: sfx.Guid.Data2
+      value: 1237152701
+      objectReference: {fileID: 0}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: sfx.Guid.Data3
+      value: 850438843
+      objectReference: {fileID: 0}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: sfx.Guid.Data4
+      value: 328919632
+      objectReference: {fileID: 0}
     - target: {fileID: 1664936575164219032, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
       propertyPath: m_Name
-      value: RedFlowerSpawner
+      value: PinkFlowerSpawner
       objectReference: {fileID: 0}
     - target: {fileID: 1664936575164219032, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
       propertyPath: m_Layer
@@ -1300,6 +1425,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8425789118104986441, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: d80fcd9afe2fd36458fdd78aeb1aa21c, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1548,6 +1677,26 @@ PrefabInstance:
       propertyPath: maxItems
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: sfx.Path
+      value: event:/Environment/BushRustle
+      objectReference: {fileID: 0}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: sfx.Guid.Data1
+      value: -2117012699
+      objectReference: {fileID: 0}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: sfx.Guid.Data2
+      value: 1237152701
+      objectReference: {fileID: 0}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: sfx.Guid.Data3
+      value: 850438843
+      objectReference: {fileID: 0}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: sfx.Guid.Data4
+      value: 328919632
+      objectReference: {fileID: 0}
     - target: {fileID: 1664936575164219032, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
       propertyPath: m_Name
       value: BlueFlowerSpawner
@@ -1596,6 +1745,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8425789118104986441, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 7e4ca95f9dbe8f04fb3f320aa3af3298, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1614,5 +1767,6 @@ SceneRoots:
   - {fileID: 1697277657}
   - {fileID: 5598380982144019725}
   - {fileID: 1901643909}
+  - {fileID: 1534595109}
   - {fileID: 148815034}
   - {fileID: 1015017413}

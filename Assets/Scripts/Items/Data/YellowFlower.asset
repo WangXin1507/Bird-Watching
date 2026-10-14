@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf1e623bf2a75ed41859df11ea3ec0d9, type: 3}
   m_Name: YellowFlower
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
-  itemName: Pink Flower
+  itemName: Yellow Flower
   itemMesh: {fileID: 0}
-  itemMaterial: {fileID: 2100000, guid: d80fcd9afe2fd36458fdd78aeb1aa21c, type: 2}
+  itemMaterial: {fileID: 2100000, guid: 23c1c853c3ea4eb498d3e01056ed1eec, type: 2}

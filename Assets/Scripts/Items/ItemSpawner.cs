@@ -38,6 +38,7 @@ public class ItemSpawner : Interactable
             ItemComponent itemComponent = newItem.GetComponent<ItemComponent>();
             itemComponent.data = item;
 
+            AudioManager.PlayOneShot(sfx, transform.position);
             PlayerID.playerInteraction.ForceHold(newItem.transform);
 
             spawnedItems.Add(newItem);
