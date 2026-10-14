@@ -10,12 +10,19 @@ public class MissionData : ScriptableObject
     [SerializeField] private Sprite trinket;
     [SerializeField] private List<ATranscriptEntry> transcripts = new List<ATranscriptEntry>();
     
+    
     public string MissionName => missionName;
     public IReadOnlyList<ATranscriptEntry> Transcripts => transcripts;
+    public string MissionID;
 
 #if UNITY_EDITOR
     private void OnValidate()
     {
+        if (MissionID != null && MissionID == "")
+        {
+            MissionID = Guid.NewGuid().ToString();
+        }
+        
         // Give every transcript a unique ID. Also catches duplicates, since
         // duplicating a list element in the inspector copies its ID.
         var seen = new HashSet<string>();

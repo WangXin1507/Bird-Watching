@@ -9,6 +9,7 @@ public class Journal : MonoBehaviour
     [SerializeField] private List<MissionData> missions = new List<MissionData>();
 
     private readonly HashSet<string> unlockedTranscriptIds = new HashSet<string>();
+    private readonly HashSet<string> completedMissionIDs = new HashSet<string>();
 
     public event Action OnTranscriptUnlocked;
 
@@ -44,11 +45,26 @@ public class Journal : MonoBehaviour
     {
         return mission != null && mission.Transcripts.Any(IsTranscriptUnlocked);
     }
+    
+    public bool IsMissionCompleted(MissionData mission)
+    {
+        return mission != null && completedMissionIDs.Contains(mission.MissionID);
+    }
 
     public IEnumerable<ATranscriptEntry> GetUnlockedTranscripts(MissionData mission)
     {
         if (mission == null) return Enumerable.Empty<TranscriptEntry>();
         return mission.Transcripts.Where(IsTranscriptUnlocked);
+    }
+
+    public bool CompleteMission(MissionData mission)
+    {
+        if (!ValidateMission(mission)) return false;
+        
+        if (!TryComplete(mission)) return false;
+        
+        SaveManager.Instance.data.completedMissionIds = completedMissionIDs.ToList();
+        return true;
     }
 
     public bool UnlockTranscript(MissionData mission, int transcriptIndex)
@@ -125,6 +141,13 @@ public class Journal : MonoBehaviour
         OnTranscriptUnlocked?.Invoke();
         return true;
     }
+    
+    private bool TryComplete(MissionData mission)
+    {
+        lastMissionChanged = mission;
+        OnTranscriptUnlocked?.Invoke();
+        return true;
+    }
 
     private void LoadUnlocks()
     {
@@ -135,5 +158,12 @@ public class Journal : MonoBehaviour
 
         foreach (var id in saved)
             unlockedTranscriptIds.Add(id);
+        
+        var completed = SaveManager.Instance.data.completedMissionIds;
+        if (completed == null) return;
+
+        foreach (var id in completed)
+            completedMissionIDs.Add(id);
+        
     }
 }

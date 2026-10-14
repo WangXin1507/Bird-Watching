@@ -8,6 +8,7 @@ public class SaveData
 {
     public Vector3 birdPosition = Vector3.zero;
     public List<string> unlockedTranscriptIds = new List<string>();
+    public List<string> completedMissionIds = new List<string>();
 }
 
 public class SaveManager : MonoBehaviour
