@@ -6,7 +6,7 @@ public class ItemSpawner : Interactable
 {
     [SerializeField] private GameObject itemBase;
     [SerializeField] private ItemData item;
-    [SerializeField] private int maxItems = 1;
+    [SerializeField] private int maxItems = 10;
     private List<GameObject> spawnedItems = new List<GameObject>();
 
     public override void Interact()
