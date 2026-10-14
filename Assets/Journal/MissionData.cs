@@ -6,8 +6,8 @@ using UnityEngine;
 public class MissionData : ScriptableObject
 {
     [SerializeField] private string missionName;
-    [SerializeField] private Sprite missionPicture;
-    [SerializeField] private Sprite trinket;
+    [SerializeField] public Sprite missionPicture;
+    [SerializeField] public Sprite trinket;
     [SerializeField] private List<ATranscriptEntry> transcripts = new List<ATranscriptEntry>();
     
     

@@ -1126,6 +1126,8 @@ MonoBehaviour:
     buttonLabel: {fileID: 9098790375500935359}
   - button: {fileID: 872851768816662752}
     buttonLabel: {fileID: 8709205901962057981}
+  trinketImage: {fileID: 9097429340538026781}
+  missionImage: {fileID: 6949091116201563119}
   pageNumberText: {fileID: 0}
   emptyJournalObject: {fileID: 0}
   leftArrow: {fileID: 5348580478948429029}
