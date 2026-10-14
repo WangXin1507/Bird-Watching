@@ -20,7 +20,9 @@ public class JournalUI : MonoBehaviour
     [SerializeField] private TMP_Text missionNameText;
     [Tooltip("Slot 0 shows the mission's first transcript, slot 1 the second, and so on.")]
     [SerializeField] private List<TranscriptSlot> transcriptSlots = new List<TranscriptSlot>();
-    [Tooltip("Optional. Shows something like '2 / 5'.")]
+    [SerializeField] private Image trinketImage;
+    [SerializeField] private Image missionImage;
+    [Tooltip("Optional. Shows something like '2 / 5'.")] 
     [SerializeField] private TMP_Text pageNumberText;
     [Tooltip("Optional. Shown only when the journal has no pages yet.")]
     [SerializeField] private GameObject emptyJournalObject;
@@ -166,6 +168,14 @@ public class JournalUI : MonoBehaviour
 
         MissionData mission = pages[currentPage];
 
+        trinketImage.sprite = mission.trinket;
+        if (Journal.Instance.IsMissionCompleted(mission))
+            trinketImage.color = Color.white;
+        else
+            trinketImage.color = Color.black;
+        
+        missionImage.sprite = mission.missionPicture;
+        
         missionNameText.text = mission.MissionName;
         DrawSlots(mission);
 
