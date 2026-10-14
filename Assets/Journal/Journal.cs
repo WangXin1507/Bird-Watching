@@ -83,6 +83,11 @@ public class Journal : MonoBehaviour
         return true;
     }
 
+    public bool UnlockTranscript(ATranscriptEntry transcript)
+    {
+        return UnlockTranscript(transcript.mission, transcript);
+    }
+
     public bool UnlockTranscript(MissionData mission, ATranscriptEntry transcript)
     {
         if (!ValidateMission(mission)) return false;
