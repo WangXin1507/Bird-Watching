@@ -18,7 +18,7 @@ MonoBehaviour:
       something but like didn\u2019t say anything specific, he said it\u2019s not
       really his info to tell, yknow?"
     isFromPhone: 1
-    timeStamp: 0
+    timeStamp: 10
   - speaker: Luke
     text: "Oof yeah, sorry I haven\u2019t kept you updated\u2026 we\u2019re on a
       break, I guess."

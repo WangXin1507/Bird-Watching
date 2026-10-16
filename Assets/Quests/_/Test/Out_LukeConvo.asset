@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BirdWatching.Quests.QuestOutcome
   guid: 
   description: 
-  maxCompletions: 1
+  maxCompletions: 0
   evaluationMode: 1
   questCondition:
     rid: 7890976374285402251
