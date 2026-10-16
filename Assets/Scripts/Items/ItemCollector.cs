@@ -82,6 +82,7 @@ public class ItemCollector : Interactable
         else
         {
             Debug.Log("Content doesn't match");
+            WrongWayUI.Instance.Show();
             DestroyItems();
         }
     }
