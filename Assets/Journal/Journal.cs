@@ -19,6 +19,8 @@ public class Journal : MonoBehaviour
     
     public static Journal Instance { get; private set; }
 
+    private bool afterLoad = false;
+
     private void Awake()
     {
         Instance = this;
@@ -28,6 +30,7 @@ public class Journal : MonoBehaviour
     {
         LoadUnlocks();
         OnTranscriptUnlocked?.Invoke();
+        afterLoad = true;
     }
 
     public bool IsTranscriptUnlocked(ATranscriptEntry transcript)
@@ -144,6 +147,8 @@ public class Journal : MonoBehaviour
 
         lastMissionChanged = mission;
         OnTranscriptUnlocked?.Invoke();
+        if (afterLoad)
+            JournalUpdateUI.Instance.Show();
         return true;
     }
     
@@ -151,6 +156,8 @@ public class Journal : MonoBehaviour
     {
         lastMissionChanged = mission;
         OnTranscriptUnlocked?.Invoke();
+        if (afterLoad)
+            JournalUpdateUI.Instance.Show();
         return true;
     }
 
