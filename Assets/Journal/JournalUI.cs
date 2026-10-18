@@ -39,6 +39,8 @@ public class JournalUI : MonoBehaviour
     private int currentPage;
     private ATranscriptEntry currentOpen;
     private bool openedTranscript = false;
+    
+    public static JournalUI Instance { get; private set; }
 
     private void Awake()
     {
@@ -51,6 +53,8 @@ public class JournalUI : MonoBehaviour
             int slotIndex = i; // capture a copy for the lambda
             transcriptSlots[i].button.onClick.AddListener(() => OpenTranscriptInSlot(slotIndex));
         }
+
+        Instance = this;
     }
 
     private void Start()
