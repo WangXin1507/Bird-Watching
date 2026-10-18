@@ -70128,6 +70128,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -22.6
       objectReference: {fileID: 0}
+    - target: {fileID: 3976727197083009229, guid: 7b945834a0911864f9023aee8044449d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5428147382112990662, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 10.821892
@@ -105062,7 +105066,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemCollector
   requiredTranscripts: []
-  highlightMaterial: {fileID: 0}
+  highlightMaterial: {fileID: 2100000, guid: b0572dddfe2661444953b7cb980e4e16, type: 2}
   interactSound:
     Guid:
       Data1: 0
