@@ -34400,13 +34400,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemSpawner
   requiredTranscripts:
   - {fileID: 11400000, guid: 1f216b6bcc1b4fc49bbe1bb26e19f103, type: 2}
-  sfx:
+  highlightMaterial: {fileID: 0}
+  interactSound:
     Guid:
-      Data1: -2117012699
-      Data2: 1237152701
-      Data3: 850438843
-      Data4: 328919632
-    Path: event:/Environment/BushRustle
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   itemBase: {fileID: 8402511910913565314, guid: 7bf0c072bc081224e870c06fc9a4fbb4, type: 3}
   item: {fileID: 11400000, guid: 7999c4bba18c4f849a9cc3343960619a, type: 2}
   maxItems: 10
@@ -42258,13 +42259,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemSpawner
   requiredTranscripts:
   - {fileID: 11400000, guid: 1f216b6bcc1b4fc49bbe1bb26e19f103, type: 2}
-  sfx:
+  highlightMaterial: {fileID: 0}
+  interactSound:
     Guid:
-      Data1: -2117012699
-      Data2: 1237152701
-      Data3: 850438843
-      Data4: 328919632
-    Path: event:/Environment/BushRustle
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   itemBase: {fileID: 8402511910913565314, guid: 7bf0c072bc081224e870c06fc9a4fbb4, type: 3}
   item: {fileID: 11400000, guid: e796b118469669b449d1fe7769a0e884, type: 2}
   maxItems: 10
@@ -56346,7 +56348,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DiaryInteractable
   requiredTranscripts: []
-  sfx:
+  highlightMaterial: {fileID: 0}
+  interactSound:
     Guid:
       Data1: 0
       Data2: 0
@@ -58245,13 +58248,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemSpawner
   requiredTranscripts:
   - {fileID: 11400000, guid: 1f216b6bcc1b4fc49bbe1bb26e19f103, type: 2}
-  sfx:
+  highlightMaterial: {fileID: 0}
+  interactSound:
     Guid:
-      Data1: -2117012699
-      Data2: 1237152701
-      Data3: 850438843
-      Data4: 328919632
-    Path: event:/Environment/BushRustle
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   itemBase: {fileID: 8402511910913565314, guid: 7bf0c072bc081224e870c06fc9a4fbb4, type: 3}
   item: {fileID: 11400000, guid: 44d3085a8cfd76c4999ec22e5a8b7ce0, type: 2}
   maxItems: 10
@@ -105058,7 +105062,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemCollector
   requiredTranscripts: []
-  sfx:
+  highlightMaterial: {fileID: 0}
+  interactSound:
     Guid:
       Data1: 0
       Data2: 0

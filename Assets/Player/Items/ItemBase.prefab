@@ -102,7 +102,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 73c176f402d2c2f4d929aa5da7585d17, type: 2}
+  - {fileID: 2100000, guid: 12c58374b3e176b4386867769b9c3663, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -186,6 +186,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02e8866fe13042d48aea79fa4c05cb32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExampleGrabbable
+  requiredTranscripts: []
+  highlightMaterial: {fileID: 2100000, guid: 12c58374b3e176b4386867769b9c3663, type: 2}
   _grabHandle: {fileID: 5722801562848090160}
 --- !u!114 &8659525234779560207
 MonoBehaviour:

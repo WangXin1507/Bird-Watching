@@ -1,10 +1,11 @@
 using FMODUnity;
 using System;
 using UnityEngine;
+using UnityEngine.Rendering.HighDefinition;
 
 public class Interactable : Focusable, IInteractable
 {
-    public EventReference sfx;
+    public EventReference interactSound;
 
     private void Start()
     {

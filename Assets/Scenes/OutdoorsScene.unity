@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemCollector
   requiredTranscripts: []
+  highlightMaterial: {fileID: 2100000, guid: b0572dddfe2661444953b7cb980e4e16, type: 2}
   sfx:
     Guid:
       Data1: 0
@@ -665,8 +666,47 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 891574856802198192, guid: 7b945834a0911864f9023aee8044449d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1325717692}
   m_SourcePrefab: {fileID: 100100000, guid: 7b945834a0911864f9023aee8044449d, type: 3}
+--- !u!1 &1325717687 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 891574856802198192, guid: 7b945834a0911864f9023aee8044449d, type: 3}
+  m_PrefabInstance: {fileID: 1015017413}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1325717692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1325717687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioEventEmitter
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  Event: 
+  EventPlayTrigger: 17
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: -1
+  OverrideMaxDistance: -1
 --- !u!1001 &1534595109
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -707,6 +747,10 @@ PrefabInstance:
       propertyPath: sfx.Guid.Data4
       value: 328919632
       objectReference: {fileID: 0}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: highlightMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: b0572dddfe2661444953b7cb980e4e16, type: 2}
     - target: {fileID: 1664936575164219032, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
       propertyPath: m_Name
       value: YellowFlowerSpawner
@@ -1009,6 +1053,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExampleGrabbable
   requiredTranscripts: []
+  highlightMaterial: {fileID: 2100000, guid: 12c58374b3e176b4386867769b9c3663, type: 2}
   _grabHandle: {fileID: 1657552921}
 --- !u!1 &1777622391
 GameObject:
@@ -1377,6 +1422,10 @@ PrefabInstance:
       propertyPath: sfx.Guid.Data4
       value: 328919632
       objectReference: {fileID: 0}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: highlightMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: b0572dddfe2661444953b7cb980e4e16, type: 2}
     - target: {fileID: 1664936575164219032, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
       propertyPath: m_Name
       value: PinkFlowerSpawner
@@ -1697,6 +1746,10 @@ PrefabInstance:
       propertyPath: sfx.Guid.Data4
       value: 328919632
       objectReference: {fileID: 0}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: highlightMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: b0572dddfe2661444953b7cb980e4e16, type: 2}
     - target: {fileID: 1664936575164219032, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
       propertyPath: m_Name
       value: BlueFlowerSpawner
