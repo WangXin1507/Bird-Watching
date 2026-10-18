@@ -54,6 +54,57 @@ public static class AudioEvents
         };
     }
 
+    public static class Journal
+    {
+        public static readonly EventReference JournalClick = new EventReference
+        {
+#if UNITY_EDITOR
+            Path = "event:/Journal/JournalClick",
+#endif
+            Guid = FMOD.GUID.Parse("{1ac8bfe4-7d8e-4d0d-b939-3e345349efd0}")
+        };
+
+        public static readonly EventReference JournalClose = new EventReference
+        {
+#if UNITY_EDITOR
+            Path = "event:/Journal/JournalClose",
+#endif
+            Guid = FMOD.GUID.Parse("{d237984b-52a9-4bf0-a918-26d41b9f6dc1}")
+        };
+
+        public static readonly EventReference JournalFlip = new EventReference
+        {
+#if UNITY_EDITOR
+            Path = "event:/Journal/JournalFlip",
+#endif
+            Guid = FMOD.GUID.Parse("{547d02df-49c7-48ed-8cd8-cb4da1a249e0}")
+        };
+
+        public static readonly EventReference JournalHover = new EventReference
+        {
+#if UNITY_EDITOR
+            Path = "event:/Journal/JournalHover",
+#endif
+            Guid = FMOD.GUID.Parse("{e506db8f-467e-4bb1-b879-b7dee9903eb3}")
+        };
+
+        public static readonly EventReference JournalNewEntry = new EventReference
+        {
+#if UNITY_EDITOR
+            Path = "event:/Journal/JournalNewEntry",
+#endif
+            Guid = FMOD.GUID.Parse("{3fb33025-d249-44f3-8c5f-1669e6cdb2d6}")
+        };
+
+        public static readonly EventReference JournalOpen = new EventReference
+        {
+#if UNITY_EDITOR
+            Path = "event:/Journal/JournalOpen",
+#endif
+            Guid = FMOD.GUID.Parse("{99ec903c-de71-4280-8729-f5255bacc53e}")
+        };
+    }
+
     public static readonly EventReference TEST_SFX = new EventReference
     {
 #if UNITY_EDITOR

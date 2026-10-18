@@ -89,6 +89,7 @@ public class JournalUI : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         
         gameObject.GetComponent<Canvas>().enabled = true;
+        AudioManager.PlayOneShot(AudioEvents.Journal.JournalOpen);
         
         if (Journal.Instance.lastMissionChanged != null)
             GoToMission(Journal.Instance.lastMissionChanged);
@@ -101,6 +102,7 @@ public class JournalUI : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         
         gameObject.GetComponent<Canvas>().enabled = false;
+        AudioManager.PlayOneShot(AudioEvents.Journal.JournalClose);
     }
 
     // ---------- Public API ----------

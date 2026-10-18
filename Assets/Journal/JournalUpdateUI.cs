@@ -81,6 +81,8 @@ public class JournalUpdateUI : MonoBehaviour
         // Start from wherever it currently is (handles being called mid slide-out)
         yield return Slide(panel.anchoredPosition, shownPos);
 
+        AudioManager.PlayOneShot(AudioEvents.Journal.JournalNewEntry);
+
         isHolding = true;
         holdTimer = hold;
         while (holdTimer > 0f)

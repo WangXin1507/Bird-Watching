@@ -5,7 +5,7 @@
 			<value>BushRustle</value>
 		</property>
 		<property name="outputFormat">
-			<value>0</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{31e05e1d-6812-4357-a039-2476b921b2f9}</destination>
@@ -100,38 +100,30 @@
 	</object>
 	<object class="MixerBusPanner" id="{52ce6e84-812d-4cd6-bf50-34ada512cb9d}" />
 	<object class="MultiSound" id="{a0e66c43-6c68-424c-b051-7b7213ae9348}">
+		<property name="startOffset">
+			<value>7.5</value>
+		</property>
+		<property name="volume">
+			<value>-17</value>
+		</property>
+		<property name="pitch">
+			<value>2.20000005</value>
+		</property>
 		<relationship name="sounds">
-			<destination>{e3a4edb4-cc37-4a2d-afc5-4bbde2518ea2}</destination>
-			<destination>{836396cb-ca86-4ef3-beda-5079cc924434}</destination>
-		</relationship>
-		<relationship name="playPercentages">
-			<destination>{56306ebb-7f21-4cbe-bec5-f465e6c45846}</destination>
+			<destination>{09728042-b26f-4cde-bcae-894b0c0c2396}</destination>
+			<destination>{9ed3719b-6769-4134-a552-34a492e45a1f}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{1d45294d-009e-4c47-acee-a884db86f219}" />
 	<object class="MixerBusFader" id="{d131d020-ba52-464a-b985-f1c29e8ba337}" />
-	<object class="SingleSound" id="{e3a4edb4-cc37-4a2d-afc5-4bbde2518ea2}">
-		<property name="startOffset">
-			<value>15</value>
-		</property>
+	<object class="SingleSound" id="{09728042-b26f-4cde-bcae-894b0c0c2396}">
 		<relationship name="audioFile">
-			<destination>{fe3d175d-d8e8-4713-acc7-cd9427690e86}</destination>
+			<destination>{2ec4abec-1c8d-4ac3-a409-f70512f351fd}</destination>
 		</relationship>
 	</object>
-	<object class="SingleSound" id="{836396cb-ca86-4ef3-beda-5079cc924434}">
-		<property name="startOffset">
-			<value>12</value>
-		</property>
+	<object class="SingleSound" id="{9ed3719b-6769-4134-a552-34a492e45a1f}">
 		<relationship name="audioFile">
-			<destination>{1ccb9204-85c8-453b-bf1c-a3e3b7dee5d4}</destination>
-		</relationship>
-	</object>
-	<object class="PlayPercentage" id="{56306ebb-7f21-4cbe-bec5-f465e6c45846}">
-		<property name="percentage">
-			<value>50</value>
-		</property>
-		<relationship name="sound">
-			<destination>{e3a4edb4-cc37-4a2d-afc5-4bbde2518ea2}</destination>
+			<destination>{02a641c6-5145-43f0-8351-23ee8273d70f}</destination>
 		</relationship>
 	</object>
 </objects>

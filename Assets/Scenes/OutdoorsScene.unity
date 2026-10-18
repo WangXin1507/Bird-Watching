@@ -153,7 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemCollector
   requiredTranscripts: []
   highlightMaterial: {fileID: 2100000, guid: b0572dddfe2661444953b7cb980e4e16, type: 2}
-  sfx:
+  interactSound:
     Guid:
       Data1: 0
       Data2: 0
@@ -751,6 +751,26 @@ PrefabInstance:
       propertyPath: highlightMaterial
       value: 
       objectReference: {fileID: 2100000, guid: b0572dddfe2661444953b7cb980e4e16, type: 2}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: interactSound.Path
+      value: event:/Environment/BushRustle
+      objectReference: {fileID: 0}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: interactSound.Guid.Data1
+      value: -2117012699
+      objectReference: {fileID: 0}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: interactSound.Guid.Data2
+      value: 1237152701
+      objectReference: {fileID: 0}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: interactSound.Guid.Data3
+      value: 850438843
+      objectReference: {fileID: 0}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: interactSound.Guid.Data4
+      value: 328919632
+      objectReference: {fileID: 0}
     - target: {fileID: 1664936575164219032, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
       propertyPath: m_Name
       value: YellowFlowerSpawner
@@ -1426,6 +1446,26 @@ PrefabInstance:
       propertyPath: highlightMaterial
       value: 
       objectReference: {fileID: 2100000, guid: b0572dddfe2661444953b7cb980e4e16, type: 2}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: interactSound.Path
+      value: event:/Environment/BushRustle
+      objectReference: {fileID: 0}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: interactSound.Guid.Data1
+      value: -2117012699
+      objectReference: {fileID: 0}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: interactSound.Guid.Data2
+      value: 1237152701
+      objectReference: {fileID: 0}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: interactSound.Guid.Data3
+      value: 850438843
+      objectReference: {fileID: 0}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: interactSound.Guid.Data4
+      value: 328919632
+      objectReference: {fileID: 0}
     - target: {fileID: 1664936575164219032, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
       propertyPath: m_Name
       value: PinkFlowerSpawner
@@ -1750,6 +1790,26 @@ PrefabInstance:
       propertyPath: highlightMaterial
       value: 
       objectReference: {fileID: 2100000, guid: b0572dddfe2661444953b7cb980e4e16, type: 2}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: interactSound.Path
+      value: event:/Environment/BushRustle
+      objectReference: {fileID: 0}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: interactSound.Guid.Data1
+      value: -2117012699
+      objectReference: {fileID: 0}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: interactSound.Guid.Data2
+      value: 1237152701
+      objectReference: {fileID: 0}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: interactSound.Guid.Data3
+      value: 850438843
+      objectReference: {fileID: 0}
+    - target: {fileID: 537859176739934750, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
+      propertyPath: interactSound.Guid.Data4
+      value: 328919632
+      objectReference: {fileID: 0}
     - target: {fileID: 1664936575164219032, guid: 4df154c7512694546bbb027eb16c4bf3, type: 3}
       propertyPath: m_Name
       value: BlueFlowerSpawner
