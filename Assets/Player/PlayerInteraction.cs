@@ -74,6 +74,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             focusedTarget?.LoseFocus();
             focusedTarget = closest;
+            closest?.GainFocus();
         }
 
         for (int i = 0; i < targets.Length; i++) targets[i] = null;

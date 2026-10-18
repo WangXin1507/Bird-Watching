@@ -9,6 +9,8 @@ public class ItemSpawner : Interactable
     [SerializeField] private int maxItems = 10;
     private List<GameObject> spawnedItems = new List<GameObject>();
 
+    private static readonly int BaseTextureID = Shader.PropertyToID("_BaseTexture");
+
     public override void Interact()
     {
         Debug.Log("Interacted");
@@ -33,12 +35,22 @@ public class ItemSpawner : Interactable
 
             //MeshFilter meshFilter = newItem.GetComponent<MeshFilter>();
             //meshFilter.mesh = item.itemMesh;
-            newItem.GetComponent<MeshRenderer>().material = item.itemMaterial;
+            Texture tex = item.itemMaterial.mainTexture;
+            if (!tex)
+            {
+                Texture2D colorTex = new Texture2D(1, 1);
+                colorTex.SetPixel(0, 0, item.itemMaterial.color);
+                colorTex.Apply();
+                tex = colorTex;
+            }
+
+            Material focusMaterial = newItem.GetComponent<MeshRenderer>().material;
+            focusMaterial.SetTexture(BaseTextureID, tex);
 
             ItemComponent itemComponent = newItem.GetComponent<ItemComponent>();
             itemComponent.data = item;
 
-            AudioManager.PlayOneShot(sfx, transform.position);
+            AudioManager.PlayOneShot(interactSound, transform.position);
             PlayerID.playerInteraction.ForceHold(newItem.transform);
 
             spawnedItems.Add(newItem);

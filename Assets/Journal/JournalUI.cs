@@ -39,6 +39,8 @@ public class JournalUI : MonoBehaviour
     private int currentPage;
     private ATranscriptEntry currentOpen;
     private bool openedTranscript = false;
+    
+    public static JournalUI Instance { get; private set; }
 
     private void Awake()
     {
@@ -51,6 +53,8 @@ public class JournalUI : MonoBehaviour
             int slotIndex = i; // capture a copy for the lambda
             transcriptSlots[i].button.onClick.AddListener(() => OpenTranscriptInSlot(slotIndex));
         }
+
+        Instance = this;
     }
 
     private void Start()
@@ -89,6 +93,7 @@ public class JournalUI : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         
         gameObject.GetComponent<Canvas>().enabled = true;
+        AudioManager.PlayOneShot(AudioEvents.Journal.JournalOpen);
         
         if (Journal.Instance.lastMissionChanged != null)
             GoToMission(Journal.Instance.lastMissionChanged);
@@ -101,6 +106,7 @@ public class JournalUI : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         
         gameObject.GetComponent<Canvas>().enabled = false;
+        AudioManager.PlayOneShot(AudioEvents.Journal.JournalClose);
     }
 
     // ---------- Public API ----------

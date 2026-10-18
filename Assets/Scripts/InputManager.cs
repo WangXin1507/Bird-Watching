@@ -33,6 +33,9 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
 
     public event UnityAction JournalClicked;
     public event UnityAction JournalReleased;
+    
+    public event UnityAction PauseClicked;
+    public event UnityAction PauseReleased;
 
     public void LockInputs(bool moveInput, bool lookInput, bool interactInput)
     {
@@ -177,6 +180,18 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
         else if (context.canceled)
         {
             JournalReleased?.Invoke();
+        }
+    }
+
+    public void OnPause(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            PauseClicked?.Invoke();
+        }
+        else if (context.canceled)
+        {
+            PauseReleased?.Invoke();
         }
     }
 }
