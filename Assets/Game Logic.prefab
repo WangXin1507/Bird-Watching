@@ -806,6 +806,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TranscriptUI
       objectReference: {fileID: 0}
+    - target: {fileID: 7238933780336909734, guid: 0c3b17aaab5ad3f42ba6f53845432df3, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
