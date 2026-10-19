@@ -114,7 +114,7 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         SubscribeToInput();
-        transform.position = SaveManager.Instance.data.birdPosition;
+        rb.position = SaveManager.Instance.data.birdPosition;
         Debug.Log(SaveManager.Instance.data.birdPosition);
         Debug.Log(transform.position);
     }

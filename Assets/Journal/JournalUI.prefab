@@ -471,7 +471,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -877,7 +877,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 7, y: 165}
+  m_AnchoredPosition: {x: 7, y: 153}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8882165171479533203
@@ -910,8 +910,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Super COol Title
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0fbc6495217385542b42c69a43afdad5, type: 2}
+  m_sharedMaterial: {fileID: 8929428819948441147, guid: 0fbc6495217385542b42c69a43afdad5, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1426,6 +1426,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3788280164496228349, guid: 04d09e1e6b088ae4a806945b9d7b24c5, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 223.7
+      objectReference: {fileID: 0}
     - target: {fileID: 7878226915747165710, guid: 04d09e1e6b088ae4a806945b9d7b24c5, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1784,11 +1788,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3788280164496228349, guid: 04d09e1e6b088ae4a806945b9d7b24c5, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9998171
+      value: 0.9989657
       objectReference: {fileID: 0}
     - target: {fileID: 3788280164496228349, guid: 04d09e1e6b088ae4a806945b9d7b24c5, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.019127637
+      value: -0.045470715
       objectReference: {fileID: 0}
     - target: {fileID: 3788280164496228349, guid: 04d09e1e6b088ae4a806945b9d7b24c5, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -1800,7 +1804,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3788280164496228349, guid: 04d09e1e6b088ae4a806945b9d7b24c5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 2.192
+      value: -5.212
       objectReference: {fileID: 0}
     - target: {fileID: 7549532766186663549, guid: 04d09e1e6b088ae4a806945b9d7b24c5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
