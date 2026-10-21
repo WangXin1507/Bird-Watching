@@ -10819,12 +10819,24 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 239400068058875850, guid: 7b945834a0911864f9023aee8044449d, type: 3}
+      propertyPath: maxBankAngle
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 239400068058875850, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: maxFallSpeed
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 239400068058875850, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: maxRiseSpeed
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 239400068058875850, guid: 7b945834a0911864f9023aee8044449d, type: 3}
+      propertyPath: bankPerDegree
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 239400068058875850, guid: 7b945834a0911864f9023aee8044449d, type: 3}
+      propertyPath: groundMaxSpeed
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 239400068058875850, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: airAcceleration
