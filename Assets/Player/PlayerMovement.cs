@@ -76,6 +76,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float groundCheckOffset = 0.4f;
     [SerializeField] private float groundCheckDistance = 0.5f;
 
+    [Header("Landing probe")]
+    [Tooltip("How far below the bird to look for ground while airborne. Visuals read GroundDistance from this to start the landing blend before touchdown.")]
+    [SerializeField] private float landingProbeDistance = 8f;
+
     private Rigidbody rb;
     private MovementState state = MovementState.GroundedIdle;
     private bool isGrounded;
@@ -92,8 +96,45 @@ public class PlayerMovement : MonoBehaviour
     private bool controlSuspended;
     private bool kinematicBeforeSuspend;
 
-    private MovementState State => state;
-    private bool IsGrounded => isGrounded;
+    // ---------------------------------------------------------------- read-only state
+    // Exposed for visuals, audio and camera. Nothing outside this class can write these.
+
+    public MovementState State => state;
+    public bool IsGrounded => isGrounded;
+    public bool IsFlying => state == MovementState.Flying;
+    public bool IsControlSuspended => controlSuspended;
+    public bool RiseHeld => riseHeld;
+    public bool DiveHeld => diveHeld;
+
+    /// <summary>World-space velocity of the body.</summary>
+    public Vector3 Velocity => rb != null ? rb.linearVelocity : Vector3.zero;
+    public float HorizontalSpeed
+    {
+        get
+        {
+            Vector3 v = Velocity;
+            return new Vector2(v.x, v.z).magnitude;
+        }
+    }
+    public float VerticalSpeed => Velocity.y;
+
+    /// <summary>Camera-relative steering input on the ground plane, magnitude 0..1.</summary>
+    public Vector3 MoveDirection => moveDirection;
+
+    /// <summary>Current roll in degrees.</summary>
+    public float BankAngle => bankAngle;
+
+    /// <summary>
+    /// Height of the pivot above the ground. 0 while grounded, PositiveInfinity when nothing
+    /// is within landingProbeDistance.
+    /// </summary>
+    public float GroundDistance { get; private set; }
+
+    // Speed caps, so readers can normalise without duplicating tuning values.
+    public float GroundMaxSpeed => groundMaxSpeed;
+    public float AirMaxSpeed => airMaxSpeed;
+    public float MaxRiseSpeed => maxRiseSpeed;
+    public float MaxDiveSpeed => maxDiveSpeed;
 
     private CameraLook ActiveCamera => cameraLook != null ? cameraLook : (cameraLook = PlayerID.cameraLook);
 
@@ -182,6 +223,7 @@ public class PlayerMovement : MonoBehaviour
 
         // The grace window keeps the ground check from re-grounding the bird on the frame it launches.
         isGrounded = Time.time >= groundCheckSuppressedUntil && CheckGrounded();
+        GroundDistance = isGrounded ? 0f : ProbeGroundDistance();
 
         if (isGrounded && !wasGrounded) OnLand?.Invoke();
 
@@ -438,8 +480,23 @@ public class PlayerMovement : MonoBehaviour
             out _, groundCheckOffset + groundCheckDistance, groundMask, QueryTriggerInteraction.Ignore);
     }
 
+    /// <summary>Longer downward look than the ground check, used only to report GroundDistance.</summary>
+    private float ProbeGroundDistance()
+    {
+        Vector3 origin = transform.position + Vector3.up * groundCheckOffset;
+        if (Physics.Raycast(origin, Vector3.down, out RaycastHit hit,
+                groundCheckOffset + landingProbeDistance, groundMask, QueryTriggerInteraction.Ignore))
+        {
+            return Mathf.Max(0f, transform.position.y - hit.point.y);
+        }
+
+        return float.PositiveInfinity;
+    }
+
     private void OnValidate()
     {
+        landingProbeDistance = Mathf.Max(0f, landingProbeDistance);
+
         groundMaxSpeed = Mathf.Max(0f, groundMaxSpeed);
         airMaxSpeed = Mathf.Max(0f, airMaxSpeed);
 

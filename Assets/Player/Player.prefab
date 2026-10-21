@@ -164,6 +164,7 @@ MonoBehaviour:
   groundCheckRadius: 0.2
   groundCheckOffset: 0.3
   groundCheckDistance: 0.25
+  landingProbeDistance: 8
 --- !u!65 &7575912060067520574
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -203,6 +204,7 @@ MonoBehaviour:
   focusRadius: 1.5
   maxTargets: 5
   mouthPos: {fileID: 8329499723674985931}
+  holding: {fileID: 0}
 --- !u!1 &9128812016563177885
 GameObject:
   m_ObjectHideFlags: 0
@@ -213,6 +215,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1620861891657745535}
   - component: {fileID: 1499918663569658343}
+  - component: {fileID: 5037672740504766676}
   m_Layer: 0
   m_Name: Visuals
   m_TagString: Untagged
@@ -251,6 +254,92 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerVisuals
   flyingModel: {fileID: 4760034700873730947}
   groundModel: {fileID: 3042276366180884516}
+  takeOffBlendTime: 0.2
+  landBlendTime: 0.15
+  blendCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  anticipateLanding: 1
+  minDescentSpeed: 0.5
+  parameterDampTime: 0.1
+  popOnSwap: 1
+  popStrength: 0.25
+  popCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.83332825
+      value: 1.0190468
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!95 &5037672740504766676
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9128812016563177885}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5265c311b72ab9f44a691141448e6b8e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &2808346131506535797
 PrefabInstance:
   m_ObjectHideFlags: 0
