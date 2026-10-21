@@ -1,23 +1,20 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// Drives the bird's Animator from PlayerMovement. Lives on the Visuals object (the parent of the
-/// models) and never touches physics.
+/// Drives the bird's Animator from PlayerMovement. Lives on the rig root next to the Animator
+/// and never touches physics.
 ///
-/// One float, Flight (0 = grounded, 1 = airborne), is eased over time and fed to a nested blend
-/// tree: takeoff and landing are just that value crossing over. Speed and Climb pick the pose
-/// inside each half of the tree.
+/// One float, Flight (0 = grounded, 1 = airborne), feeds the root of a nested blend tree;
+/// Speed and Climb pick the pose inside each half.
 ///
-/// While the bird is two static blockout meshes, the clips only toggle which mesh is active
-/// (the swap lands around Flight = 0.5) and a squash-and-stretch pop hides the cut. When real
-/// clips exist, drop them into the same blend trees and turn the pop off -- this script stays.
-///
-/// Build the Animator with: right-click this component's header > Build Bird Animator.
+/// Takeoff eases Flight up over takeOffBlendTime. Landing is not a timed blend at all: while
+/// descending, Flight is read straight off PlayerMovement.TimeToLanding (seconds until the ground
+/// check fires) divided by landBlendTime. It therefore reaches 0 on the frame the bird lands at
+/// any height or speed, and corrects itself if the player changes speed mid-descent.
 /// </summary>
-[RequireComponent(typeof(Animator))]
 public class PlayerVisuals : MonoBehaviour
 {
-    // Animator parameter names, shared with the editor builder so they can't drift apart.
+    // Animator parameter names.
     public const string FlightParam = "Flight";
     public const string SpeedParam = "Speed";
     public const string ClimbParam = "Climb";
@@ -26,56 +23,41 @@ public class PlayerVisuals : MonoBehaviour
     private static readonly int SpeedId = Animator.StringToHash(SpeedParam);
     private static readonly int ClimbId = Animator.StringToHash(ClimbParam);
 
-    [Header("Blockout models")]
-    [Tooltip("Read by the Build Bird Animator tool to know which objects the swap clips toggle.")]
-    [SerializeField] private GameObject flyingModel;
-    [SerializeField] private GameObject groundModel;
+    [Tooltip("Optional. Found on this object or its children when left empty.")]
+    [SerializeField] private Animator animator;
 
     [Header("Ground / air blend")]
     [Tooltip("Seconds to blend from the ground pose to the flying pose after leaving the ground.")]
     [SerializeField] private float takeOffBlendTime = 0.2f;
-    [Tooltip("Seconds to blend from the flying pose back to the ground pose.")]
-    [SerializeField] private float landBlendTime = 0.15f;
+    [Tooltip("How long before touchdown the landing blend starts. The blend finishes exactly as the bird lands.")]
+    [SerializeField] private float landBlendTime = 0.3f;
+    [Tooltip("Fastest the blend may fall toward the ground pose, in seconds for a full 1 to 0. Covers landings that " +
+             "weren't predicted (too slow to anticipate, or ground appearing suddenly, like flying onto a ledge).")]
+    [SerializeField] private float landCatchUpTime = 0.1f;
     [Tooltip("Shapes the blend. Both axes run 0..1.")]
     [SerializeField] private AnimationCurve blendCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
     [Header("Landing anticipation")]
-    [Tooltip("Start the landing blend before touchdown, so the bird is already in its ground pose when it lands.")]
+    [Tooltip("Start the landing blend before touchdown. Off = blend only after landing, at landCatchUpTime.")]
     [SerializeField] private bool anticipateLanding = true;
-    [Tooltip("Only anticipate while descending at least this fast (m/s), so drifting near the ground doesn't flicker.")]
-    [SerializeField] private float minDescentSpeed = 0.5f;
+    [Tooltip("Only anticipate while descending at least this fast (m/s), so drifting near the ground doesn't dip the pose.")]
+    [SerializeField] private float minDescentSpeed = 0.3f;
 
     [Header("Parameter smoothing")]
     [Tooltip("Damp time for Speed and Climb, so velocity noise doesn't show up as twitching.")]
     [SerializeField] private float parameterDampTime = 0.1f;
 
-    [Header("Swap pop (blockout only)")]
-    [Tooltip("Squash and stretch this object around the mesh swap. Turn off once real animations exist.")]
-    [SerializeField] private bool popOnSwap = true;
-    [Tooltip("Stretch at the peak: 0.25 = 25% taller and correspondingly thinner.")]
-    [SerializeField] private float popStrength = 0.25f;
-    [Tooltip("Pop amount (Y) across the blend (X). Peak it at 0.5, where the mesh swaps.")]
-    [SerializeField] private AnimationCurve popCurve = new AnimationCurve(
-        new Keyframe(0f, 0f), new Keyframe(0.5f, 1f), new Keyframe(1f, 0f));
-
-    private Animator animator;
     private PlayerMovement movement;
-    private Vector3 baseScale;
-    private float progress;          // linear 0..1; eased through blendCurve before it reaches the Animator
-    private bool landingCommitted;   // latched so the anticipation can't flicker on and off near the ground
+    private float progress; // linear 0..1; eased through blendCurve before it reaches the Animator
     private bool warnedNoController;
-
-    public GameObject FlyingModel => flyingModel;
-    public GameObject GroundModel => groundModel;
 
     /// <summary>The eased ground/air blend currently sent to the Animator.</summary>
     public float Flight => blendCurve.Evaluate(progress);
 
     private void Awake()
     {
-        animator = GetComponent<Animator>();
+        if (animator == null) animator = GetComponentInChildren<Animator>();
         if (animator != null) animator.applyRootMotion = false;
-        baseScale = transform.localScale;
         movement = GetComponentInParent<PlayerMovement>();
     }
 
@@ -89,11 +71,13 @@ public class PlayerVisuals : MonoBehaviour
     {
         if (!CanDrive()) return;
 
-        bool airborne = WantsFlyingPose();
-        float duration = airborne ? takeOffBlendTime : landBlendTime;
-        float target = airborne ? 1f : 0f;
-        progress = duration > 0f
-            ? Mathf.MoveTowards(progress, target, Time.deltaTime / duration)
+        float target = TargetProgress();
+
+        // Up toward flight is paced by takeOffBlendTime. Down toward the ground normally follows the
+        // landing prediction (which already moves at 1/landBlendTime); landCatchUpTime only caps it.
+        float seconds = target > progress ? takeOffBlendTime : landCatchUpTime;
+        progress = seconds > 0f
+            ? Mathf.MoveTowards(progress, target, Time.deltaTime / seconds)
             : target;
 
         animator.SetFloat(FlightId, Flight);
@@ -103,49 +87,18 @@ public class PlayerVisuals : MonoBehaviour
         animator.SetFloat(ClimbId, Climb(movement.VerticalSpeed), parameterDampTime, Time.deltaTime);
     }
 
-    private void LateUpdate()
-    {
-        if (!popOnSwap || popStrength <= 0f)
-        {
-            transform.localScale = baseScale;
-            return;
-        }
-
-        // Taller and thinner at the swap, roughly volume-preserving, back to rest at either end.
-        float stretch = popCurve.Evaluate(Flight) * popStrength;
-        float thin = 1f / Mathf.Sqrt(1f + stretch);
-        transform.localScale = Vector3.Scale(baseScale, new Vector3(thin, 1f + stretch, thin));
-    }
-
     /// <summary>
-    /// Flying pose while airborne, except when descending fast enough that touchdown will arrive
-    /// within landBlendTime -- then the blend starts early. Once committed, only climbing, holding
-    /// Rise, levelling off, or actually landing releases it.
+    /// 0 on the ground, 1 in the air -- except while descending toward ground in range, where it is
+    /// the predicted time to touchdown as a fraction of landBlendTime. Holding Rise or levelling
+    /// off sends it back to 1, so an aborted landing recovers on its own.
     /// </summary>
-    private bool WantsFlyingPose()
+    private float TargetProgress()
     {
-        if (!movement.IsFlying)
-        {
-            landingCommitted = false;
-            return false;
-        }
+        if (!movement.IsFlying) return 0f;
+        if (!anticipateLanding || landBlendTime <= 0f || movement.RiseHeld) return 1f;
+        if (-movement.VerticalSpeed < minDescentSpeed) return 1f;
 
-        if (!anticipateLanding) return true;
-
-        float descent = -movement.VerticalSpeed;
-
-        if (landingCommitted)
-        {
-            // Half the threshold on the way out gives hysteresis against hovering at the edge.
-            if (movement.RiseHeld || descent < minDescentSpeed * 0.5f) landingCommitted = false;
-        }
-        else if (!movement.RiseHeld && descent >= minDescentSpeed)
-        {
-            float timeToGround = movement.GroundDistance / descent; // Infinity when no ground in range
-            landingCommitted = timeToGround <= landBlendTime;
-        }
-
-        return !landingCommitted;
+        return Mathf.Clamp01(movement.TimeToLanding / landBlendTime); // Infinity (no ground in range) -> 1
     }
 
     /// <summary>Vertical speed mapped to -1 (full dive) .. 0 (level) .. 1 (full climb).</summary>
@@ -166,8 +119,7 @@ public class PlayerVisuals : MonoBehaviour
         {
             if (!warnedNoController)
             {
-                Debug.LogWarning("PlayerVisuals: no Animator Controller assigned. Right-click the PlayerVisuals " +
-                                 "component > Build Bird Animator.", this);
+                Debug.LogWarning("PlayerVisuals: the Animator has no controller assigned.", this);
                 warnedNoController = true;
             }
             return false;
@@ -180,8 +132,8 @@ public class PlayerVisuals : MonoBehaviour
     {
         takeOffBlendTime = Mathf.Max(0f, takeOffBlendTime);
         landBlendTime = Mathf.Max(0f, landBlendTime);
+        landCatchUpTime = Mathf.Max(0f, landCatchUpTime);
         minDescentSpeed = Mathf.Max(0f, minDescentSpeed);
         parameterDampTime = Mathf.Max(0f, parameterDampTime);
-        popStrength = Mathf.Max(0f, popStrength);
     }
 }

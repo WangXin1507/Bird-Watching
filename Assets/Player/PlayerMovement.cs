@@ -62,6 +62,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float minTurnSpeed = 0.4f;
     [Tooltip("Nose up while rising and down while diving, in proportion to climb rate against airspeed. 0 = keep the body level.")]
     [SerializeField] private float maxPitchAngle = 45f;
+    [Tooltip("Degrees per second the nose eases toward its target pitch. Also how fast it levels out after landing.")]
+    [SerializeField] private float pitchSpeed = 360f;
+    [Tooltip("Horizontal speed treated as the floor when working out pitch, so a slow straight-down sink doesn't tip the nose fully over.")]
+    [SerializeField] private float minPitchAirspeed = 2f;
     [Tooltip("Degrees of roll per degree of turn still to go.")]
     [SerializeField] private float bankPerDegree = 1f;
     [Tooltip("Hard cap on how far the body rolls. 0 = no banking.")]
@@ -90,7 +94,8 @@ public class PlayerMovement : MonoBehaviour
     private bool subscribed;
     private float groundCheckSuppressedUntil;
     private bool wasGrounded;
-    private Quaternion facingRotation = Quaternion.identity;
+    private float headingYaw;
+    private float pitchAngle;
     private float bankAngle;
     private CameraLook cameraLook;
     private bool controlSuspended;
@@ -130,6 +135,19 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     public float GroundDistance { get; private set; }
 
+    /// <summary>
+    /// How much further the bird has to descend before the ground check fires -- i.e. before
+    /// IsGrounded turns true. Uses the same sphere as the ground check, so it is measured to
+    /// "landed" rather than to the pivot. 0 while grounded, PositiveInfinity when out of range.
+    /// </summary>
+    public float DistanceToLanding { get; private set; }
+
+    /// <summary>
+    /// Seconds until IsGrounded is predicted to turn true at the current descent rate.
+    /// 0 while grounded, PositiveInfinity while not descending or out of range.
+    /// </summary>
+    public float TimeToLanding { get; private set; }
+
     // Speed caps, so readers can normalise without duplicating tuning values.
     public float GroundMaxSpeed => groundMaxSpeed;
     public float AirMaxSpeed => airMaxSpeed;
@@ -143,7 +161,7 @@ public class PlayerMovement : MonoBehaviour
         PlayerID.playerMovement = this;
 
         rb = GetComponent<Rigidbody>();
-        facingRotation = transform.rotation;
+        headingYaw = transform.eulerAngles.y;
         rb.useGravity = false;
         rb.freezeRotation = true;
         rb.interpolation = RigidbodyInterpolation.Interpolate;
@@ -223,7 +241,7 @@ public class PlayerMovement : MonoBehaviour
 
         // The grace window keeps the ground check from re-grounding the bird on the frame it launches.
         isGrounded = Time.time >= groundCheckSuppressedUntil && CheckGrounded();
-        GroundDistance = isGrounded ? 0f : ProbeGroundDistance();
+        UpdateLandingPrediction();
 
         if (isGrounded && !wasGrounded) OnLand?.Invoke();
 
@@ -420,57 +438,50 @@ public class PlayerMovement : MonoBehaviour
     }
 
     /// <summary>
-    /// Turns the body toward its own velocity, eased at turnSpeed so single-frame wobble doesn't
-    /// show up as jitter. Heading comes from horizontal velocity alone, so LookRotation can never
-    /// degenerate; the climb is layered on afterwards as a local pitch, and the turn as a roll.
+    /// Turns the body toward its own velocity, eased so single-frame wobble doesn't show up as
+    /// jitter. Heading (yaw) and pitch are tracked separately: heading only steers when there is
+    /// enough horizontal speed to read a direction from, but pitch is updated every frame. That
+    /// split is what stops a steep dive leaving the bird stuck nose-down after it lands -- with
+    /// almost no horizontal speed the old single rotation was never updated at all.
     /// </summary>
     private void FaceVelocity(float dt)
     {
         Vector3 velocity = rb.linearVelocity;
-        Vector3 facing = new Vector3(velocity.x, 0f, velocity.z);
+        Vector3 planar = new Vector3(velocity.x, 0f, velocity.z);
+        float airspeed = planar.magnitude;
 
-        if (facing.sqrMagnitude < minTurnSpeed * minTurnSpeed)
+        // Heading. Below minTurnSpeed it is left alone so the bird doesn't chase noise while nearly stopped.
+        float turnRemaining = 0f;
+        if (airspeed >= minTurnSpeed)
         {
-            // Still unwind any roll left over from the last turn, even while drifting too
-            // slowly to steer -- otherwise the body can be parked mid-bank.
-            ApplyBank(0f, dt);
-            return;
+            float targetYaw = Quaternion.LookRotation(planar / airspeed, Vector3.up).eulerAngles.y;
+            turnRemaining = Mathf.DeltaAngle(headingYaw, targetYaw);
+            headingYaw = Mathf.MoveTowardsAngle(headingYaw, targetYaw, turnSpeed * dt);
         }
 
-        float airspeed = facing.magnitude;
-        facing /= airspeed;
-
-        // Nose angle from how steeply the bird is actually travelling. Negative X pitches up.
-        float pitch = 0f;
+        // Pitch. Always level on the ground; in the air, from how steeply the bird is travelling.
+        // minPitchAirspeed keeps a slow vertical sink from reading as a nosedive. Positive X = nose down.
+        float targetPitch = 0f;
         if (maxPitchAngle > 0f && !isGrounded)
         {
-            pitch = Mathf.Clamp(-Mathf.Atan2(velocity.y, airspeed) * Mathf.Rad2Deg, -maxPitchAngle, maxPitchAngle);
+            float pitchAirspeed = Mathf.Max(airspeed, minPitchAirspeed);
+            targetPitch = Mathf.Clamp(-Mathf.Atan2(velocity.y, pitchAirspeed) * Mathf.Rad2Deg, -maxPitchAngle, maxPitchAngle);
         }
+        pitchAngle = Mathf.MoveTowards(pitchAngle, targetPitch, pitchSpeed * dt);
 
-        Quaternion target = Quaternion.LookRotation(facing, Vector3.up) * Quaternion.Euler(pitch, 0f, 0f);
-
-        // How far there is left to turn, and which way. The roll leans into that and unwinds
-        // as it closes, so the body is upright again the moment it settles on the heading.
-        Vector3 current = Vector3.ProjectOnPlane(facingRotation * Vector3.forward, Vector3.up);
-        float turnRemaining = current.sqrMagnitude > 0.0001f
-            ? Vector3.SignedAngle(current.normalized, facing, Vector3.up)
-            : 0f;
-
-        // Tracked unbanked so the roll never feeds back into the heading -- rotating toward a
-        // target from an already-rolled rotation would spend the turn budget undoing the roll.
-        facingRotation = Quaternion.RotateTowards(facingRotation, target, turnSpeed * dt);
-
+        // Roll leans into the turn still to go and unwinds as it closes.
         ApplyBank(isGrounded ? 0f : -turnRemaining * bankPerDegree, dt);
     }
 
-    /// <summary>Eases the roll toward a target and writes the banked rotation to the Rigidbody.</summary>
+    /// <summary>Eases the roll toward a target and writes heading, pitch and roll to the Rigidbody.</summary>
     private void ApplyBank(float targetBank, float dt)
     {
         targetBank = Mathf.Clamp(targetBank, -maxBankAngle, maxBankAngle);
         bankAngle = Mathf.MoveTowards(bankAngle, targetBank, bankSpeed * dt);
 
-        // Local Z is the body's forward axis, so rolling about it is the wing drop.
-        rb.MoveRotation(facingRotation * Quaternion.AngleAxis(bankAngle, Vector3.forward));
+        // Yaw, then pitch about the body's right axis, then roll about its forward axis.
+        Quaternion facing = Quaternion.Euler(0f, headingYaw, 0f) * Quaternion.Euler(pitchAngle, 0f, 0f);
+        rb.MoveRotation(facing * Quaternion.AngleAxis(bankAngle, Vector3.forward));
     }
 
     private bool CheckGrounded()
@@ -480,17 +491,37 @@ public class PlayerMovement : MonoBehaviour
             out _, groundCheckOffset + groundCheckDistance, groundMask, QueryTriggerInteraction.Ignore);
     }
 
-    /// <summary>Longer downward look than the ground check, used only to report GroundDistance.</summary>
-    private float ProbeGroundDistance()
+    /// <summary>
+    /// Sweeps the ground-check sphere further down than the check itself, so the prediction
+    /// agrees exactly with when isGrounded will flip, whatever the height or speed.
+    /// </summary>
+    private void UpdateLandingPrediction()
     {
-        Vector3 origin = transform.position + Vector3.up * groundCheckOffset;
-        if (Physics.Raycast(origin, Vector3.down, out RaycastHit hit,
-                groundCheckOffset + landingProbeDistance, groundMask, QueryTriggerInteraction.Ignore))
+        if (isGrounded)
         {
-            return Mathf.Max(0f, transform.position.y - hit.point.y);
+            GroundDistance = 0f;
+            DistanceToLanding = 0f;
+            TimeToLanding = 0f;
+            return;
         }
 
-        return float.PositiveInfinity;
+        GroundDistance = float.PositiveInfinity;
+        DistanceToLanding = float.PositiveInfinity;
+        TimeToLanding = float.PositiveInfinity;
+
+        Vector3 origin = transform.position + Vector3.up * groundCheckOffset;
+        float groundedReach = groundCheckOffset + groundCheckDistance;
+        if (!Physics.SphereCast(origin, groundCheckRadius, Vector3.down, out RaycastHit hit,
+                groundedReach + landingProbeDistance, groundMask, QueryTriggerInteraction.Ignore))
+        {
+            return;
+        }
+
+        GroundDistance = Mathf.Max(0f, transform.position.y - hit.point.y);
+        DistanceToLanding = Mathf.Max(0f, hit.distance - groundedReach);
+
+        float descent = -rb.linearVelocity.y;
+        if (descent > 0.0001f) TimeToLanding = DistanceToLanding / descent;
     }
 
     private void OnValidate()
@@ -514,6 +545,8 @@ public class PlayerMovement : MonoBehaviour
         turnSpeed = Mathf.Max(0f, turnSpeed);
         minTurnSpeed = Mathf.Max(0f, minTurnSpeed);
         maxPitchAngle = Mathf.Clamp(maxPitchAngle, 0f, 89f);
+        pitchSpeed = Mathf.Max(0f, pitchSpeed);
+        minPitchAirspeed = Mathf.Max(0.01f, minPitchAirspeed);
         bankPerDegree = Mathf.Max(0f, bankPerDegree);
         maxBankAngle = Mathf.Clamp(maxBankAngle, 0f, 89f);
         bankSpeed = Mathf.Max(0f, bankSpeed);
@@ -558,7 +591,8 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     public void Place(Vector3 position, Quaternion rotation)
     {
-        facingRotation = rotation;
+        headingYaw = rotation.eulerAngles.y;
+        pitchAngle = 0f;
         bankAngle = 0f;
         rb.position = position;
         rb.rotation = rotation;
