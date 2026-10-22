@@ -1,58 +1,66 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
 /// <summary>
-/// Drives the bird's Animator from PlayerMovement. Lives on the rig root next to the Animator
-/// and never touches physics.
+/// Feeds the bird's Animator from PlayerMovement. All states and transitions live in the graph;
+/// this script only sets parameters.
 ///
-/// One float, Flight (0 = grounded, 1 = airborne), feeds the root of a nested blend tree;
-/// Speed and Climb pick the pose inside each half.
+///   Speed    (float, 0..1)   horizontal speed against the ground speed cap
+///   Climb    (float, -1..1)  full dive .. level .. full climb
+///   IsFlying (bool)          true in the air; turns false landLeadTime before a predicted touchdown,
+///                            so a Flying -> Grounded (or -> Land) transition finishes on the ground
 ///
-/// Takeoff eases Flight up over takeOffBlendTime. Landing is not a timed blend at all: while
-/// descending, Flight is read straight off PlayerMovement.TimeToLanding (seconds until the ground
-/// check fires) divided by landBlendTime. It therefore reaches 0 on the frame the bird lands at
-/// any height or speed, and corrects itself if the player changes speed mid-descent.
+/// Input Triggers fire Animator triggers from input actions, so you can punt out of Locomotion
+/// (e.g. Any State -> Peck on the "Peck" trigger) and come back with Has Exit Time.
 /// </summary>
 public class PlayerVisuals : MonoBehaviour
 {
-    // Animator parameter names.
-    public const string FlightParam = "Flight";
-    public const string SpeedParam = "Speed";
-    public const string ClimbParam = "Climb";
+    [Serializable]
+    public class InputTrigger
+    {
+        [Tooltip("Input action as 'Map/Action' in InputSystem_Actions, e.g. 'BirdActions/Peck'. Use a separate " +
+                 "action map, not 'Player' -- every 'Player' action needs an On...() method on InputManager.")]
+        public string input = "BirdActions/Peck";
+        [Tooltip("Animator trigger parameter to set.")]
+        public string trigger = "Peck";
 
-    private static readonly int FlightId = Animator.StringToHash(FlightParam);
-    private static readonly int SpeedId = Animator.StringToHash(SpeedParam);
-    private static readonly int ClimbId = Animator.StringToHash(ClimbParam);
+        [NonSerialized] internal InputAction bound;
+        [NonSerialized] internal Action<InputAction.CallbackContext> handler;
+    }
+
+    private static readonly int SpeedId = Animator.StringToHash("Speed");
+    private static readonly int ClimbId = Animator.StringToHash("Climb");
+    private static readonly int IsFlyingId = Animator.StringToHash("IsFlying");
 
     [Tooltip("Optional. Found on this object or its children when left empty.")]
     [SerializeField] private Animator animator;
 
-    [Header("Ground / air blend")]
-    [Tooltip("Seconds to blend from the ground pose to the flying pose after leaving the ground.")]
-    [SerializeField] private float takeOffBlendTime = 0.2f;
-    [Tooltip("How long before touchdown the landing blend starts. The blend finishes exactly as the bird lands.")]
-    [SerializeField] private float landBlendTime = 0.3f;
-    [Tooltip("Fastest the blend may fall toward the ground pose, in seconds for a full 1 to 0. Covers landings that " +
-             "weren't predicted (too slow to anticipate, or ground appearing suddenly, like flying onto a ledge).")]
-    [SerializeField] private float landCatchUpTime = 0.1f;
-    [Tooltip("Shapes the blend. Both axes run 0..1.")]
-    [SerializeField] private AnimationCurve blendCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
-
-    [Header("Landing anticipation")]
-    [Tooltip("Start the landing blend before touchdown. Off = blend only after landing, at landCatchUpTime.")]
+    [Header("Landing")]
+    [Tooltip("Turn IsFlying off this many seconds before a predicted touchdown. Match it to your Flying -> Grounded " +
+             "transition duration, or to the touchdown frame of a Land clip.")]
+    [SerializeField] private float landLeadTime = 0.3f;
+    [Tooltip("Off = IsFlying only turns false once the bird is actually on the ground.")]
     [SerializeField] private bool anticipateLanding = true;
-    [Tooltip("Only anticipate while descending at least this fast (m/s), so drifting near the ground doesn't dip the pose.")]
+    [Tooltip("Only anticipate while descending at least this fast (m/s), so drifting near the ground doesn't trigger it.")]
     [SerializeField] private float minDescentSpeed = 0.3f;
 
     [Header("Parameter smoothing")]
     [Tooltip("Damp time for Speed and Climb, so velocity noise doesn't show up as twitching.")]
     [SerializeField] private float parameterDampTime = 0.1f;
 
-    private PlayerMovement movement;
-    private float progress; // linear 0..1; eased through blendCurve before it reaches the Animator
-    private bool warnedNoController;
+    [Header("Input triggers")]
+    [SerializeField] private List<InputTrigger> inputTriggers = new List<InputTrigger>();
+    [Tooltip("Seconds a trigger waits to be used before it is cleared, so a press the graph can't act on " +
+             "right now (e.g. a ground-only action mid-air) doesn't fire later by surprise.")]
+    [SerializeField] private float triggerBufferTime = 0.15f;
 
-    /// <summary>The eased ground/air blend currently sent to the Animator.</summary>
-    public float Flight => blendCurve.Evaluate(progress);
+    private PlayerMovement movement;
+    private bool landingCommitted;
+    private bool inputBound;
+    private readonly Dictionary<int, float> pendingTriggers = new Dictionary<int, float>();
+    private readonly List<int> expired = new List<int>();
 
     private void Awake()
     {
@@ -61,44 +69,58 @@ public class PlayerVisuals : MonoBehaviour
         movement = GetComponentInParent<PlayerMovement>();
     }
 
-    private void Start()
-    {
-        if (movement == null) movement = PlayerID.playerMovement;
-        progress = movement != null && movement.IsFlying ? 1f : 0f;
-    }
+    // InputManager is created in Awake, so binding waits for Start; OnEnable covers re-enabling later.
+    private void Start() => BindInput();
+    private void OnEnable() => BindInput();
+    private void OnDisable() => UnbindInput();
 
     private void Update()
     {
-        if (!CanDrive()) return;
-
-        float target = TargetProgress();
-
-        // Up toward flight is paced by takeOffBlendTime. Down toward the ground normally follows the
-        // landing prediction (which already moves at 1/landBlendTime); landCatchUpTime only caps it.
-        float seconds = target > progress ? takeOffBlendTime : landCatchUpTime;
-        progress = seconds > 0f
-            ? Mathf.MoveTowards(progress, target, Time.deltaTime / seconds)
-            : target;
-
-        animator.SetFloat(FlightId, Flight);
+        if (movement == null) movement = PlayerID.playerMovement;
+        if (movement == null || animator == null || animator.runtimeAnimatorController == null) return;
 
         float speed01 = movement.GroundMaxSpeed > 0f ? movement.HorizontalSpeed / movement.GroundMaxSpeed : 0f;
         animator.SetFloat(SpeedId, Mathf.Clamp01(speed01), parameterDampTime, Time.deltaTime);
         animator.SetFloat(ClimbId, Climb(movement.VerticalSpeed), parameterDampTime, Time.deltaTime);
+        animator.SetBool(IsFlyingId, movement.IsFlying && !LandingAnticipated());
+
+        ExpireTriggers();
+    }
+
+    /// <summary>Sets an Animator trigger, cleared again after triggerBufferTime if the graph doesn't use it.</summary>
+    public void Trigger(string triggerName)
+    {
+        if (animator == null) return;
+
+        int id = Animator.StringToHash(triggerName);
+        animator.SetTrigger(id);
+        pendingTriggers[id] = Time.time + triggerBufferTime;
     }
 
     /// <summary>
-    /// 0 on the ground, 1 in the air -- except while descending toward ground in range, where it is
-    /// the predicted time to touchdown as a fraction of landBlendTime. Holding Rise or levelling
-    /// off sends it back to 1, so an aborted landing recovers on its own.
+    /// Latched once touchdown is predicted within landLeadTime, so it doesn't flicker near the ground.
+    /// Holding Rise or levelling off (half the trigger speed, for hysteresis) lets go of it.
     /// </summary>
-    private float TargetProgress()
+    private bool LandingAnticipated()
     {
-        if (!movement.IsFlying) return 0f;
-        if (!anticipateLanding || landBlendTime <= 0f || movement.RiseHeld) return 1f;
-        if (-movement.VerticalSpeed < minDescentSpeed) return 1f;
+        if (!movement.IsFlying || !anticipateLanding)
+        {
+            landingCommitted = false;
+            return false;
+        }
 
-        return Mathf.Clamp01(movement.TimeToLanding / landBlendTime); // Infinity (no ground in range) -> 1
+        float descent = -movement.VerticalSpeed;
+
+        if (landingCommitted)
+        {
+            if (movement.RiseHeld || descent < minDescentSpeed * 0.5f) landingCommitted = false;
+        }
+        else if (!movement.RiseHeld && descent >= minDescentSpeed)
+        {
+            landingCommitted = movement.TimeToLanding <= landLeadTime; // Infinity when no ground in range
+        }
+
+        return landingCommitted;
     }
 
     /// <summary>Vertical speed mapped to -1 (full dive) .. 0 (level) .. 1 (full climb).</summary>
@@ -110,30 +132,77 @@ public class PlayerVisuals : MonoBehaviour
         return movement.MaxDiveSpeed > 0f ? -Mathf.Clamp01(-vertical / movement.MaxDiveSpeed) : 0f;
     }
 
-    private bool CanDrive()
+    private void ExpireTriggers()
     {
-        if (movement == null) movement = PlayerID.playerMovement;
-        if (movement == null || animator == null) return false;
+        if (pendingTriggers.Count == 0) return;
 
-        if (animator.runtimeAnimatorController == null)
+        expired.Clear();
+        foreach (KeyValuePair<int, float> pair in pendingTriggers)
+            if (Time.time >= pair.Value) expired.Add(pair.Key);
+
+        foreach (int id in expired)
         {
-            if (!warnedNoController)
+            animator.ResetTrigger(id);
+            pendingTriggers.Remove(id);
+        }
+    }
+
+    // ---------------------------------------------------------------- input
+
+    private void BindInput()
+    {
+        if (inputBound || InputManager.Instance == null || InputManager.Instance.Actions == null) return;
+
+        InputActionAsset asset = InputManager.Instance.Actions.asset;
+        foreach (InputTrigger entry in inputTriggers)
+        {
+            if (string.IsNullOrWhiteSpace(entry.input) || string.IsNullOrWhiteSpace(entry.trigger)) continue;
+
+            InputAction action = asset.FindAction(entry.input, throwIfNotFound: false);
+            if (action == null)
             {
-                Debug.LogWarning("PlayerVisuals: the Animator has no controller assigned.", this);
-                warnedNoController = true;
+                Debug.LogError($"PlayerVisuals: input action '{entry.input}' isn't in InputSystem_Actions.", this);
+                continue;
             }
-            return false;
+
+            if (!action.actionMap.enabled) action.actionMap.Enable();
+
+            string trigger = entry.trigger;
+            entry.handler = _ => OnTriggerInput(trigger);
+            entry.bound = action;
+            action.performed += entry.handler;
         }
 
-        return true;
+        inputBound = true;
+    }
+
+    private void UnbindInput()
+    {
+        if (!inputBound) return;
+
+        foreach (InputTrigger entry in inputTriggers)
+        {
+            if (entry.bound != null && entry.handler != null) entry.bound.performed -= entry.handler;
+            entry.bound = null;
+            entry.handler = null;
+        }
+
+        inputBound = false;
+    }
+
+    private void OnTriggerInput(string trigger)
+    {
+        // Same gate the rest of the player's buttons respect (journal, dialogue, pause).
+        if (InputManager.Instance != null && !InputManager.Instance.interactionInputEnabled) return;
+        if (Time.timeScale <= 0f) return;
+        Trigger(trigger);
     }
 
     private void OnValidate()
     {
-        takeOffBlendTime = Mathf.Max(0f, takeOffBlendTime);
-        landBlendTime = Mathf.Max(0f, landBlendTime);
-        landCatchUpTime = Mathf.Max(0f, landCatchUpTime);
+        landLeadTime = Mathf.Max(0f, landLeadTime);
         minDescentSpeed = Mathf.Max(0f, minDescentSpeed);
         parameterDampTime = Mathf.Max(0f, parameterDampTime);
+        triggerBufferTime = Mathf.Max(0f, triggerBufferTime);
     }
 }
