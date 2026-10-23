@@ -2790,6 +2790,7 @@ GameObject:
   m_Component:
   - component: {fileID: 994139272}
   - component: {fileID: 994139273}
+  - component: {fileID: 994139274}
   m_Layer: 0
   m_Name: Trigger
   m_TagString: Untagged
@@ -2833,6 +2834,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &994139274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 994139271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3cb0cd37eb974abb8987b6511980ada, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: QuestSystem::QuestSystem.QuestTrigger
+  runtime: {fileID: 11400000, guid: 84929b3feb7df1b418cbd3ea4dd7b024, type: 2}
+  onEnter: {fileID: 11400000, guid: 889eb1e4dd7f3fa47bc8ed13dc270823, type: 2}
+  onExit: {fileID: 0}
+  layers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  filter:
+    rid: 2908372624481976330
+  references:
+    version: 2
+    RefIds:
+    - rid: 2908372624481976330
+      type: {class: PlayerTriggerFilter, ns: BirdWatching.Quests, asm: Assembly-CSharp}
+      data:
+        playerTag: Player
 --- !u!1 &1027798100
 GameObject:
   m_ObjectHideFlags: 0
@@ -5422,7 +5450,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2040788364}
-  - component: {fileID: 2040788365}
   m_Layer: 0
   m_Name: Broadcasters
   m_TagString: Untagged
@@ -5445,29 +5472,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1916913213}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2040788365
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2040788363}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af569df637aa4208a730abcf22e46b70, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BirdWatching.Quests.QuestEventBroadcaster
-  objectiveKey: {fileID: 11400000, guid: 549c38948e92c00408375bb9aff32f9a, type: 2}
-  conditionStrategy:
-    rid: 1911326681417121986
-  references:
-    version: 2
-    RefIds:
-    - rid: 1911326681417121986
-      type: {class: TriggerEnterCondition, ns: BirdWatching.Quests.Util, asm: Assembly-CSharp}
-      data:
-        colliderSource: {fileID: 994139273}
-        deactivateOnExit: 1
 --- !u!1 &2054630028
 GameObject:
   m_ObjectHideFlags: 0
@@ -5748,21 +5752,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 2096655732}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56f95ac11603413f81dd0374fa57c154, type: 3}
+  m_Script: {fileID: 11500000, guid: cb0edc4be4c9f424b8fd96888910b70c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BirdWatching.Quests.QuestEventReceiver
-  receiverType: 0
-  questOutcome: {fileID: 11400000, guid: ebdf5a05291cea84ebc54aaadad375fa, type: 2}
-  executionStrategy:
-    rid: 8442906397989929120
+  m_EditorClassIdentifier: QuestSystem::QuestSystem.QuestReaction
+  runtime: {fileID: 11400000, guid: 84929b3feb7df1b418cbd3ea4dd7b024, type: 2}
+  when:
+    rid: 2908372624481976331
+  effects:
+  - rid: 2908372624481976332
   references:
     version: 2
     RefIds:
-    - rid: 8442906397989929120
-      type: {class: CutsceneExecution, ns: BirdWatching.Quests, asm: Assembly-CSharp}
+    - rid: 2908372624481976331
+      type: {class: StepStateCondition, ns: QuestSystem, asm: QuestSystem}
+      data:
+        quest: {fileID: 11400000, guid: f55115aba64f49e49bca8fbb311ef637, type: 2}
+        stepId: 3784af34df55
+        state: 1
+    - rid: 2908372624481976332
+      type: {class: CutsceneEffect, ns: BirdWatching.Quests, asm: Assembly-CSharp}
       data:
         playableDirector: {fileID: 1616391427}
         conversationObject: {fileID: 11400000, guid: 1f406d52c8eb61041ac0d9d968853cf3, type: 2}
+        transcriptEntry: {fileID: 0}
+        runtime: {fileID: 11400000, guid: 84929b3feb7df1b418cbd3ea4dd7b024, type: 2}
+        onFinished: {fileID: 11400000, guid: b90f2c853476522429b69240f767bacc, type: 2}
 --- !u!1 &2121828611
 GameObject:
   m_ObjectHideFlags: 0

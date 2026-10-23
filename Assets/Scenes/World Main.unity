@@ -5248,7 +5248,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 678314952}
-  - component: {fileID: 678314953}
   m_Layer: 0
   m_Name: Broadcasters
   m_TagString: Untagged
@@ -5271,29 +5270,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 776765474}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &678314953
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 678314951}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af569df637aa4208a730abcf22e46b70, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BirdWatching.Quests.QuestEventBroadcaster
-  objectiveKey: {fileID: 11400000, guid: 9f4b1cf7d7e921643abc2c3fa4d50ada, type: 2}
-  conditionStrategy:
-    rid: 1911326681417121986
-  references:
-    version: 2
-    RefIds:
-    - rid: 1911326681417121986
-      type: {class: TriggerEnterCondition, ns: BirdWatching.Quests.Util, asm: Assembly-CSharp}
-      data:
-        colliderSource: {fileID: 2079947822}
-        deactivateOnExit: 1
 --- !u!1 &680602710
 GameObject:
   m_ObjectHideFlags: 0
@@ -14207,22 +14183,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 1579392614}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56f95ac11603413f81dd0374fa57c154, type: 3}
+  m_Script: {fileID: 11500000, guid: cb0edc4be4c9f424b8fd96888910b70c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BirdWatching.Quests.QuestEventReceiver
-  receiverType: 0
-  questOutcome: {fileID: 11400000, guid: d4424193bfc6c9d42b15190d71e56823, type: 2}
-  executionStrategy:
-    rid: 7890976374285402252
+  m_EditorClassIdentifier: QuestSystem::QuestSystem.QuestReaction
+  runtime: {fileID: 11400000, guid: 84929b3feb7df1b418cbd3ea4dd7b024, type: 2}
+  when:
+    rid: 2908372624481976328
+  effects:
+  - rid: 2908372624481976329
   references:
     version: 2
     RefIds:
-    - rid: 7890976374285402252
-      type: {class: CutsceneExecution, ns: BirdWatching.Quests, asm: Assembly-CSharp}
+    - rid: 2908372624481976328
+      type: {class: StepStateCondition, ns: QuestSystem, asm: QuestSystem}
+      data:
+        quest: {fileID: 11400000, guid: 109134d10d72ef447a36c3f82f18c6ca, type: 2}
+        stepId: 7106acb8b967
+        state: 1
+    - rid: 2908372624481976329
+      type: {class: CutsceneEffect, ns: BirdWatching.Quests, asm: Assembly-CSharp}
       data:
         playableDirector: {fileID: 1920218651}
         conversationObject: {fileID: 11400000, guid: 4b6ee03412c150445ae3155622a94dad, type: 2}
         transcriptEntry: {fileID: 0}
+        runtime: {fileID: 11400000, guid: 84929b3feb7df1b418cbd3ea4dd7b024, type: 2}
+        onFinished: {fileID: 11400000, guid: 0e113b3a3b2d7ac4489fd313999dab1b, type: 2}
 --- !u!1001 &1580471922
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18652,6 +18637,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2079947823}
   - component: {fileID: 2079947822}
+  - component: {fileID: 2079947824}
   m_Layer: 0
   m_Name: Trigger
   m_TagString: Untagged
@@ -18695,6 +18681,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 776765474}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2079947824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079947821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3cb0cd37eb974abb8987b6511980ada, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: QuestSystem::QuestSystem.QuestTrigger
+  runtime: {fileID: 11400000, guid: 84929b3feb7df1b418cbd3ea4dd7b024, type: 2}
+  onEnter: {fileID: 11400000, guid: 49e86fc34db81784aa32228e881b4153, type: 2}
+  onExit: {fileID: 0}
+  layers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  filter:
+    rid: 2908372624481976327
+  references:
+    version: 2
+    RefIds:
+    - rid: 2908372624481976327
+      type: {class: PlayerTriggerFilter, ns: BirdWatching.Quests, asm: Assembly-CSharp}
+      data:
+        playerTag: Player
 --- !u!1001 &2082065013
 PrefabInstance:
   m_ObjectHideFlags: 0

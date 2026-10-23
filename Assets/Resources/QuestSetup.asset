@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab2439b492150ea4783254c13b3a17cc, type: 3}
+  m_Name: QuestSetup
+  m_EditorClassIdentifier: Assembly-CSharp::BirdWatching.Quests.QuestSetup
+  runtime: {fileID: 11400000, guid: 84929b3feb7df1b418cbd3ea4dd7b024, type: 2}
+  catalog: {fileID: 11400000, guid: 4ee6b123b17819841b261e8557a73c8a, type: 2}
