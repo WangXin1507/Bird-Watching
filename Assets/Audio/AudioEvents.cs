@@ -34,6 +34,14 @@ public static class AudioEvents
 
     public static class Conversation
     {
+        public static readonly EventReference Luke_Convo_Test = new EventReference
+        {
+#if UNITY_EDITOR
+            Path = "event:/Conversation/Luke Convo_Test",
+#endif
+            Guid = FMOD.GUID.Parse("{8ac62ce8-bd28-41af-b601-79a560fe87a1}")
+        };
+
         public static readonly EventReference TEST_CONVO = new EventReference
         {
 #if UNITY_EDITOR

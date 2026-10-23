@@ -84,7 +84,7 @@
 	</object>
 	<object class="MultiSound" id="{0e2f186d-67d7-4998-9f40-fd4662b9af66}">
 		<relationship name="sounds">
-			<destination>{8c74dd06-5fb8-4671-bafd-2431004679ed}</destination>
+			<destination>{c1ba362b-7ab1-4301-9eea-fc9cdea860aa}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{180bb34a-3df3-4d32-b232-6630a423f914}">
@@ -99,11 +99,46 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{a1cf6dce-13cf-41f5-a826-ff83cdc0b6eb}" />
-	<object class="SingleSound" id="{8c74dd06-5fb8-4671-bafd-2431004679ed}">
-		<relationship name="audioFile">
-			<destination>{60e41594-0c63-43b3-8579-310bc47344e4}</destination>
+	<object class="MultiSound" id="{c1ba362b-7ab1-4301-9eea-fc9cdea860aa}">
+		<property name="volume">
+			<value>-9</value>
+		</property>
+		<property name="pitch">
+			<value>0.900000036</value>
+		</property>
+		<property name="looping">
+			<value>true</value>
+		</property>
+		<relationship name="sounds">
+			<destination>{7a78cfe9-7d42-4338-928e-8b821b7ffa5f}</destination>
+			<destination>{766c331f-a94f-47b0-8579-a522e2ddc82b}</destination>
+			<destination>{9f185ab5-a1ee-440d-a893-828edc89bae5}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{5784602e-edfd-419e-a5d6-a2f4e168b6be}" />
 	<object class="MixerBusFader" id="{0675796a-ba17-43c7-aa6c-1182567348bc}" />
+	<object class="SingleSound" id="{7a78cfe9-7d42-4338-928e-8b821b7ffa5f}">
+		<property name="pitch">
+			<value>0.900000036</value>
+		</property>
+		<relationship name="audioFile">
+			<destination>{5ed66757-f456-4631-9585-6e8f39c3ba2e}</destination>
+		</relationship>
+	</object>
+	<object class="SingleSound" id="{766c331f-a94f-47b0-8579-a522e2ddc82b}">
+		<property name="pitch">
+			<value>-1.80000007</value>
+		</property>
+		<relationship name="audioFile">
+			<destination>{391b39a3-8652-4ccd-a592-f0a35573a83d}</destination>
+		</relationship>
+	</object>
+	<object class="SingleSound" id="{9f185ab5-a1ee-440d-a893-828edc89bae5}">
+		<property name="pitch">
+			<value>-0.900000036</value>
+		</property>
+		<relationship name="audioFile">
+			<destination>{62c8e050-45b0-416e-a182-0d6b5c09bd6b}</destination>
+		</relationship>
+	</object>
 </objects>
