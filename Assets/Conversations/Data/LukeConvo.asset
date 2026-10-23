@@ -18,45 +18,45 @@ MonoBehaviour:
       something but like didn\u2019t say anything specific, he said it\u2019s not
       really his info to tell, yknow?"
     isFromPhone: 1
-    timeStamp: 10
+    timeStamp: 6
   - speaker: Luke
     text: "Oof yeah, sorry I haven\u2019t kept you updated\u2026 we\u2019re on a
       break, I guess."
     isFromPhone: 0
-    timeStamp: 0
+    timeStamp: 12
   - speaker: Friend
     text: "Oh\u2026 do you um\u2026 mean like a good break? Like a \u201Cwe both
       needed this\u201D kind of break?"
     isFromPhone: 0
-    timeStamp: 0
+    timeStamp: 19
   - speaker: Luke
     text: "Uhh not really\u2026 More like a \u201CI\u2019ve been the only one putting
       in the effort of making plans for us this summer and I\u2019m mad at you\u201D
       kind of break."
     isFromPhone: 0
-    timeStamp: 0
+    timeStamp: 29
   - speaker: Friend
     text: Yikes, sorry to hear that man.
     isFromPhone: 0
-    timeStamp: 0
+    timeStamp: 31
   - speaker: Luke
     text: "Yeahh, it sucks. To be honest, she isn\u2019t wrong. I guess I just got
       used to her making the plans for us, you know? Like even when I\u2019d forget
       or get busy she\u2019d always reach out, and I just got really used to that\u2026"
     isFromPhone: 0
-    timeStamp: 0
+    timeStamp: 45
   - speaker: Friend
     text: Huh.
     isFromPhone: 0
-    timeStamp: 0
+    timeStamp: 47
   - speaker: Luke
     text: "It\u2019s not great, I know."
     isFromPhone: 0
-    timeStamp: 0
+    timeStamp: 49
   - speaker: Friend
     text: So you guys are gonna patch up, right?
     isFromPhone: 0
-    timeStamp: 0
+    timeStamp: 52
   - speaker: Luke
     text: "Well, the issue is I\u2019m\u2026 not sure how to approach her. Or if
       approaching her right now is even a good move. Like I have an idea, I just\u2026
@@ -64,26 +64,26 @@ MonoBehaviour:
       stupid, and then what if that\u2019s it? What if I\u2019ve fumbled my chance
       to fix things?"
     isFromPhone: 0
-    timeStamp: 0
+    timeStamp: 69
   - speaker: Friend
     text: "Look man, whatever it is, it\u2019s probably worth a shot. I mean, we\u2019re
       still trying to have that get-together before we all leave, right? Might wanna
       try and talk to her before that. Could be the last night you two spend together
       for a while."
     isFromPhone: 0
-    timeStamp: 0
+    timeStamp: 82
   - speaker: Luke
     text: "I know, that\u2019s what makes me even more nervous. Every time I think
       of some solution to maybe get us talking again, I just think about actually
       doing it and realize it\u2019s probably dumb. I\u2019ll think of something
       good though, eventually\u2026 I hope\u2026"
     isFromPhone: 0
-    timeStamp: 0
+    timeStamp: 97
   audio:
     Guid:
-      Data1: 1430653633
-      Data2: 1309797724
-      Data3: -1076269902
-      Data4: 651645033
-    Path: event:/Conversation/TEST CONVO
+      Data1: -1966723864
+      Data2: 1102036264
+      Data3: -1518796362
+      Data4: -1584923040
+    Path: event:/Conversation/Luke Convo_Test
   startDelay: 0
