@@ -8,15 +8,23 @@ using UnityEngine.UI;
 [Serializable]
 public struct FadeStyle
 {
+    public FadeType type;
     public float duration;
     public float delay;
     public Ease easeStyle;
 
-    public FadeStyle(float duration, float delay = 0, Ease easeStyle = Ease.Linear)
+    public FadeStyle(FadeType type, float duration, float delay = 0, Ease easeStyle = Ease.Linear)
     {
+        this.type = type;
         this.duration = duration;
         this.delay = delay;
         this.easeStyle = easeStyle;
+    }
+
+    public enum FadeType
+    {
+        FadeInAndOut,
+        SlideBirb
     }
 }
 
@@ -30,8 +38,6 @@ public static class ScreenFader
     {
         await FadeOut(fadeOutStyle);
         await SceneManager.LoadSceneAsync(sceneName);
-        //await UniTask.NextFrame();
-        //await UniTask.WaitUntil(() => Time.unscaledDeltaTime < 0.1f);
         await FadeIn(fadeInStyle);
     }
 
@@ -43,9 +49,16 @@ public static class ScreenFader
 
     public static async UniTask FadeIn(FadeStyle fade)
     {
-        SpawnCanvas();
-        t.Stop();
-        t = Tween.Alpha(fadeCanvas, endValue: 0, fade.duration, startDelay: fade.delay, ease: fade.easeStyle, useUnscaledTime: true);
+        switch (fade.type) 
+        {
+            case FadeStyle.FadeType.SlideBirb:
+                break;
+            default:
+                SpawnCanvas();
+                t.Stop();
+                t = Tween.Alpha(fadeCanvas, endValue: 0, fade.duration, startDelay: fade.delay, ease: fade.easeStyle, useUnscaledTime: true);
+                break;
+        }
         await t;
     }
 
