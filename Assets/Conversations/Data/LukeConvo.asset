@@ -14,9 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BirdWatching.Conversation.ConversationObject
   lines:
   - speaker: Friend
-    text: "Oh by the way, anything change between you and Chelsea? Carter mentioned
-      something but like didn\u2019t say anything specific, he said it\u2019s not
-      really his info to tell, yknow?"
+    text: Hey, anything change between you and Chelsea?
     isFromPhone: 1
     timeStamp: 6
   - speaker: Luke
@@ -27,7 +25,7 @@ MonoBehaviour:
   - speaker: Friend
     text: "Oh\u2026 do you um\u2026 mean like a good break? Like a \u201Cwe both
       needed this\u201D kind of break?"
-    isFromPhone: 0
+    isFromPhone: 1
     timeStamp: 19
   - speaker: Luke
     text: "Uhh not really\u2026 More like a \u201CI\u2019ve been the only one putting
@@ -37,7 +35,7 @@ MonoBehaviour:
     timeStamp: 29
   - speaker: Friend
     text: Yikes, sorry to hear that man.
-    isFromPhone: 0
+    isFromPhone: 1
     timeStamp: 31
   - speaker: Luke
     text: "Yeahh, it sucks. To be honest, she isn\u2019t wrong. I guess I just got
@@ -47,7 +45,7 @@ MonoBehaviour:
     timeStamp: 45
   - speaker: Friend
     text: Huh.
-    isFromPhone: 0
+    isFromPhone: 1
     timeStamp: 47
   - speaker: Luke
     text: "It\u2019s not great, I know."
@@ -55,7 +53,7 @@ MonoBehaviour:
     timeStamp: 49
   - speaker: Friend
     text: So you guys are gonna patch up, right?
-    isFromPhone: 0
+    isFromPhone: 1
     timeStamp: 52
   - speaker: Luke
     text: "Well, the issue is I\u2019m\u2026 not sure how to approach her. Or if
@@ -70,7 +68,7 @@ MonoBehaviour:
       still trying to have that get-together before we all leave, right? Might wanna
       try and talk to her before that. Could be the last night you two spend together
       for a while."
-    isFromPhone: 0
+    isFromPhone: 1
     timeStamp: 82
   - speaker: Luke
     text: "I know, that\u2019s what makes me even more nervous. Every time I think

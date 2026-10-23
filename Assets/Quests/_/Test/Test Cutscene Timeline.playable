@@ -278,7 +278,7 @@ MonoBehaviour:
     exposedName: 012b95e5a6c4b0449b7b8e9620397004
     defaultValue: {fileID: 0}
   startPosition: 0
-  endPosition: 0
+  endPosition: 1
   ease:
     serializedVersion: 2
     m_Curve:

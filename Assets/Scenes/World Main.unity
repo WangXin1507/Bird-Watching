@@ -5492,6 +5492,22 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -4.634116
       objectReference: {fileID: 0}
+    - target: {fileID: -6223870459846183282, guid: a93412c1820c5bd4eb88ba743e92b7c2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4.503612
+      objectReference: {fileID: 0}
+    - target: {fileID: -6223870459846183282, guid: a93412c1820c5bd4eb88ba743e92b7c2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 5.3257647
+      objectReference: {fileID: 0}
+    - target: {fileID: -4524324554298751242, guid: a93412c1820c5bd4eb88ba743e92b7c2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4.503612
+      objectReference: {fileID: 0}
+    - target: {fileID: -4524324554298751242, guid: a93412c1820c5bd4eb88ba743e92b7c2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 5.3257647
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a93412c1820c5bd4eb88ba743e92b7c2, type: 3}
       propertyPath: m_Name
       value: house2test
