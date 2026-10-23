@@ -6,7 +6,7 @@ public class RegistryHub : MonoBehaviour
     public static RegistryHub Instance { get; private set; }
 
     [Header("Registries")]
-    public GuidRegistry<QuestObjective> questObjectives;
+    public List<GuidRegistryBase> registries = new();
 
     private Dictionary<System.Type, GuidRegistryBase> registryCache = new();
 
@@ -14,8 +14,11 @@ public class RegistryHub : MonoBehaviour
     {
         Instance = this;
 
-        questObjectives?.BuildLookup();
-        RegisterRegistry(questObjectives);
+        foreach (var registry in registries)
+        {
+            registry?.BuildLookup();
+            RegisterRegistry(registry);
+        }
     }
 
     private void RegisterRegistry(GuidRegistryBase registry)
