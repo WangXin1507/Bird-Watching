@@ -1,0 +1,92 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45fffa64599bb4434ad46be012253575, type: 3}
+  m_Name: Test Walk Through Trigger
+  m_EditorClassIdentifier: QuestSystem::QuestSystem.QuestDefinition
+  assetId:
+    value: f55115aba64f49e49bca8fbb311ef637
+  title: Test Walk Through Trigger
+  summary: 
+  kind: {fileID: 0}
+  giver: {fileID: 0}
+  place: {fileID: 0}
+  order: 0
+  suggestedLevel: 0
+  repeatable: 0
+  hiddenUntilGiven: 0
+  availableWhen:
+    rid: -2
+  givenAutomatically: 1
+  failWhen:
+    rid: -2
+  steps:
+  - id: 6f330cd0b434
+    text: Walk through the trigger
+    hiddenUntilReached: 0
+    start: 0
+    after: []
+    afterRule: 0
+    unlockWhen:
+      rid: -2
+    completion: 0
+    endsQuest: 0
+    failWhen:
+      rid: -2
+    objectives:
+    - id: f6f0da25dcd7
+      text: Walk through the trigger
+      optional: 0
+      targetCount: 1
+      tracker:
+        rid: 2908372624481976323
+    graphPosition: {x: 0, y: 0}
+  - id: 3784af34df55
+    text: Watch the cutscene
+    hiddenUntilReached: 0
+    start: 0
+    after: []
+    afterRule: 0
+    unlockWhen:
+      rid: -2
+    completion: 0
+    endsQuest: 0
+    failWhen:
+      rid: -2
+    objectives:
+    - id: 1471a22ccb09
+      text: Watch the cutscene
+      optional: 0
+      targetCount: 1
+      tracker:
+        rid: 2908372624481976324
+    graphPosition: {x: 0, y: 0}
+  rewards: []
+  webPosition: {x: 0, y: 0}
+  webPinned: 0
+  graphArranged: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 2908372624481976323
+      type: {class: SignalTracker, ns: QuestSystem, asm: QuestSystem}
+      data:
+        signal: {fileID: 11400000, guid: 889eb1e4dd7f3fa47bc8ed13dc270823, type: 2}
+        onlyWhen:
+          rid: -2
+    - rid: 2908372624481976324
+      type: {class: SignalTracker, ns: QuestSystem, asm: QuestSystem}
+      data:
+        signal: {fileID: 11400000, guid: b90f2c853476522429b69240f767bacc, type: 2}
+        onlyWhen:
+          rid: -2

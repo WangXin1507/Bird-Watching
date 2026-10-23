@@ -416,7 +416,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 970599275}
-  - component: {fileID: 970599274}
+  - component: {fileID: 970599276}
   m_Layer: 0
   m_Name: QuestReceiver
   m_TagString: Untagged
@@ -424,29 +424,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &970599274
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 970599273}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56f95ac11603413f81dd0374fa57c154, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BirdWatching.Quests.QuestEventReceiver
-  receiverType: 0
-  questOutcome: {fileID: 11400000, guid: ebdf5a05291cea84ebc54aaadad375fa, type: 2}
-  executionStrategy:
-    rid: 8442906214443253874
-  references:
-    version: 2
-    RefIds:
-    - rid: 8442906214443253874
-      type: {class: TestPrintExecution, ns: , asm: Assembly-CSharp}
-      data:
-        msgToPrint: You have just collided with a box!
 --- !u!4 &970599275
 Transform:
   m_ObjectHideFlags: 0
@@ -462,6 +439,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &970599276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 970599273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb0edc4be4c9f424b8fd96888910b70c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: QuestSystem::QuestSystem.QuestReaction
+  runtime: {fileID: 11400000, guid: 84929b3feb7df1b418cbd3ea4dd7b024, type: 2}
+  when:
+    rid: 2908372624481976337
+  effects:
+  - rid: 2908372624481976338
+  references:
+    version: 2
+    RefIds:
+    - rid: 2908372624481976337
+      type: {class: StepStateCondition, ns: QuestSystem, asm: QuestSystem}
+      data:
+        quest: {fileID: 11400000, guid: f55115aba64f49e49bca8fbb311ef637, type: 2}
+        stepId: 6f330cd0b434
+        state: 2
+    - rid: 2908372624481976338
+      type: {class: LogEffect, ns: BirdWatching.Quests, asm: Assembly-CSharp}
+      data:
+        msgToPrint: Walked through the test trigger
 --- !u!1001 &1032415360
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -535,11 +542,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 55242ecff7c19f7428695d905be0e6f9, type: 3}
---- !u!4 &1032415361 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8493531706250860071, guid: 55242ecff7c19f7428695d905be0e6f9, type: 3}
-  m_PrefabInstance: {fileID: 1032415360}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1087127817
 GameObject:
   m_ObjectHideFlags: 0
@@ -552,6 +554,7 @@ GameObject:
   - component: {fileID: 1087127820}
   - component: {fileID: 1087127819}
   - component: {fileID: 1087127818}
+  - component: {fileID: 1087127822}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -652,6 +655,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1087127822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1087127817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3cb0cd37eb974abb8987b6511980ada, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: QuestSystem::QuestSystem.QuestTrigger
+  runtime: {fileID: 11400000, guid: 84929b3feb7df1b418cbd3ea4dd7b024, type: 2}
+  onEnter: {fileID: 11400000, guid: 889eb1e4dd7f3fa47bc8ed13dc270823, type: 2}
+  onExit: {fileID: 0}
+  layers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  filter:
+    rid: 2908372624481976336
+  references:
+    version: 2
+    RefIds:
+    - rid: 2908372624481976336
+      type: {class: PlayerTriggerFilter, ns: BirdWatching.Quests, asm: Assembly-CSharp}
+      data:
+        playerTag: Player
 --- !u!1001 &1219715430
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -718,7 +748,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1358142567}
-  - component: {fileID: 1358142566}
   m_Layer: 0
   m_Name: QuestBroadcaster
   m_TagString: Untagged
@@ -726,29 +755,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1358142566
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1358142565}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af569df637aa4208a730abcf22e46b70, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BirdWatching.Quests.QuestEventBroadcaster
-  objectiveKey: {fileID: 11400000, guid: 549c38948e92c00408375bb9aff32f9a, type: 2}
-  conditionStrategy:
-    rid: 8442906168470274208
-  references:
-    version: 2
-    RefIds:
-    - rid: 8442906168470274208
-      type: {class: TriggerEnterCondition, ns: BirdWatching.Quests.Util, asm: Assembly-CSharp}
-      data:
-        colliderSource: {fileID: 1087127818}
-        deactivateOnExit: 1
 --- !u!4 &1358142567
 Transform:
   m_ObjectHideFlags: 0
@@ -793,6 +799,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 805f8c06847332b42911583e679530f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InputManager
+  moveInputEnabled: 1
+  lookInputEnabled: 1
+  interactionInputEnabled: 1
   movementVector: {x: 0, y: 0}
   lookVector: {x: 0, y: 0}
 --- !u!4 &1777622393
@@ -1055,26 +1064,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1479dc6ec04fea34996aa682d7d4233a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraLook
-  target: {fileID: 1032415361}
-  targetOffset: {x: 0, y: 0, z: 0}
-  distance: 5
-  minDistance: 1
-  maxDistance: 15
-  horizontalSensitivity: 1.5
-  verticalSensitivity: 1.5
-  invertY: 0
-  scaleByDeltaTime: 0
-  minPitch: -80
-  maxPitch: 80
-  clampYaw: 0
-  minYaw: -90
-  maxYaw: 90
-  positionSmoothTime: 0
-  avoidGeometry: 1
-  collisionMask:
-    serializedVersion: 2
-    m_Bits: 55
-  collisionRadius: 0.2
 --- !u!1 &1987697910
 GameObject:
   m_ObjectHideFlags: 0

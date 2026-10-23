@@ -1,0 +1,92 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45fffa64599bb4434ad46be012253575, type: 3}
+  m_Name: Luke Conversation
+  m_EditorClassIdentifier: QuestSystem::QuestSystem.QuestDefinition
+  assetId:
+    value: 109134d10d72ef447a36c3f82f18c6ca
+  title: Luke Conversation
+  summary: 
+  kind: {fileID: 0}
+  giver: {fileID: 0}
+  place: {fileID: 0}
+  order: 0
+  suggestedLevel: 0
+  repeatable: 0
+  hiddenUntilGiven: 0
+  availableWhen:
+    rid: -2
+  givenAutomatically: 1
+  failWhen:
+    rid: -2
+  steps:
+  - id: 0a40a08c287b
+    text: Reach Luke
+    hiddenUntilReached: 0
+    start: 0
+    after: []
+    afterRule: 0
+    unlockWhen:
+      rid: -2
+    completion: 0
+    endsQuest: 0
+    failWhen:
+      rid: -2
+    objectives:
+    - id: 1f961023f5cd
+      text: Reach Luke
+      optional: 0
+      targetCount: 1
+      tracker:
+        rid: 2908372624481976325
+    graphPosition: {x: 0, y: 0}
+  - id: 7106acb8b967
+    text: Talk to Luke
+    hiddenUntilReached: 0
+    start: 0
+    after: []
+    afterRule: 0
+    unlockWhen:
+      rid: -2
+    completion: 0
+    endsQuest: 0
+    failWhen:
+      rid: -2
+    objectives:
+    - id: e0e5b0c97518
+      text: Talk to Luke
+      optional: 0
+      targetCount: 1
+      tracker:
+        rid: 2908372624481976326
+    graphPosition: {x: 0, y: 0}
+  rewards: []
+  webPosition: {x: 0, y: 0}
+  webPinned: 0
+  graphArranged: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 2908372624481976325
+      type: {class: SignalTracker, ns: QuestSystem, asm: QuestSystem}
+      data:
+        signal: {fileID: 11400000, guid: 49e86fc34db81784aa32228e881b4153, type: 2}
+        onlyWhen:
+          rid: -2
+    - rid: 2908372624481976326
+      type: {class: SignalTracker, ns: QuestSystem, asm: QuestSystem}
+      data:
+        signal: {fileID: 11400000, guid: 0e113b3a3b2d7ac4489fd313999dab1b, type: 2}
+        onlyWhen:
+          rid: -2
