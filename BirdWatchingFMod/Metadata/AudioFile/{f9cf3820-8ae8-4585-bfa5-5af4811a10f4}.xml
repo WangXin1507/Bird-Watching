@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{f9cf3820-8ae8-4585-bfa5-5af4811a10f4}">
+		<property name="assetPath">
+			<value>wing-flap.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.16900226757369616</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{f8a1db07-317b-4b47-9da7-bcbe72273528}</destination>
+		</relationship>
+	</object>
+</objects>
