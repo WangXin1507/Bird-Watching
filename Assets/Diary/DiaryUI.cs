@@ -13,6 +13,7 @@ public class DiaryUI : MonoBehaviour
     private DiaryData _diaryData;
     private bool backToGame;
 
+    [SerializeField] private TMP_Text title;
     [SerializeField] private TMP_Text leftText;
     [SerializeField] private TMP_Text rightText;
     [SerializeField] private Image rightImage;
@@ -37,6 +38,7 @@ public class DiaryUI : MonoBehaviour
         
         gameObject.GetComponent<Canvas>().enabled = true;
         
+        title.text = context.diaryTitle;
         leftText.text = context.leftTextBox;
         if (context.rightTextBox != "")
         {

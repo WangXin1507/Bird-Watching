@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewDiary", menuName = "Bird Watching/Diary")]
 public class DiaryData : ATranscriptEntry
 {
+    [SerializeField] public string diaryTitle;
     [TextArea(10, 40)]
     [SerializeField] public string leftTextBox;
     [TextArea(10, 40)]
