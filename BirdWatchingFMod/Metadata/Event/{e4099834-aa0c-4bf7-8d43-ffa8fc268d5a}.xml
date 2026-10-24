@@ -106,9 +106,6 @@
 		<property name="pitch">
 			<value>0.900000036</value>
 		</property>
-		<property name="looping">
-			<value>true</value>
-		</property>
 		<relationship name="sounds">
 			<destination>{7a78cfe9-7d42-4338-928e-8b821b7ffa5f}</destination>
 			<destination>{766c331f-a94f-47b0-8579-a522e2ddc82b}</destination>
