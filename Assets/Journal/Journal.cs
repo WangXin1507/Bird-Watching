@@ -155,6 +155,7 @@ public class Journal : MonoBehaviour
     private bool TryComplete(MissionData mission)
     {
         lastMissionChanged = mission;
+        completedMissionIDs.Add(mission.MissionID);
         OnTranscriptUnlocked?.Invoke();
         if (afterLoad)
             JournalUpdateUI.Instance.Show();
