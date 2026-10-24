@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class FlightSounds : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class FlightSounds : MonoBehaviour
 
     public void Flap()
     {
-        if (PlayerID.playerMovement.VerticalSpeed < 0)
+        if (Math.Abs(PlayerID.playerMovement.VerticalSpeed) < 5.0f && PlayerID.playerMovement.HorizontalSpeed < 5.0f)
         {
             AudioManager.PlayOneShot(AudioEvents.Bird.Bird_Flap_SFX, transform.position);
         }
