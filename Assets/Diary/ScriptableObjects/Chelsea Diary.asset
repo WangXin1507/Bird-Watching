@@ -31,6 +31,6 @@ MonoBehaviour:
     And then we\u2019d make plans, and sometimes he\u2019d get me them again. Something
     like that would be nice. Just something to show me he still wants to spend time
     together."
-  rightTextBox: '[ Temp Text, Flower sketch sprite will display here eventually]'
-  imageToShow: {fileID: 0}
-  imageSize: {x: 0, y: 0}
+  rightTextBox: 
+  imageToShow: {fileID: 21300000, guid: 845a04b4342473b4cb19a88b3467afff, type: 3}
+  imageSize: {x: 215, y: 215}
