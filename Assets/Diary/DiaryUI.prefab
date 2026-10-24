@@ -1067,6 +1067,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c088f1f9454f08d4da246741cd84402c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DiaryUI
+  title: {fileID: 928404744402153736}
   leftText: {fileID: 6927418578015910003}
   rightText: {fileID: 8697368578014385647}
   rightImage: {fileID: 2416817340394484406}
