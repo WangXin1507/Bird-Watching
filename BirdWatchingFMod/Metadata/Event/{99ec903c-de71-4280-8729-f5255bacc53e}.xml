@@ -73,7 +73,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{5eb07959-aec5-4f80-ad62-61ba57702b81}">
 		<property name="volume">
-			<value>-17</value>
+			<value>10</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{8957dac1-1592-428e-8f11-71744a23e128}</destination>
@@ -118,16 +118,16 @@
 			<value>-60</value>
 		</property>
 		<property name="ratio">
-			<value>19</value>
+			<value>11</value>
 		</property>
 		<property name="attackTime">
-			<value>4.4000001</value>
+			<value>0.25</value>
 		</property>
 		<property name="releaseTime">
 			<value>520</value>
 		</property>
 		<property name="gain">
-			<value>14.5</value>
+			<value>22</value>
 		</property>
 	</object>
 </objects>

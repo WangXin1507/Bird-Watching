@@ -59,7 +59,11 @@
 			<destination>{66e87273-c19f-4d22-a384-d8a633e43eb2}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{bf0f8664-e890-4f15-ad12-4f1aeae1ee77}" />
+	<object class="EventAutomatableProperties" id="{bf0f8664-e890-4f15-ad12-4f1aeae1ee77}">
+		<property name="dopplerEnabled">
+			<value>true</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{291a7e22-7587-4acf-8502-677ee5858003}" />
 	<object class="Timeline" id="{7124482c-3c4b-4a4d-b3ee-2d34d05280c7}">
 		<property name="isProxyEnabled">
@@ -72,6 +76,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{2709bc97-c933-4221-a33c-0f162d71fa5d}">
+		<property name="volume">
+			<value>-8.5</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{df14f4a2-68bf-43b0-88ed-1356dc3e6fda}</destination>
 		</relationship>
@@ -84,7 +91,7 @@
 	</object>
 	<object class="MultiSound" id="{74731b34-d66d-4463-be6f-3f21a9e54a14}">
 		<relationship name="sounds">
-			<destination>{4f6d81a1-7e5f-460f-a08f-bfe46bd4d1f6}</destination>
+			<destination>{d4e6e90a-f2f3-4173-bdaa-bb11945068c0}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{7c4cafd7-fe6d-4b2e-8fc2-bc1ba0a6ed0d}">
@@ -96,14 +103,29 @@
 	<object class="MixerBusEffectChain" id="{df14f4a2-68bf-43b0-88ed-1356dc3e6fda}">
 		<relationship name="effects">
 			<destination>{5611f655-19cc-400a-954e-87e2635fb969}</destination>
+			<destination>{c8be428c-b98a-433c-b2f2-3efbb1a4e0a4}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{89739602-0dc1-482d-bae4-7cb9c2597630}" />
-	<object class="SingleSound" id="{4f6d81a1-7e5f-460f-a08f-bfe46bd4d1f6}">
+	<object class="SingleSound" id="{d4e6e90a-f2f3-4173-bdaa-bb11945068c0}">
 		<relationship name="audioFile">
-			<destination>{60e41594-0c63-43b3-8579-310bc47344e4}</destination>
+			<destination>{87dfb0b7-3ee2-405e-96e1-a0ea88aaee0c}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{9dda4639-0d3f-43e7-b85c-2590b2c3e341}" />
 	<object class="MixerBusFader" id="{5611f655-19cc-400a-954e-87e2635fb969}" />
+	<object class="SFXReverbEffect" id="{c8be428c-b98a-433c-b2f2-3efbb1a4e0a4}">
+		<property name="decayTime">
+			<value>4000</value>
+		</property>
+		<property name="HFDecayRatio">
+			<value>100</value>
+		</property>
+		<property name="wetLevel">
+			<value>0</value>
+		</property>
+		<property name="dryLevel">
+			<value>-80</value>
+		</property>
+	</object>
 </objects>

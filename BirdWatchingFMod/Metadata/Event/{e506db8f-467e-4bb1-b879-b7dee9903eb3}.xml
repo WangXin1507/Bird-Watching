@@ -73,7 +73,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{fd38d13c-b3f4-42c5-ab4b-59bbdcb665fe}">
 		<property name="volume">
-			<value>4</value>
+			<value>10</value>
 		</property>
 		<property name="pitch">
 			<value>8.5</value>
@@ -103,6 +103,7 @@
 		<relationship name="effects">
 			<destination>{c68e5fcf-20e3-42bf-bc23-f016a5651e8f}</destination>
 			<destination>{c913df8d-e591-464c-9b93-089cd27f6736}</destination>
+			<destination>{fe83869f-1f2c-417b-9efd-befc05dce9d6}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{a60cd1ec-f8b7-4f20-95f0-55ea8199c98d}">
@@ -132,6 +133,11 @@
 		</property>
 		<property name="overlap">
 			<value>1</value>
+		</property>
+	</object>
+	<object class="GainEffect" id="{fe83869f-1f2c-417b-9efd-befc05dce9d6}">
+		<property name="gain">
+			<value>4</value>
 		</property>
 	</object>
 </objects>

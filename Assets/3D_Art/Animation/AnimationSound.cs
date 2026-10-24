@@ -9,8 +9,7 @@ public class AnimationSound : MonoBehaviour
         {
             return;
         }
-        //EventReference audio = EventReference.Find(path);
-        AudioManager.PlayOneShot(AudioEvents.Bird.Bird_Footstep_SFX, transform.position);
-        Debug.Log("?");
+        EventReference audio = EventReference.Find(path);
+        AudioManager.PlayOneShot(audio, transform.position);
     }
 }

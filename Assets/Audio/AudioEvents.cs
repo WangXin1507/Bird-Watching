@@ -7,12 +7,20 @@ public static class AudioEvents
 {
     public static class Bird
     {
+        public static readonly EventReference Bird_Flap_SFX = new EventReference
+        {
+#if UNITY_EDITOR
+            Path = "event:/Bird/Bird Flap SFX",
+#endif
+            Guid = FMOD.GUID.Parse("{b3853a5a-d05c-4522-9627-f6a39210e6ba}")
+        };
+
         public static readonly EventReference Bird_Flight_SFX = new EventReference
         {
 #if UNITY_EDITOR
             Path = "event:/Bird/Bird Flight SFX",
 #endif
-            Guid = FMOD.GUID.Parse("{b3853a5a-d05c-4522-9627-f6a39210e6ba}")
+            Guid = FMOD.GUID.Parse("{bccb90dc-f2b0-460a-b324-535d236eb972}")
         };
 
         public static readonly EventReference Bird_Footstep_SFX = new EventReference
