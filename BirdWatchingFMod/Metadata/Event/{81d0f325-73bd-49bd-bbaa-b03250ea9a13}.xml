@@ -72,6 +72,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{749fb889-97dc-4b7a-94b4-7f815625c365}">
+		<property name="volume">
+			<value>-13</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{35f11878-841f-41d0-84b9-36e2e5f24d01}</destination>
 		</relationship>
@@ -96,6 +99,7 @@
 	<object class="MixerBusEffectChain" id="{35f11878-841f-41d0-84b9-36e2e5f24d01}">
 		<relationship name="effects">
 			<destination>{d131d020-ba52-464a-b985-f1c29e8ba337}</destination>
+			<destination>{0ce7716a-b6e3-4d8c-997c-54a3ae8b1b03}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{52ce6e84-812d-4cd6-bf50-34ada512cb9d}" />
@@ -116,6 +120,23 @@
 	</object>
 	<object class="MixerBusFader" id="{1d45294d-009e-4c47-acee-a884db86f219}" />
 	<object class="MixerBusFader" id="{d131d020-ba52-464a-b985-f1c29e8ba337}" />
+	<object class="CompressorEffect" id="{0ce7716a-b6e3-4d8c-997c-54a3ae8b1b03}">
+		<property name="threshold">
+			<value>-60</value>
+		</property>
+		<property name="ratio">
+			<value>50</value>
+		</property>
+		<property name="attackTime">
+			<value>500</value>
+		</property>
+		<property name="releaseTime">
+			<value>5000</value>
+		</property>
+		<property name="gain">
+			<value>6.5</value>
+		</property>
+	</object>
 	<object class="SingleSound" id="{09728042-b26f-4cde-bcae-894b0c0c2396}">
 		<relationship name="audioFile">
 			<destination>{2ec4abec-1c8d-4ac3-a409-f70512f351fd}</destination>

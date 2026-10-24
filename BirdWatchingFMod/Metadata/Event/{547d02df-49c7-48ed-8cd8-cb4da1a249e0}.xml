@@ -73,7 +73,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{d1822a47-7cf6-406b-ac95-a6563e2b5a6f}">
 		<property name="volume">
-			<value>-15.5</value>
+			<value>-13.5</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{61f2a772-6eff-43fa-91c5-456fcd504517}</destination>
@@ -105,7 +105,7 @@
 	<object class="MixerBusPanner" id="{d6ae0c8e-5e18-42bc-ac92-b1b9dbcacede}" />
 	<object class="SingleSound" id="{54654a84-3890-461a-85b3-f905086cefc4}">
 		<property name="startOffset">
-			<value>14.5</value>
+			<value>31</value>
 		</property>
 		<property name="volume">
 			<value>-16</value>
@@ -118,19 +118,19 @@
 	<object class="MixerBusFader" id="{9f970a8a-f392-4b3b-b409-3e34644e4f2e}" />
 	<object class="CompressorEffect" id="{eb6175bc-896c-4a7e-84b4-8d85c245bca9}">
 		<property name="threshold">
-			<value>-60</value>
+			<value>-58</value>
 		</property>
 		<property name="ratio">
-			<value>19</value>
+			<value>18.5</value>
 		</property>
 		<property name="attackTime">
-			<value>4.4000001</value>
+			<value>0.100000001</value>
 		</property>
 		<property name="releaseTime">
-			<value>520</value>
+			<value>300</value>
 		</property>
 		<property name="gain">
-			<value>14.5</value>
+			<value>17.5</value>
 		</property>
 	</object>
 </objects>
