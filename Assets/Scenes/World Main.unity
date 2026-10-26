@@ -5425,7 +5425,7 @@ MonoBehaviour:
       Data4: 328919632
     Path: event:/Environment/BushRustle
   itemBase: {fileID: 8402511910913565314, guid: 7bf0c072bc081224e870c06fc9a4fbb4, type: 3}
-  item: {fileID: 11400000, guid: 7999c4bba18c4f849a9cc3343960619a, type: 2}
+  item: {fileID: 11400000, guid: e796b118469669b449d1fe7769a0e884, type: 2}
   maxItems: 10
 --- !u!4 &422470197 stripped
 Transform:
@@ -6647,7 +6647,7 @@ MonoBehaviour:
       Data4: 328919632
     Path: event:/Environment/BushRustle
   itemBase: {fileID: 8402511910913565314, guid: 7bf0c072bc081224e870c06fc9a4fbb4, type: 3}
-  item: {fileID: 11400000, guid: e796b118469669b449d1fe7769a0e884, type: 2}
+  item: {fileID: 11400000, guid: 7999c4bba18c4f849a9cc3343960619a, type: 2}
   maxItems: 10
 --- !u!1001 &551670812
 PrefabInstance:
