@@ -16,5 +16,6 @@ MonoBehaviour:
   missionPicture: {fileID: 0}
   trinket: {fileID: 0}
   transcripts:
-  - {fileID: 11400000, guid: 740ac8e5b0f4df846adea70d73d47b2f, type: 2}
+  - {fileID: 11400000, guid: 3b2efcacc9f86db46b1c8df1536abba1, type: 2}
   - {fileID: 11400000, guid: 1f216b6bcc1b4fc49bbe1bb26e19f103, type: 2}
+  MissionID: 6204d64d-7d22-41b5-abcd-94ddbb1ae3ac
