@@ -18289,7 +18289,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2188626570381399317, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -3058540.5
+      value: -3123028.5
       objectReference: {fileID: 0}
     - target: {fileID: 3745754139378678193, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -23930,7 +23930,7 @@ MonoBehaviour:
       data:
         playableDirector: {fileID: 1920218651}
         conversationObject: {fileID: 11400000, guid: 4b6ee03412c150445ae3155622a94dad, type: 2}
-        transcriptEntry: {fileID: 0}
+        transcriptEntry: {fileID: 11400000, guid: 3b2efcacc9f86db46b1c8df1536abba1, type: 2}
 --- !u!1001 &1580471922
 PrefabInstance:
   m_ObjectHideFlags: 0
