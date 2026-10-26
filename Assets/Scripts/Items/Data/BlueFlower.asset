@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: BlueFlower
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   itemName: Blue Flower
-  itemMesh: {fileID: 0}
-  itemMaterial: {fileID: 2100000, guid: 7e4ca95f9dbe8f04fb3f320aa3af3298, type: 2}
+  itemMesh: {fileID: -3367387088471862438, guid: 716967eaa4a5aed4c8b4bb66149ab96b, type: 3}
+  itemMaterial: {fileID: -4855376167854761719, guid: 5f189c63ccc1ddc47aec47b5b78b1c89, type: 3}

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: PinkFlower
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   itemName: Pink Flower
-  itemMesh: {fileID: 0}
-  itemMaterial: {fileID: 2100000, guid: d80fcd9afe2fd36458fdd78aeb1aa21c, type: 2}
+  itemMesh: {fileID: -119364882934372449, guid: 5f189c63ccc1ddc47aec47b5b78b1c89, type: 3}
+  itemMaterial: {fileID: -5966224508155034526, guid: edf00f72de68d2d4cb31b9e8a22dff52, type: 3}
