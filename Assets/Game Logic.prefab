@@ -1008,14 +1008,6 @@ PrefabInstance:
       propertyPath: groundMask.m_Bits
       value: 183
       objectReference: {fileID: 0}
-    - target: {fileID: 8329499723674985931, guid: 55242ecff7c19f7428695d905be0e6f9, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.15
-      objectReference: {fileID: 0}
-    - target: {fileID: 8329499723674985931, guid: 55242ecff7c19f7428695d905be0e6f9, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.12
-      objectReference: {fileID: 0}
     - target: {fileID: 8493531706250860071, guid: 55242ecff7c19f7428695d905be0e6f9, type: 3}
       propertyPath: m_LocalPosition.x
       value: -30.56
