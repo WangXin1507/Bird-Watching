@@ -15,3 +15,6 @@ MonoBehaviour:
   itemName: Yellow Flower
   itemMesh: {fileID: 1629751626127219779, guid: edf00f72de68d2d4cb31b9e8a22dff52, type: 3}
   itemMaterial: {fileID: -5649517544918255706, guid: 716967eaa4a5aed4c8b4bb66149ab96b, type: 3}
+  itemScale: {x: 0.125, y: 0.125, z: 0.125}
+  grabOffset: {x: 0, y: 0, z: 0}
+  grabRotation: {x: 90, y: 0, z: 90}

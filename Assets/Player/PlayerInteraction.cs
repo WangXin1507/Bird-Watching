@@ -139,10 +139,26 @@ public class PlayerInteraction : MonoBehaviour
         heldRb.useGravity = false;
 
         IGrabbable grabbable = heldRb.GetComponent<IGrabbable>();
+        ItemComponent itemComponent = heldRb.GetComponent<ItemComponent>();
+
+        Vector3 targetPos = pos.position;
+        Quaternion targetRot = grabbable.grabHandle.localRotation;
+
+        if (itemComponent && itemComponent.data)
+        {
+            targetPos += itemComponent.data.grabOffset;
+            targetRot *= Quaternion.Euler(itemComponent.data.grabRotation);
+        }
 
         heldRb.transform.SetParent(transform, true);
-        heldRb.transform.position = pos.position;
-        heldRb.transform.localRotation = grabbable.grabHandle.localRotation;
+        heldRb.transform.localRotation = targetRot;
+        heldRb.transform.position = targetPos;
+
+        if (heldCollider is BoxCollider box)
+        {
+            Vector3 objCenter = box.transform.TransformPoint(box.center);
+            heldRb.transform.position += pos.position - objCenter;
+        }
     }
 
     private void _StopHolding()

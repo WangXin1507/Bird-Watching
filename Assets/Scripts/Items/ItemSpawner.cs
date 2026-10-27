@@ -9,8 +9,6 @@ public class ItemSpawner : Interactable
     [SerializeField] private int maxItems = 10;
     private List<GameObject> spawnedItems = new List<GameObject>();
 
-    private static readonly int BaseTextureID = Shader.PropertyToID("_BaseTexture");
-
     public override void Interact()
     {
         Debug.Log("Interacted");
@@ -31,21 +29,41 @@ public class ItemSpawner : Interactable
             }
 
             GameObject newItem = Instantiate(itemBase);
+            newItem.transform.localScale = item.itemScale;
             newItem.name = item.itemName;
 
-            //MeshFilter meshFilter = newItem.GetComponent<MeshFilter>();
-            //meshFilter.mesh = item.itemMesh;
-            Texture tex = item.itemMaterial.mainTexture;
-            if (!tex)
+            if (item.itemMesh)
             {
-                Texture2D colorTex = new Texture2D(1, 1);
-                colorTex.SetPixel(0, 0, item.itemMaterial.color);
-                colorTex.Apply();
-                tex = colorTex;
+                Bounds bounds = GetTightBounds(item.itemMesh);
+
+                MeshFilter meshFilter = newItem.GetComponent<MeshFilter>();
+                meshFilter.sharedMesh = item.itemMesh;
+
+                meshFilter.mesh = item.itemMesh;
+
+                Vector3 meshSize = bounds.size;
+                Vector3 targetSize = item.itemScale;
+
+                float x = targetSize.x / meshSize.x;
+                float y = targetSize.y / meshSize.y;
+                float z = targetSize.z / meshSize.z;
+                float scale = Mathf.Min(x, y, z);
+
+                newItem.transform.localScale = Vector3.one * scale;
+
+                BoxCollider boxCollider = newItem.GetComponent<BoxCollider>();
+                boxCollider.center = bounds.center;
+                boxCollider.size = bounds.size;
             }
 
-            Material focusMaterial = newItem.GetComponent<MeshRenderer>().material;
-            focusMaterial.SetTexture(BaseTextureID, tex);
+            if (item.itemMaterial)
+            {
+                MeshRenderer meshRenderer = newItem.GetComponent<MeshRenderer>();
+                meshRenderer.material = item.itemMaterial;
+
+                Focusable focusable = newItem.GetComponent<Focusable>();
+                if (focusable) focusable.RefreshMaterials();
+            }
 
             ItemComponent itemComponent = newItem.GetComponent<ItemComponent>();
             itemComponent.data = item;
@@ -55,5 +73,32 @@ public class ItemSpawner : Interactable
 
             spawnedItems.Add(newItem);
         }
+    }
+
+    private Bounds GetTightBounds(Mesh mesh)
+    {
+        Vector3[] vertices = mesh.vertices;
+        bool foundVertex = false;
+        Bounds bounds = new Bounds();
+
+        for (int submesh = 0; submesh < mesh.subMeshCount; submesh++)
+        {
+            int[] indices = mesh.GetIndices(submesh);
+
+            foreach (int index in indices)
+            {
+                if (!foundVertex)
+                {
+                    bounds = new Bounds(vertices[index], Vector3.zero);
+                    foundVertex = true;
+                }
+                else
+                {
+                    bounds.Encapsulate(vertices[index]);
+                }
+            }
+        }
+
+        return bounds;
     }
 }

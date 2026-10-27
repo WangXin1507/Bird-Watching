@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf1e623bf2a75ed41859df11ea3ec0d9, type: 3}
   m_Name: BlueFlower
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
-  itemName: Blue Flower
+  itemName: Purple Flower
   itemMesh: {fileID: -3367387088471862438, guid: 716967eaa4a5aed4c8b4bb66149ab96b, type: 3}
   itemMaterial: {fileID: -4855376167854761719, guid: 5f189c63ccc1ddc47aec47b5b78b1c89, type: 3}
+  itemScale: {x: 0.125, y: 0.125, z: 0.125}
+  grabOffset: {x: 0, y: 0, z: 0}
+  grabRotation: {x: 90, y: 0, z: 90}
