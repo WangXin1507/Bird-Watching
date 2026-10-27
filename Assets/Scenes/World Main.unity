@@ -2161,6 +2161,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e796b118469669b449d1fe7769a0e884, type: 2}
   - {fileID: 11400000, guid: 7999c4bba18c4f849a9cc3343960619a, type: 2}
   mission: {fileID: 11400000, guid: 8a619ff05acad9d43a566640fcd02f31, type: 2}
+  slotContainer: {fileID: 0}
 --- !u!65 &165327233
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -18289,7 +18290,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2188626570381399317, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -3311567.8
+      value: -3468621.2
       objectReference: {fileID: 0}
     - target: {fileID: 3745754139378678193, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_LocalPosition.x
