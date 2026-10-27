@@ -166,7 +166,7 @@ MonoBehaviour:
   groundCheckRadius: 0.2
   groundCheckOffset: 0.3
   groundCheckDistance: 0.25
-  landingProbeDistance: 8
+  landingProbeDistance: 0
 --- !u!114 &2175892325222162732
 MonoBehaviour:
   m_ObjectHideFlags: 0
