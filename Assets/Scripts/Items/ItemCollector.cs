@@ -7,6 +7,7 @@ public class ItemCollector : Interactable
     [SerializeField] private List<ItemData> acceptableItems;
     [SerializeField] private List<ItemData> desiredItems;
     [SerializeField] private MissionData mission;
+    [SerializeField] private Transform slotContainer;
     
     private int totalItems = 0;
     private GameObject[] slots;
@@ -16,7 +17,7 @@ public class ItemCollector : Interactable
     {
         totalItems = desiredItems.Count;
 
-        foreach (Transform child in transform) {
+        foreach (Transform child in slotContainer) {
             itemPositions.Add(child);
         }
 
@@ -48,6 +49,7 @@ public class ItemCollector : Interactable
                     if (targetSlot != null)
                     {
                         playerItem.transform.position = targetSlot.position;
+                        playerItem.transform.rotation = targetSlot.rotation;
                     }
                     else
                     {

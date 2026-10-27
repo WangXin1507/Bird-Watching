@@ -85,7 +85,7 @@ namespace BirdWatching.Conversation
             for (lineInConvo = 0; lines != null && lineInConvo < lines.Count; lineInConvo++)
             {
                 var line = lines[lineInConvo];
-                character.SetCharacterSpeech(null, line.text);
+                character.SetCharacterSpeech(curConvo.charSprites[line.speaker], line.text);
 
                 RuntimeManager.StudioSystem.setParameterByName("PhoneVoice", line.isFromPhone ? 1 : 0);
 

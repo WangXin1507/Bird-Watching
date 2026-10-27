@@ -5,11 +5,11 @@ public class AnimationSound : MonoBehaviour
 {
     public void PlaySoundEffect(string path)
     {
-        if (GetComponent<Animator>().GetFloat("Speed") <= 0.5f)
+        if (path == "" || GetComponent<Animator>().GetFloat("Speed") <= 0.5f)
         {
             return;
         }
         EventReference audio = EventReference.Find(path);
-        AudioManager.PlayOneShot(audio, transform.position);
+        if (!audio.IsNull) AudioManager.PlayOneShot(audio, transform.position);
     }
 }

@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using Sirenix.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,6 +25,24 @@ public class Focusable : MonoBehaviour, IFocusable
         SetOutlineIntensity(0f);
     }
 
+    private void Start()
+    {
+        if (!highlightMaterial) return;
+        if (dynamicMaterials.Count == 0)
+        {
+            SetupDynamicMaterials();
+            SetOutlineIntensity(0f);
+        }
+    }
+
+    public void RefreshMaterials()
+    {
+        dynamicMaterials.Clear();
+        renderers = GetComponentsInChildren<Renderer>();
+        SetupDynamicMaterials();
+        SetOutlineIntensity(0f);
+    }
+
     private void SetupDynamicMaterials()
     {
         foreach (var rend in renderers)
@@ -35,13 +54,15 @@ public class Focusable : MonoBehaviour, IFocusable
 
                 // Get the original texture
                 Texture tex = null;
-                if (originalMat.HasTexture("_BaseColorMap"))
+                if (originalMat.HasTexture("_DiffuseColorMap"))
+                    tex = originalMat.GetTexture("_DiffuseColorMap");
+                else if (originalMat.HasTexture("_BaseColorMap"))
                     tex = originalMat.GetTexture("_BaseColorMap");
                 else if (originalMat.HasTexture("_MainTex"))
                     tex = originalMat.GetTexture("_MainTex");
 
-                // If there is no default texture (color only material), then make it a texture
-                if (tex == null && originalMat.HasColor("_BaseColor"))
+                // If there is no default texture (color only material), mostly for testing
+                if (!tex && originalMat.HasColor("_BaseColor"))
                 {
                     Color solidColor = originalMat.GetColor("_BaseColor");
 
@@ -52,10 +73,7 @@ public class Focusable : MonoBehaviour, IFocusable
                 }
 
                 // Give the original texture to the highlight material
-                if (tex != null)
-                {
-                    dynamicMat.SetTexture(BaseTextureID, tex);
-                }
+                dynamicMat.SetTexture(BaseTextureID, tex);
 
                 rend.material = dynamicMat;
                 dynamicMaterials.Add(rend.material);
