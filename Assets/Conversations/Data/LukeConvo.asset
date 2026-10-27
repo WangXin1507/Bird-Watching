@@ -17,6 +17,7 @@ MonoBehaviour:
     SerializedBytes: 
     ReferencedUnityObjects:
     - {fileID: 21300000, guid: fa98672c5462f0746bbca5146c9c37e7, type: 3}
+    - {fileID: 21300000, guid: a8fe74ace8ac0c4419f1ca5d26c00a00, type: 3}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -56,7 +57,7 @@ MonoBehaviour:
       Data: Friend
     - Name: $v
       Entry: 10
-      Data: 0
+      Data: 1
     - Name: 
       Entry: 8
       Data: 
