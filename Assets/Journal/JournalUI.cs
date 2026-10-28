@@ -91,6 +91,7 @@ public class JournalUI : MonoBehaviour
     {
         PlayerID.LockMovement();
         Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         
         gameObject.GetComponent<Canvas>().enabled = true;
         AudioManager.PlayOneShot(AudioEvents.Journal.JournalOpen);
@@ -104,6 +105,7 @@ public class JournalUI : MonoBehaviour
         PlayerID.UnlockMovement();
         
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         
         gameObject.GetComponent<Canvas>().enabled = false;
         AudioManager.PlayOneShot(AudioEvents.Journal.JournalClose);

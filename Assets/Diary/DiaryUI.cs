@@ -35,6 +35,7 @@ public class DiaryUI : MonoBehaviour
         
         PlayerID.LockMovement();
         Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         
         gameObject.GetComponent<Canvas>().enabled = true;
         
@@ -64,6 +65,7 @@ public class DiaryUI : MonoBehaviour
             PlayerID.UnlockMovement();
         
             Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
         
         gameObject.GetComponent<Canvas>().enabled = false;

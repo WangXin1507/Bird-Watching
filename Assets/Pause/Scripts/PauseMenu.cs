@@ -24,6 +24,7 @@ public class PauseMenu : MonoBehaviour
         canvas.enabled = true;
         Time.timeScale = 0;
         Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
     
     private void Resume()
@@ -31,6 +32,7 @@ public class PauseMenu : MonoBehaviour
         canvas.enabled = false;
         Time.timeScale = 1;
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     private void PauseGame()
