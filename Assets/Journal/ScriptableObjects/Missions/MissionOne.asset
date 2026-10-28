@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MissionOne
   m_EditorClassIdentifier: Assembly-CSharp::MissionData
   missionName: Mission One
-  missionPicture: {fileID: 0}
+  missionPicture: {fileID: 21300000, guid: 6f3c3565105f6a64b9707d96082b6cff, type: 3}
   trinket: {fileID: 21300000, guid: 7a73e8754d199884fb61ecce68e9ecbd, type: 3}
   transcripts:
   - {fileID: 11400000, guid: 3b2efcacc9f86db46b1c8df1536abba1, type: 2}
