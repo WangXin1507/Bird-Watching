@@ -24,6 +24,9 @@ public class ItemCollector : Interactable
         slots = new GameObject[totalItems];
     }
 
+    /*
+     * Interactable behavior
+     */
     public override void Interact()
     {
         Transform playerItem = PlayerID.playerInteraction.holding;
@@ -73,12 +76,15 @@ public class ItemCollector : Interactable
         }
     }
 
+    /*
+     * Evaluate the items for the mission
+     */
     private void _EvaluateItems()
     {
         if (_CompareItemLists())
         {
             
-            Debug.Log("QUEST LOGIC GOES HERE");
+            Debug.Log("Completed mission");
             Journal.Instance.CompleteMission(mission);
         }
         else
@@ -89,6 +95,9 @@ public class ItemCollector : Interactable
         }
     }
 
+    /*
+     * Find the first index of an empty slot
+     */
     private int _FirstEmptySlotIndex()
     {
         for (int i = 0; i < slots.Length; i++)
@@ -98,6 +107,9 @@ public class ItemCollector : Interactable
         return -1;
     }
 
+    /*
+     *  Return the number of items currently in the slots
+     */
     private int GetItemCount()
     {
         int count = 0;
@@ -108,6 +120,9 @@ public class ItemCollector : Interactable
         return count;
     }
 
+    /*
+     * Verify the current items in the slots against the desired items by counting for an unordered match
+     */
     private bool _CompareItemLists()
     {
         List<ItemData> currentItemData = new List<ItemData>();
@@ -142,6 +157,9 @@ public class ItemCollector : Interactable
         return true;
     }
 
+    /*
+     * Clear the current items from the slots
+     */
     private void DestroyItems()
     {
         for (int i = 0; i < slots.Length; i++)
@@ -154,6 +172,9 @@ public class ItemCollector : Interactable
         }
     }
 
+    /*
+     * Give the player an item from the most previously used slot
+     */
     private void _GiveItem()
     {
         int lastIndex = -1;
