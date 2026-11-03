@@ -162,26 +162,37 @@ namespace UnityEditor.Importer.USD
         /// </summary>
         private Texture CreateTexture(string textureName, byte[] textureRawData)
         {
-            var texture = new Texture2D(1, 1);
-            if (!texture.LoadImage(textureRawData))
-                return null;
-
-            //We are not using 'texture.GetRawTextureData<Color32>()' because the Color32 conversion can lead to swapped channels
-            //(if texture is ARGB instead of RGBA like Color32)
-            using var natColor32 = new NativeArray<Color32>(texture.GetPixels32(), Allocator.Temp);
-            var importSetting = Input.textureSettings;
-            importSetting.sourceTextureInformation = new SourceTextureInformation
+            // Scratch texture holding the decoded source image. LoadImage allocates it at the full
+            // source resolution and uncompressed, which also puts a copy in VRAM. It has to be
+            // released as soon as its pixels are handed to the generator, otherwise one
+            // full-resolution uncompressed copy per texture stays resident for the whole import.
+            var sourceTexture = new Texture2D(1, 1);
+            try
             {
-                width = texture.width,
-                height = texture.height
-            };
+                if (!sourceTexture.LoadImage(textureRawData))
+                    return null;
 
-            // Do not remove this line. We do not want AssetPostprocessors to have side effects
-            // on the USD importer or any importer that would use this Node.
-            importSetting.enablePostProcessor = false;
-            var textureGeneration = TextureGenerator.GenerateTexture(importSetting, natColor32);
-            textureGeneration.output.name = textureName;
-            return textureGeneration.output;
+                //We are not using 'texture.GetRawTextureData<Color32>()' because the Color32 conversion can lead to swapped channels
+                //(if texture is ARGB instead of RGBA like Color32)
+                using var natColor32 = new NativeArray<Color32>(sourceTexture.GetPixels32(), Allocator.Temp);
+                var importSetting = Input.textureSettings;
+                importSetting.sourceTextureInformation = new SourceTextureInformation
+                {
+                    width = sourceTexture.width,
+                    height = sourceTexture.height
+                };
+
+                // Do not remove this line. We do not want AssetPostprocessors to have side effects
+                // on the USD importer or any importer that would use this Node.
+                importSetting.enablePostProcessor = false;
+                var textureGeneration = TextureGenerator.GenerateTexture(importSetting, natColor32);
+                textureGeneration.output.name = textureName;
+                return textureGeneration.output;
+            }
+            finally
+            {
+                UnityEngine.Object.DestroyImmediate(sourceTexture);
+            }
         }
 
         private class UsdZipFileCacheEntry : IDisposable
