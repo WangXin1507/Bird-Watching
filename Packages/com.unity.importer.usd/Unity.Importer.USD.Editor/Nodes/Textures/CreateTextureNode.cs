@@ -174,7 +174,11 @@ namespace UnityEditor.Importer.USD
 
                 //We are not using 'texture.GetRawTextureData<Color32>()' because the Color32 conversion can lead to swapped channels
                 //(if texture is ARGB instead of RGBA like Color32)
-                using var natColor32 = new NativeArray<Color32>(sourceTexture.GetPixels32(), Allocator.Temp);
+                // Allocator.Persistent, not Temp: this array is sized by the full source resolution, and
+                // the whole import runs inside a single frame. Temp is a bump allocator that is only
+                // rewound at the end of the frame, so one entry per texture accumulated there and the
+                // block kept doubling until the allocation failed. Persistent is released by the using.
+                using var natColor32 = new NativeArray<Color32>(sourceTexture.GetPixels32(), Allocator.Persistent);
                 var importSetting = Input.textureSettings;
                 importSetting.sourceTextureInformation = new SourceTextureInformation
                 {
