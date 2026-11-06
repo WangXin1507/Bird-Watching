@@ -9,12 +9,15 @@ Unity-SaveSystem, Unity-QuestSystem) build on.
 | `Logic/` | Composable conditions (`ICondition<T>`, And / Or / Not), plus the facts conditions read (below) |
 | `Ids/` | Stable asset ids, the asset catalog (below) |
 | `Inspector/` | `[SubclassPicker]`, a type menu for `[SerializeReference]` fields (below) |
-| `Modifiers/`, `Rules/`, `Timers/`, `Scheduling/`, `PushdownAutomata/`, `Singleton/`, `EntityComponent/`, `Patterns/`, `Utils/`, `Other/` | Modifiers and mediators, rules, timers, a priority queue, a stack state machine, singletons, an entity/component base, patterns, utilities |
+| `Menus/` | `ToolMenus`: where every Privnoval tool puts its menu entries (one Privnoval heading in the Tools, Create and Add Component menus) |
+| `Properties/` | `AssemblyInfo`: the internals the Editor and test assemblies may see |
+| `Modifiers/`, `Rules/`, `Timers/`, `Scheduling/`, `PushdownAutomata/`, `Singleton/`, `EntityComponent/`, `Patterns/`, `Utils/`, `Other/` | Modifiers and mediators, rules, timers, a priority queue, a stack state machine, singletons, an entity/component base, patterns, utilities (among them `CollectionUtil.Has`, whether a list holds this exact object, by reference and allocating nothing, `EaseUtil.Damp` / `DampAngle`, and `CommandLineUtil.ValueOf` / `Has` for `-flag value` arguments) |
 
 Assemblies:
 
 - `Extensions` (auto-referenced);
-- `Extensions.Editor` (editor only: the id tooling and the type picker's drawer);
+- `Extensions.Editor` (editor only: the id tooling, the type picker's drawer, and `AssetQuery`: `All<T>` and `First<T>` find
+  a type's assets, in given folders or anywhere, and `EnsureFolder` makes a folder and its missing parents);
 - `Extensions.Tests` (EditMode tests, compiled only with tests included).
 
 ## Conditions and facts

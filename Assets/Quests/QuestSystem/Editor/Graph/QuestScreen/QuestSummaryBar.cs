@@ -48,8 +48,9 @@ namespace QuestSystem.EditorTools
             AddRefs("Needs", summary.Reads.Where(link => LinkSlots.GatesAvailability(link.Slot) && link.Read != quest)
                 .Select(link => (link.Read, link.ReadStepId == null ? link.StateName : "step " + link.StateName)));
             AddRefs("Fails if", summary.Reads.Where(link => link.Slot == LinkSlot.Fails && link.Read != quest).Select(link => (link.Read, link.StateName)));
+            AddRefs("Expires if", summary.Reads.Where(link => link.Slot == LinkSlot.Expires && link.Read != quest).Select(link => (link.Read, link.StateName)));
             AddRefs("Read by", readers.Where(link => link.Reader != quest && link.ReadStepId == null).Select(link => (link.Reader, link.Label)));
-            if (quest.Rewards.Count > 0) AddField("Rewards", string.Join(" · ", quest.Rewards.Where(reward => reward != null).Select(reward => reward.Describe().Text)));
+            if (quest.Rewards.Count > 0) AddField("Rewards", string.Join(", ", quest.Rewards.Where(reward => reward != null).Select(reward => reward.Describe().Text)));
             if (quest.GivenAutomatically) AddPill("Auto-given");
             if (quest.Repeatable) AddPill("Repeatable");
             if (summary.Unreadable > 0)

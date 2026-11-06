@@ -17,7 +17,7 @@ Version 2; version 1 is kept on the `v1` branch and the `v1.0.0` tag.
 |---|---|---|
 | `QuestSystem` | `Runtime/` | Definitions, the quest service, trackers, conditions, events, scene triggers and reactions |
 | `QuestSystem.Saving` | `Saving/` | `QuestSaveSection`, for Unity-SaveSystem |
-| `QuestSystem.Editor` | `Editor/` | The quest graph (`Graph/`), the quest Inspector and step picker (`Inspector/`), validation and its build check (`Validation/`) |
+| `QuestSystem.Editor` | `Editor/` | The quest graph (`Graph/`), the quest Inspector, the step picker and the asset picker (`Inspector/`), validation and its build check (`Validation/`) |
 | `QuestSystem.Tests` | `Tests/` | EditMode tests |
 
 None is auto-referenced.
@@ -26,18 +26,21 @@ None is auto-referenced.
 
 | Asset or type | What it is |
 |---|---|
-| **`QuestDefinition`** (*Create > Privnoval > Quest System > Quest*) | A quest: title, summary, kind, order within its kind, giver and place, suggested level, steps, rewards, and when it can be given or fails. Repeatable or not; hidden until given or not |
+| **`QuestDefinition`** (*Create > Privnoval > Quest System > Quest*) | A quest: title, summary, kind, order within its kind, giver and place, suggested level, steps, rewards, and when it can be given, fails or runs out (*Expire When*: it ends as Expired, with no rewards; failing wins if both hold at once), with an optional line for players saying why it failed or ran out. Repeatable or not; hidden until given or not |
 | **`QuestStep`** (inside the quest) | A stage. It starts after the step above, after its linked steps, or with the quest (below). It completes when all its required objectives are done, or any one. It can fail, which fails the quest. It can end the quest |
 | **`QuestObjective`** (inside a step) | One thing a step asks for, counted by a tracker up to a target. Optional (bonus) objectives never hold a step back |
 | **`StoryFlag`** (*Create > Privnoval > Quest System > Story Flag*) | A whole number about the story, 0 when unset. Set by quests and the game, read by conditions and trackers |
 | **`QuestSignal`** (*Create > Privnoval > Quest System > Quest Signal*) | Something that happens: a wolf defeated, a place reached. Raised by game code or a `QuestTrigger` |
-| **`QuestKind`** (*Create > Privnoval > Quest System > Quest Kind*) | Main story, errand, and so on, with an order. A game lists quests by kind |
+| **`QuestKind`** (*Create > Privnoval > Quest System > Quest Kind*) | Main story, errand, and so on, with an order and a name for one quest of the kind (*Side Quest* beside *Side Quests*). A game lists quests by kind |
 
 **Ids.** Steps and objectives get ids the editor assigns, unique in their quest; a duplicated step gets fresh ones.
 Quests, kinds and flags get asset ids from Extensions. Saves point at ids, so renaming anything is safe.
 
-**Givers and places** are any assets the game makes that implement `IDisplayNamed` (a character, a town). The
-quest only asks for their display name.
+**Givers and places** are assets the game makes in those roles: a giver implements `IQuestGiverAsset` (a person, a
+guild), a place `IQuestPlaceAsset` (a town, a shrine); both are `IDisplayNamed`, and the quest only asks for their
+display name. The Inspector and the quest graph's bulk edit offer a menu of only the assets in the role (with a button
+showing the chosen one in the Project window); an asset in neither role is refused. `[AssetPicker(typeof(T))]` gives
+any asset field that menu, for a type or an interface.
 
 **When a step starts** (its start rule):
 
@@ -99,6 +102,13 @@ quests.SetFlag(metTheSmith, 1);
 quests.SetActive(smithQuest);         // the quest the player follows
 ```
 
+When a load restores other systems before the quests (a bag, a wallet), hold the quests still around it, so a quest
+of the game being left can't move on, or give its rewards, on the next game's facts:
+
+```csharp
+using (quests.Hold()) await slots.LoadAsync(slot);   // letting go checks every quest once
+```
+
 ### Signal payloads
 
 A signal can carry what it says about the moment, so one signal serves many objectives: "foe defeated" with the
@@ -128,7 +138,7 @@ fails any condition that needs one. The payload lives only for that raise.
   - `QuestGivenEvent`;
   - `StepChangedEvent` (started, done, failed);
   - `ObjectiveProgressedEvent`;
-  - `QuestEndedEvent` (done or failed);
+  - `QuestEndedEvent` (done, failed or expired);
   - `FlagChangedEvent`;
   - `ActiveQuestChangedEvent`.
 - **Rewards** implement `IQuestReward` in the game (items, money, a bond rank) and are granted once per completion,

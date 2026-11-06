@@ -44,6 +44,7 @@ namespace QuestSystem.EditorTools
             var scan = new Scan(quest);
             scan.Condition(quest.AvailableWhen, LinkSlot.Available, null);
             scan.Condition(quest.FailWhen, LinkSlot.Fails, null);
+            scan.Condition(quest.ExpireWhen, LinkSlot.Expires, null);
             foreach (var step in quest.Steps)
             {
                 if (step == null) continue;

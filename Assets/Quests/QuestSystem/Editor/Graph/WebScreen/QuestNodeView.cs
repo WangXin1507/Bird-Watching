@@ -65,7 +65,7 @@ namespace QuestSystem.EditorTools
             if (summary?.Warnings > 0) head.Add(Badge(summary.Warnings, QuestIssueLevel.Warning, summary));
             Add(head);
 
-            var facts = new Label(string.Join("  ·  ", Facts(quest)));
+            var facts = new Label(string.Join("    ", Facts(quest)));
             facts.AddToClassList("quest-graph__quest-facts");
             Add(facts);
 

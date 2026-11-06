@@ -15,7 +15,7 @@ namespace QuestSystem.EditorTools
         /** <summary>What the reading asks for: "needs done", "fails if done", "needs step done".</summary> */
         public string Label { get; }
 
-        /** <summary>True when the reading can fail the quest.</summary> */
+        /** <summary>True when the reading can end the quest unrewarded: fail it or make it run out.</summary> */
         public bool Fails { get; }
 
         /** <summary>Makes a link.</summary> */
@@ -45,8 +45,8 @@ namespace QuestSystem.EditorTools
                 foreach (var pair in summary.Reads.Where(link => link.Read != reader && known.Contains(link.Read)).GroupBy(link => link.Read))
                 {
                     var labels = pair.Select(link => link.Label).Distinct().ToList();
-                    var label = labels.Count <= 2 ? string.Join(" · ", labels) : $"{labels[0]} · +{labels.Count - 1}";
-                    links.Add(new WebLink(pair.Key, reader, label, pair.Any(link => LinkSlots.Fails(link.Slot))));
+                    var label = labels.Count <= 2 ? string.Join(", ", labels) : $"{labels[0]}, +{labels.Count - 1}";
+                    links.Add(new WebLink(pair.Key, reader, label, pair.Any(link => LinkSlots.EndsUnrewarded(link.Slot))));
                 }
             }
             return links;

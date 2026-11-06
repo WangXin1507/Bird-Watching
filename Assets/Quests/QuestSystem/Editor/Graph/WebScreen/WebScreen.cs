@@ -105,7 +105,6 @@ namespace QuestSystem.EditorTools
             _bar.OnFiltersChanged += ApplyFilters;
             _bar.OnViewChanged += Rebuild;
             _bulk.OnEdited += AfterEdit;
-            _bulk.OnRefused += () => _notice.Show("That asset has no display name to show.", false);
             _canvas.OnBackgroundClicked += (_, additive) =>
             {
                 if (!additive) Select(Array.Empty<QuestDefinition>(), null);

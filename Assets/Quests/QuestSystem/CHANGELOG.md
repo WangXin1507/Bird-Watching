@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+- Givers and places have roles: `IQuestGiverAsset` and `IQuestPlaceAsset` (both `IDisplayNamed`). A quest refuses an
+  asset that isn't in the role, a named one included (a quest kind is no giver). `QuestDefinition.Giver` and `Place`
+  read as the roles. Breaking: a game's giver and place assets implement the roles instead of `IDisplayNamed`;
+  `DisplayNames.As` and `IsNamedOrEmpty` became `As<T>` and `Fits<T>`.
+- `[AssetPicker(typeof(T))]`: an asset field drawn as a menu of only the assets of a type or interface, with a
+  button showing the chosen one. The quest's giver and place use it, and so does the quest graph's bulk edit.
+- The quest graph's bulk edit shows the selected quests' shared kind; it showed the kind before it (or none for the first).
+- `QuestService.Hold()`: holds the quests still while the world they read is replaced (a load restoring other
+  systems before the quests, a new game); changes heard meanwhile are dropped, and letting go checks every quest once.
+- Quests can run out: *Expire When* beside *Fail When* ends an active quest as `QuestState.Expired` (saved as 4), with
+  no rewards; failing wins if both hold at once, and a repeatable quest can be given again after it. Optional
+  *Failed Text* and *Expired Text* say why, for players. The graph draws an expiry link ("expires if") as it draws
+  a failing one.
+- `QuestKind.NameForOne`: the name for one quest of the kind; the kind's name when unset.
 - Saved flags are written in id order, so the same state always saves the same; the save data classes are kept from IL2CPP stripping.
 - `QuestDefinition.Configure` is public, so other assemblies can build quests in code (generated quests, tests).
 - Menus moved under one Privnoval heading: *Tools > Privnoval > Quest System* (Quest Graph, Validate Quests),

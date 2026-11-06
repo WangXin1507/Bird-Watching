@@ -32,6 +32,9 @@ namespace QuestSystem
         [Tooltip("The kind's name as players see it.")]
         [SerializeField] private string displayName;
 
+        [Tooltip("The name for one quest of the kind (Side Quest, beside Side Quests). Empty: the kind's name.")]
+        [SerializeField] private string nameForOne;
+
         [Tooltip("Where this kind sits among the others: lower comes first.")]
         [SerializeField] private int order;
 
@@ -47,6 +50,9 @@ namespace QuestSystem
 
         /** <inheritdoc /> */
         public string DisplayName => displayName;
+
+        /** <summary>The name for one quest of the kind; the kind's name when unset (its asset's name without one).</summary> */
+        public string NameForOne => string.IsNullOrEmpty(nameForOne) ? QuestStates.NameOf(this) : nameForOne;
 
         /** <summary>Where this kind sits among the others: lower comes first.</summary> */
         public int Order => order;

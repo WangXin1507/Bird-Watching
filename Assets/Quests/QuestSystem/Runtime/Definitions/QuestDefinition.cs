@@ -8,7 +8,7 @@ using Object = UnityEngine.Object;
 
 namespace QuestSystem
 {
-    /** <summary>A quest: who gives it and where, its steps, what it rewards, and when it can be given or fails.</summary> */
+    /** <summary>A quest: who gives it and where, its steps, what it rewards, and when it can be given, fails or runs out.</summary> */
     [CreateAssetMenu(menuName = QuestMenus.Create + "Quest", fileName = "Quest")]
     public sealed class QuestDefinition : ScriptableObject, IIdentifiedAsset, IConditionSubject
     {
@@ -27,10 +27,12 @@ namespace QuestSystem
         [Tooltip("The kind of quest, which decides where it is listed.")]
         [SerializeField] private QuestKind kind;
 
-        [Tooltip("Who gives the quest: any asset with a display name. Optional.")]
+        [Tooltip("Who gives the quest: one of the game's quest givers (a person). Optional.")]
+        [AssetPicker(typeof(IQuestGiverAsset))]
         [SerializeField] private Object giver;
 
-        [Tooltip("Where the quest is given: any asset with a display name. Optional.")]
+        [Tooltip("Where the quest is given: one of the game's quest places. Optional.")]
+        [AssetPicker(typeof(IQuestPlaceAsset))]
         [SerializeField] private Object place;
 
         [Tooltip("Where the quest sits among others of its kind: lower comes first.")]
@@ -54,6 +56,17 @@ namespace QuestSystem
 
         [Tooltip("When the quest fails. Empty: it can't fail, except through a step.")]
         [SerializeReference, SubclassPicker] private ICondition<IFacts> failWhen;
+
+        [Tooltip("Why it failed, as players see it once it has. Optional.")]
+        [TextArea(1, 4)]
+        [SerializeField] private string failedText;
+
+        [Tooltip("When the quest runs out: it ends as Expired, with no rewards. Empty: it can't. Failing wins if both hold at once.")]
+        [SerializeReference, SubclassPicker] private ICondition<IFacts> expireWhen;
+
+        [Tooltip("Why it ran out, as players see it once it has. Optional.")]
+        [TextArea(1, 4)]
+        [SerializeField] private string expiredText;
 
         [Tooltip("The quest's steps. Order matters for steps that start after the step above.")]
         [SerializeField] private List<QuestStep> steps = new List<QuestStep>();
@@ -90,10 +103,10 @@ namespace QuestSystem
         public QuestKind Kind => kind;
 
         /** <summary>Who gives it; null when unset. A game's own asset type, so a portrait or a map pin can come from it.</summary> */
-        public IDisplayNamed Giver => DisplayNames.As(giver);
+        public IQuestGiverAsset Giver => DisplayNames.As<IQuestGiverAsset>(giver);
 
         /** <summary>Where it is given; null when unset.</summary> */
-        public IDisplayNamed Place => DisplayNames.As(place);
+        public IQuestPlaceAsset Place => DisplayNames.As<IQuestPlaceAsset>(place);
 
         /** <summary>Where it sits among others of its kind: lower comes first.</summary> */
         public int Order => order;
@@ -115,6 +128,23 @@ namespace QuestSystem
 
         /** <summary>When it fails; null means never, except through a step.</summary> */
         public ICondition<IFacts> FailWhen => failWhen;
+
+        /** <summary>Why it failed, as players see it; empty for none.</summary> */
+        public string FailedText => failedText ?? string.Empty;
+
+        /** <summary>Why it ended in <paramref name="state" />, as players see it: its failed or expired text; empty for any other state.</summary> */
+        public string EndTextFor(QuestState state) => state switch
+        {
+            QuestState.Failed => FailedText,
+            QuestState.Expired => ExpiredText,
+            _ => string.Empty,
+        };
+
+        /** <summary>When it runs out; null means never.</summary> */
+        public ICondition<IFacts> ExpireWhen => expireWhen;
+
+        /** <summary>Why it ran out, as players see it; empty for none.</summary> */
+        public string ExpiredText => expiredText ?? string.Empty;
 
         /** <summary>The steps, in order.</summary> */
         public IReadOnlyList<QuestStep> Steps => steps;
@@ -144,8 +174,8 @@ namespace QuestSystem
         private void OnValidate()
         {
             AssignMissingIds();
-            if (!DisplayNames.IsNamedOrEmpty(giver)) giver = null;
-            if (!DisplayNames.IsNamedOrEmpty(place)) place = null;
+            if (!DisplayNames.Fits<IQuestGiverAsset>(giver)) giver = null;
+            if (!DisplayNames.Fits<IQuestPlaceAsset>(place)) place = null;
         }
 
         #endregion
@@ -159,6 +189,7 @@ namespace QuestSystem
             rewards = new List<IQuestReward>(settings.Rewards ?? Array.Empty<IQuestReward>());
             availableWhen = settings.AvailableWhen;
             failWhen = settings.FailWhen;
+            expireWhen = settings.ExpireWhen;
             givenAutomatically = settings.GivenAutomatically;
             repeatable = settings.Repeatable;
             hiddenUntilGiven = settings.HiddenUntilGiven;
@@ -189,10 +220,10 @@ namespace QuestSystem
         internal void SetKind(QuestKind questKind) => kind = questKind;
 
         /** <summary>Sets who gives the quest, for editor tools; an asset that isn't display-named clears it.</summary> */
-        internal void SetGiver(Object asset) => giver = DisplayNames.IsNamedOrEmpty(asset) ? asset : null;
+        internal void SetGiver(Object asset) => giver = DisplayNames.Fits<IQuestGiverAsset>(asset) ? asset : null;
 
         /** <summary>Sets where the quest is given, for editor tools; an asset that isn't display-named clears it.</summary> */
-        internal void SetPlace(Object asset) => place = DisplayNames.IsNamedOrEmpty(asset) ? asset : null;
+        internal void SetPlace(Object asset) => place = DisplayNames.Fits<IQuestPlaceAsset>(asset) ? asset : null;
 
         /** <summary>Sets the quest's title, for editor tools.</summary> */
         internal void SetTitle(string questTitle) => title = questTitle;
@@ -268,6 +299,9 @@ namespace QuestSystem
 
         /** <summary>When it fails.</summary> */
         public ICondition<IFacts> FailWhen;
+
+        /** <summary>When it runs out.</summary> */
+        public ICondition<IFacts> ExpireWhen;
 
         /** <summary>True when it can be given again.</summary> */
         public bool Repeatable;

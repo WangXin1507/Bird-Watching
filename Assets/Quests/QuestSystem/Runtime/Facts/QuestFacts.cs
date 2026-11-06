@@ -11,6 +11,8 @@ namespace QuestSystem
         Done = 2,
         /** <summary>Failed.</summary> */
         Failed = 3,
+        /** <summary>Ran out: its Expire When held before it was done. A repeatable quest can be given again.</summary> */
+        Expired = 4,
     }
 
     /** <summary>A step's state.</summary> */

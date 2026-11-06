@@ -87,13 +87,13 @@ namespace QuestSystem.EditorTools
         /** <summary>Sets several quests' kind, as one Undo step.</summary> */
         public static void SetKind(IEnumerable<QuestDefinition> quests, QuestKind kind) => ChangeEach("Set Kind", quests, quest => quest.SetKind(kind));
 
-        /** <summary>Sets several quests' giver, as one Undo step; an asset without a display name is refused.</summary> */
+        /** <summary>Sets several quests' giver, as one Undo step; an asset that isn't a quest giver is refused.</summary> */
         public static bool SetGiver(IEnumerable<QuestDefinition> quests, Object giver) =>
-            DisplayNames.IsNamedOrEmpty(giver) && ChangeEach("Set Giver", quests, quest => quest.SetGiver(giver));
+            DisplayNames.Fits<IQuestGiverAsset>(giver) && ChangeEach("Set Giver", quests, quest => quest.SetGiver(giver));
 
-        /** <summary>Sets several quests' place, as one Undo step; an asset without a display name is refused.</summary> */
+        /** <summary>Sets several quests' place, as one Undo step; an asset that isn't a quest place is refused.</summary> */
         public static bool SetPlace(IEnumerable<QuestDefinition> quests, Object place) =>
-            DisplayNames.IsNamedOrEmpty(place) && ChangeEach("Set Place", quests, quest => quest.SetPlace(place));
+            DisplayNames.Fits<IQuestPlaceAsset>(place) && ChangeEach("Set Place", quests, quest => quest.SetPlace(place));
 
         /** <summary>Creates a quest asset in a folder, pinned at a web position. Undo removes it.</summary> */
         public static QuestDefinition CreateQuest(string folder, string title, QuestKind kind, Vector2 position)

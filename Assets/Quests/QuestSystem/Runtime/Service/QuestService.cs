@@ -60,6 +60,7 @@ namespace QuestSystem
         private readonly Queue<IConditionSubject> _changes = new Queue<IConditionSubject>();
         private bool _settling;
         private bool _disposed;
+        private int _holds;
         private long _order;
 
         #endregion
@@ -156,6 +157,18 @@ namespace QuestSystem
         /** <summary>True when players may see the step: it started, or it isn't hidden until then.</summary> */
         public bool IsVisible(QuestDefinition quest, QuestStep step) => step != null && (!step.HiddenUntilReached || StateOf(quest, step.Id) != StepState.Locked);
 
+        /**
+         * <summary>Holds the quests still while the world they read is replaced (a load restoring the bag before the
+         * quests, a new game): changes heard meanwhile are dropped, so a quest of the game being left can't move on (or
+         * give its rewards) on the next game's facts. Letting go of the last hold checks every quest once.</summary>
+         * <returns>What lets go; disposing it twice lets go once.</returns>
+         */
+        public IDisposable Hold()
+        {
+            _holds++;
+            return new QuestHold(this);
+        }
+
         /** <summary>Gives a quest, if it is available.</summary> <returns>True when it was given.</returns> */
         public bool Give(QuestDefinition quest)
         {
@@ -234,7 +247,11 @@ namespace QuestSystem
         {
             var data = new QuestSaveData { ActiveQuest = ActiveQuest != null && !ActiveQuest.AssetId.IsEmpty ? ActiveQuest.AssetId.Value : null };
             foreach (var record in _records)
-                if (!record.Definition.AssetId.IsEmpty && (record.State != QuestState.NotGiven || record.Completions > 0)) data.Quests.Add(record.ToEntry());
+            {
+                if (record.State == QuestState.NotGiven && record.Completions == 0) continue;
+                if (!record.Definition.AssetId.IsEmpty) data.Quests.Add(record.ToEntry());
+                else Debug.LogWarning($"Quests: {record.Definition.name} has no asset id, so its progress isn't saved.", record.Definition);
+            }
             data.Quests.AddRange(_unknownQuests);
             foreach (var pair in _flags)
                 if (!pair.Key.AssetId.IsEmpty) data.Flags.Add(new FlagEntry { Flag = pair.Key.AssetId.Value, Value = pair.Value });
@@ -270,6 +287,7 @@ namespace QuestSystem
 
         private void HandleSubjectChanged(IConditionSubject subject)
         {
+            if (_holds > 0) return;
             _changes.Enqueue(subject);
             Settle();
         }
@@ -277,6 +295,26 @@ namespace QuestSystem
         #endregion
 
         #region Helpers
+
+        private void LetGo()
+        {
+            if (_holds == 0 || --_holds > 0 || _disposed) return;
+            CheckAll();
+        }
+
+        /** <summary>One hold on the service, let go once.</summary> */
+        private sealed class QuestHold : IDisposable
+        {
+            private QuestService _service;
+
+            public QuestHold(QuestService service) => _service = service;
+
+            public void Dispose()
+            {
+                _service?.LetGo();
+                _service = null;
+            }
+        }
 
         private QuestRecord Find(QuestDefinition quest) => quest != null && _byQuest.TryGetValue(quest, out var record) ? record : null;
 
@@ -296,7 +334,8 @@ namespace QuestSystem
         {
             var quest = record.Definition;
             var subjects = new HashSet<IConditionSubject>();
-            var known = ConditionSubjects.TryCollect(quest.AvailableWhen, subjects) & ConditionSubjects.TryCollect(quest.FailWhen, subjects);
+            var known = ConditionSubjects.TryCollect(quest.AvailableWhen, subjects) & ConditionSubjects.TryCollect(quest.FailWhen, subjects)
+                & ConditionSubjects.TryCollect(quest.ExpireWhen, subjects);
             foreach (var step in record.Steps)
                 known &= ConditionSubjects.TryCollect(step.Definition.UnlockWhen, subjects) & ConditionSubjects.TryCollect(step.Definition.FailWhen, subjects);
             foreach (var objective in record.Objectives)
@@ -434,6 +473,8 @@ namespace QuestSystem
                 return;
             }
             CheckFailure(record, subject);
+            if (record.State != QuestState.Active) return;
+            CheckExpiry(record, subject);
         }
 
         private void AdvanceSteps(QuestRecord record, IConditionSubject subject)
@@ -465,6 +506,12 @@ namespace QuestSystem
                 Fail(record);
                 return;
             }
+        }
+
+        private void CheckExpiry(QuestRecord record, IConditionSubject subject)
+        {
+            var quest = record.Definition;
+            if (Reads(quest.ExpireWhen, subject) && quest.ExpireWhen.Evaluate(_facts)) End(record, QuestState.Expired);
         }
 
         /** <summary>True when a locked step should start: the steps it follows allow it, and its unlock condition holds. A change only reaches steps whose condition reads it.</summary> */
@@ -534,12 +581,15 @@ namespace QuestSystem
             Ended(record);
         }
 
-        private void Fail(QuestRecord record)
+        private void Fail(QuestRecord record) => End(record, QuestState.Failed);
+
+        /** <summary>Ends an active quest without its rewards, as Failed or Expired.</summary> */
+        private void End(QuestRecord record, QuestState state)
         {
             if (record.State != QuestState.Active) return;
-            record.State = QuestState.Failed;
+            record.State = state;
             record.EndedOrder = ++_order;
-            EventBus<QuestEndedEvent>.Raise(new QuestEndedEvent(this, record.Definition, QuestState.Failed, record.Completions));
+            EventBus<QuestEndedEvent>.Raise(new QuestEndedEvent(this, record.Definition, state, record.Completions));
             Ended(record);
         }
 

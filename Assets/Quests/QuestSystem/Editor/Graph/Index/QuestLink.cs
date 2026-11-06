@@ -15,6 +15,8 @@ namespace QuestSystem.EditorTools
         StepFails,
         /** <summary>An objective's tracker.</summary> */
         Objective,
+        /** <summary>The quest's "expire when".</summary> */
+        Expires,
     }
 
     /** <summary>What each slot means for a link: its wording, whether it fails the quest, whether it gates giving it.</summary> */
@@ -24,12 +26,16 @@ namespace QuestSystem.EditorTools
         public static string Verb(LinkSlot slot) => slot switch
         {
             LinkSlot.Fails or LinkSlot.StepFails => "fails if",
+            LinkSlot.Expires => "expires if",
             LinkSlot.Objective => "tracks",
             _ => "needs",
         };
 
         /** <summary>True when a condition in the slot fails the quest.</summary> */
         public static bool Fails(LinkSlot slot) => slot == LinkSlot.Fails || slot == LinkSlot.StepFails;
+
+        /** <summary>True when a condition in the slot ends the quest without its rewards: it fails or runs out.</summary> */
+        public static bool EndsUnrewarded(LinkSlot slot) => Fails(slot) || slot == LinkSlot.Expires;
 
         /** <summary>True when a condition in the slot decides whether the quest can be given.</summary> */
         public static bool GatesAvailability(LinkSlot slot) => slot == LinkSlot.Available;

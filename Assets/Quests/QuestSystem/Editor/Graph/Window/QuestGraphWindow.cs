@@ -251,7 +251,7 @@ namespace QuestSystem.EditorTools
         /** <summary>A count with its noun, plural when not one; null for none, so it is left out.</summary> */
         private static string Count(int count, string noun) => count > 0 ? $"{count} {noun}{(count == 1 ? "" : "s")}" : null;
 
-        private static string Join(params string[] parts) => string.Join("  ·  ", parts.Where(part => part != null));
+        private static string Join(params string[] parts) => string.Join("    ", parts.Where(part => part != null));
 
         private void Tidy()
         {
