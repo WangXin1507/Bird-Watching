@@ -469,12 +469,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ff81fd30b56ed6c47b3b9a674b27d1ef, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6639640756730096413}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ff81fd30b56ed6c47b3b9a674b27d1ef, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2957593908557323562}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ff81fd30b56ed6c47b3b9a674b27d1ef, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1296738966303032052}
   m_SourcePrefab: {fileID: 100100000, guid: ff81fd30b56ed6c47b3b9a674b27d1ef, type: 3}
 --- !u!4 &7241468195199692213 stripped
 Transform:
@@ -543,30 +537,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &2957593908557323562
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8013324686112519951}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a9178080deb8984da8931c1d2a41ba6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AnimationSound
---- !u!114 &1296738966303032052
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8013324686112519951}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a9178080deb8984da8931c1d2a41ba6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AnimationSound
 --- !u!1001 &8455950464429578648
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4141,12 +4111,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ea97ee2634062974b97f6196fc6b49a0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 99027943067074342}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ea97ee2634062974b97f6196fc6b49a0, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 906658992673599274}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ea97ee2634062974b97f6196fc6b49a0, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2891435595850170247}
   m_SourcePrefab: {fileID: 100100000, guid: ea97ee2634062974b97f6196fc6b49a0, type: 3}
 --- !u!4 &8274004598040215155 stripped
 Transform:
@@ -4215,27 +4179,3 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &906658992673599274
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8762030103435863241}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a9178080deb8984da8931c1d2a41ba6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AnimationSound
---- !u!114 &2891435595850170247
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8762030103435863241}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: adc5c60cf4481a34797f2c3bd9572b4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FlightSounds

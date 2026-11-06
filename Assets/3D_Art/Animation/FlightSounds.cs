@@ -7,7 +7,7 @@ public class FlightSounds : MonoBehaviour
 
     public void TakeOff()
     {
-        if (GetComponent<Animator>().GetFloat("Speed") <= 0.5f) return;
+        if (GetComponent<Animator>().GetFloat("Speed") <= 0.3f) return;
         AudioManager.PlayOneShot(AudioEvents.Bird.Bird_Takeoff_SFX, transform.position);
     }
 
@@ -20,7 +20,6 @@ public class FlightSounds : MonoBehaviour
         else
         {
             // Cycle between flap with and without wind to keep it going
-
             if (flaps % 2 == 0)
             {
                 AudioManager.PlayOneShot(AudioEvents.Bird.Bird_Flap_SFX, transform.position);
@@ -32,5 +31,16 @@ public class FlightSounds : MonoBehaviour
             }
             flaps++;
         }
+    }
+
+    public void Land()
+    {
+        AudioManager.PlayOneShot(AudioEvents.Bird.Bird_Flap_SFX, transform.position);
+    }
+
+    public void Impact()
+    {
+        if (GetComponent<Animator>().GetFloat("Speed") <= 0.2f) return;
+        AudioManager.PlayOneShot(AudioEvents.Bird.Bird_Land_SFX, transform.position);
     }
 }

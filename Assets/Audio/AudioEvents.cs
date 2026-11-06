@@ -31,6 +31,14 @@ public static class AudioEvents
             Guid = FMOD.GUID.Parse("{e4099834-aa0c-4bf7-8d43-ffa8fc268d5a}")
         };
 
+        public static readonly EventReference Bird_Land_SFX = new EventReference
+        {
+#if UNITY_EDITOR
+            Path = "event:/Bird/Bird Land SFX",
+#endif
+            Guid = FMOD.GUID.Parse("{3a22f8f9-959b-4ead-9631-5a1a3f302791}")
+        };
+
         public static readonly EventReference Bird_Takeoff_SFX = new EventReference
         {
 #if UNITY_EDITOR
