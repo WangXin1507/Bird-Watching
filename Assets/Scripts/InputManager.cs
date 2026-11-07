@@ -8,6 +8,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
     public bool moveInputEnabled = true;
     public bool lookInputEnabled = true;
     public bool interactionInputEnabled = true;
+    private Camera mainCamera;
     
     private InputSystem_Actions inputActions;
     private InputSystem_Actions.PlayerActions playerInput;
@@ -16,6 +17,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
 
     public Vector2 movementVector;
     public Vector2 lookVector;
+    public Vector2 mousePos;
 
     // Declared as events so subscribers can only use += / -=; a stray '=' assignment
     // would otherwise wipe every other listener without a compiler error.
@@ -76,6 +78,11 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
         playerInput.AddCallbacks(this);
 
         LockInputs(false, false, false);
+    }
+
+    private void Start()
+    {
+        mainCamera = Camera.main;
     }
 
     private void OnDestroy()
@@ -192,6 +199,40 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
         else if (context.canceled)
         {
             PauseReleased?.Invoke();
+        }
+    }
+
+    public void OnFocusClick(InputAction.CallbackContext context)
+    {
+        if (context.performed) {
+            RaycastHit hitInfo;
+            if (Physics.Raycast(mainCamera.ScreenPointToRay(mousePos), out hitInfo, Mathf.Infinity))
+            {
+                GameObject hitObject = hitInfo.collider.gameObject;
+                InteractInFocus interactInFocus = hitObject.GetComponent<InteractInFocus>();
+                if (interactInFocus != null) {
+                    interactInFocus.Interact();
+                }
+                else
+                {
+                    Debug.Log("Not the ocrrect type");
+                }
+            }
+        }
+    }
+
+    public void OnMousePos(InputAction.CallbackContext context)
+    {
+        mousePos = context.ReadValue<Vector2>();
+    }
+
+    private void OnDrawGizmos()
+    {
+        RaycastHit hitInfo;
+        if (mainCamera != null && Physics.Raycast(mainCamera.ScreenPointToRay(mousePos), out hitInfo, Mathf.Infinity))
+        {
+            GameObject hitObject = hitInfo.collider.gameObject;
+            Gizmos.DrawLine(mainCamera.transform.position, hitObject.transform.position);
         }
     }
 }
