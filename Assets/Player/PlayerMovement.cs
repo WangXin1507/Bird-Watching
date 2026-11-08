@@ -5,8 +5,8 @@ using UnityEngine.Events;
 /// <summary>
 /// State-machine movement for the bird. Attach to the player root alongside a Rigidbody
 /// and a Collider. WASD steers in the horizontal plane only; height is Rise (space) and
-/// Dive (shift), each with its own acceleration and speed cap. Gravity applies only when
-/// nothing at all is held -- a bird under power keeps its altitude.
+/// Dive (shift), each with its own acceleration and speed cap. Steering holds altitude only
+/// while the bird has real airspeed (see Lift); with nothing held, or blocked, gravity takes over.
 /// </summary>
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
@@ -52,6 +52,28 @@ public class PlayerMovement : MonoBehaviour
     [Header("Falling (nothing held)")]
     [SerializeField] private float gravity = 24f;
     [SerializeField] private float maxFallSpeed = 20f;
+
+    [Header("Lift")]
+    [Tooltip("Horizontal airspeed (m/s) needed to hold altitude while steering. Below it, gravity takes over in " +
+             "proportion -- so a bird pressed into a wall, or otherwise blocked, falls instead of hovering. " +
+             "Rise and Dive are unaffected (flapping works at any speed). 0 = always hold altitude.")]
+    [SerializeField] private float stallSpeed = 1f;
+    [Tooltip("Seconds below Stall Speed before lift starts dropping, so a quick turn or reversal doesn't dip.")]
+    [SerializeField] private float stallDelay = 0.2f;
+
+    [Header("Landing")]
+    [Tooltip("While flying, ground in range only counts as a landing when the bird is heading down at least this " +
+             "steeply (degrees below horizontal). Level skimming over the ground stays flight.")]
+    [SerializeField] private float minLandingAngle = 20f;
+    [Tooltip("Below this horizontal speed (m/s) any non-rising approach counts as a landing.")]
+    [SerializeField] private float landingStopSpeed = 0.5f;
+
+    [Header("Walls")]
+    [Tooltip("Steepest surface (degrees) that counts as floor. Anything steeper is a wall: steering into it slides along it.")]
+    [SerializeField] private float walkableSlope = 45f;
+    [Tooltip("Give the bird's colliders a zero-friction material on Awake (only those with no material set), so " +
+             "contact friction can't pin it to a wall.")]
+    [SerializeField] private bool frictionlessCollider = true;
 
     [Header("Facing")]
     [Tooltip("Turn the body to face the direction it is actually travelling, not the direction being pressed.")]
@@ -100,6 +122,10 @@ public class PlayerMovement : MonoBehaviour
     private CameraLook cameraLook;
     private bool controlSuspended;
     private bool kinematicBeforeSuspend;
+    private float stallTimer;
+    private bool launchedFlight; // this flight was flown (Rise pressed), not just a walk off an edge
+    private readonly System.Collections.Generic.List<Vector3> wallNormals = new System.Collections.Generic.List<Vector3>();
+    private const int MaxWallNormals = 16;
 
     // ---------------------------------------------------------------- read-only state
     // Exposed for visuals, audio and camera. Nothing outside this class can write these.
@@ -166,6 +192,7 @@ public class PlayerMovement : MonoBehaviour
         rb.freezeRotation = true;
         rb.interpolation = RigidbodyInterpolation.Interpolate;
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        if (frictionlessCollider) ApplyFrictionlessMaterial();
     }
 
     // Start runs after every Awake, so InputManager.Instance exists by then. OnEnable also
@@ -235,12 +262,19 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (controlSuspended) return;
+        if (controlSuspended)
+        {
+            wallNormals.Clear();
+            return;
+        }
 
         float dt = Time.fixedDeltaTime;
 
         // The grace window keeps the ground check from re-grounding the bird on the frame it launches.
-        isGrounded = Time.time >= groundCheckSuppressedUntil && CheckGrounded();
+        // Once airborne, ground in range only lands the bird if it means to land -- heading down, slowed
+        // down, or hands off. Walking around (wasGrounded) keeps the old always-grounded behaviour.
+        bool groundBelow = Time.time >= groundCheckSuppressedUntil && CheckGrounded();
+        isGrounded = groundBelow && (wasGrounded || LandingIntended());
         UpdateLandingPrediction();
 
         if (isGrounded && !wasGrounded) OnLand?.Invoke();
@@ -252,7 +286,9 @@ public class PlayerMovement : MonoBehaviour
             if (isGrounded) BeginFlight(true);
         }
 
-        moveDirection = ReadMoveDirection();
+        // Steering into a wall is turned into steering along it. Normals come from the last physics step's contacts.
+        moveDirection = SlideAlongWalls(ReadMoveDirection());
+        wallNormals.Clear();
 
         // Leaving the ground any other way -- walking off a ledge -- starts flight on the same
         // terms as a Rise press, so there is never a state where the bird is falling uncontrolled.
@@ -301,6 +337,9 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     private void BeginFlight(bool launch)
     {
+        launchedFlight = launch;
+        stallTimer = 0f;
+
         if (launch)
         {
             Vector3 velocity = rb.linearVelocity;
@@ -345,9 +384,9 @@ public class PlayerMovement : MonoBehaviour
     }
 
     /// <summary>
-    /// Height is entirely on the two buttons, and gravity only exists for a bird that has let
-    /// go of everything. Under power the bird holds whatever altitude it is at: rise climbs,
-    /// dive descends, and steering alone settles the vertical speed back to zero.
+    /// Height is on the two buttons: rise climbs and dive descends at any speed. Steering alone
+    /// settles vertical speed back to zero -- but only as far as airspeed allows (Lift), so a bird
+    /// that is blocked or crawling sinks. With nothing held, plain gravity.
     /// </summary>
     private float ApplyVerticalMotion(float vertical, float dt)
     {
@@ -355,22 +394,33 @@ public class PlayerMovement : MonoBehaviour
         // No gravity term at all -- the cap is what limits the climb, not a tug of war with it.
         if (riseHeld)
         {
+            launchedFlight = true; // flapping mid-fall makes it a real flight, which then needs an intended landing
+            stallTimer = 0f;
             return Mathf.MoveTowards(vertical, maxRiseSpeed, riseAcceleration * dt);
         }
 
         if (diveHeld)
         {
+            stallTimer = 0f;
             return Mathf.MoveTowards(vertical, -maxDiveSpeed, diveAcceleration * dt);
         }
 
         // Still flying, just not changing height: bleed the climb or descent off so releasing
         // rise stops the ascent instead of coasting on up to the apex.
+        // Holding altitude needs airspeed: blocked or too slow, gravity blends in.
         if (moveDirection.sqrMagnitude > 0.0001f)
         {
-            return Mathf.MoveTowards(vertical, 0f, verticalStopAcceleration * dt);
+            float held = Mathf.MoveTowards(vertical, 0f, verticalStopAcceleration * dt);
+            float lift = Lift(dt);
+            if (lift >= 1f) return held;
+
+            float falling = Mathf.Max(vertical - gravity * dt, -maxFallSpeed);
+            return Mathf.Lerp(falling, held, lift);
         }
 
-        // Hands off everything: the only place gravity exists.
+        stallTimer = 0f;
+
+        // Hands off everything (or steering straight into a wall, which SlideAlongWalls zeroes): plain gravity.
         vertical -= gravity * dt;
         return Mathf.Max(vertical, -maxFallSpeed);
     }
@@ -484,6 +534,88 @@ public class PlayerMovement : MonoBehaviour
         rb.MoveRotation(facing * Quaternion.AngleAxis(bankAngle, Vector3.forward));
     }
 
+    /// <summary>
+    /// 0..1 share of altitude-holding the bird has from its actual horizontal airspeed. Stays at 1 for
+    /// stallDelay after dropping below stallSpeed, then follows airspeed / stallSpeed. Recovers instantly.
+    /// </summary>
+    private float Lift(float dt)
+    {
+        if (stallSpeed <= 0f) return 1f;
+
+        Vector3 velocity = rb.linearVelocity;
+        float lift = Mathf.Clamp01(new Vector2(velocity.x, velocity.z).magnitude / stallSpeed);
+
+        stallTimer = lift < 1f ? stallTimer + dt : 0f;
+        return stallTimer >= stallDelay ? lift : 1f;
+    }
+
+    /// <summary>
+    /// Whether ground in range should end this flight. A walk off an edge always lands again; a flown
+    /// flight lands when the bird lets go of steering, has nearly stopped, or is heading down at least
+    /// minLandingAngle below horizontal. Climbing or holding Rise never lands.
+    /// </summary>
+    private bool LandingIntended()
+    {
+        if (!launchedFlight) return true;
+        if (riseHeld) return false;
+
+        Vector3 velocity = rb.linearVelocity;
+        if (velocity.y > 0.05f) return false;
+        if (moveDirection.sqrMagnitude <= 0.0001f) return true;
+
+        float horizontal = new Vector2(velocity.x, velocity.z).magnitude;
+        if (horizontal <= landingStopSpeed) return true;
+
+        return Mathf.Atan2(-velocity.y, horizontal) * Mathf.Rad2Deg >= minLandingAngle;
+    }
+
+    /// <summary>Removes the part of the steering that pushes into a wall the bird is touching.</summary>
+    private Vector3 SlideAlongWalls(Vector3 direction)
+    {
+        for (int i = 0; i < wallNormals.Count; i++)
+        {
+            float into = Vector3.Dot(direction, wallNormals[i]);
+            if (into < 0f) direction -= wallNormals[i] * into;
+        }
+
+        return direction;
+    }
+
+    private void OnCollisionEnter(Collision collision) => RecordWalls(collision);
+
+    private void OnCollisionStay(Collision collision) => RecordWalls(collision);
+
+    /// <summary>Keeps the flattened normals of steep contacts for the next FixedUpdate.</summary>
+    private void RecordWalls(Collision collision)
+    {
+        float floorY = Mathf.Cos(walkableSlope * Mathf.Deg2Rad);
+
+        for (int i = 0; i < collision.contactCount && wallNormals.Count < MaxWallNormals; i++)
+        {
+            Vector3 normal = collision.GetContact(i).normal;
+            if (normal.y >= floorY) continue; // floor, not wall
+
+            normal.y = 0f;
+            if (normal.sqrMagnitude < 0.0001f) continue; // ceiling straight overhead
+            wallNormals.Add(normal.normalized);
+        }
+    }
+
+    private void ApplyFrictionlessMaterial()
+    {
+        var material = new PhysicsMaterial("Bird (frictionless)")
+        {
+            dynamicFriction = 0f,
+            staticFriction = 0f,
+            frictionCombine = PhysicsMaterialCombine.Minimum,
+            bounciness = 0f,
+            bounceCombine = PhysicsMaterialCombine.Minimum
+        };
+
+        foreach (Collider body in GetComponents<Collider>())
+            if (!body.isTrigger && body.sharedMaterial == null) body.sharedMaterial = material;
+    }
+
     private bool CheckGrounded()
     {
         Vector3 origin = transform.position + Vector3.up * groundCheckOffset;
@@ -539,6 +671,11 @@ public class PlayerMovement : MonoBehaviour
 
         gravity = Mathf.Max(0f, gravity);
         maxFallSpeed = Mathf.Max(0f, maxFallSpeed);
+        stallSpeed = Mathf.Max(0f, stallSpeed);
+        stallDelay = Mathf.Max(0f, stallDelay);
+        minLandingAngle = Mathf.Clamp(minLandingAngle, 0f, 90f);
+        landingStopSpeed = Mathf.Max(0f, landingStopSpeed);
+        walkableSlope = Mathf.Clamp(walkableSlope, 0f, 89f);
 
         takeoffGroundGrace = Mathf.Max(0f, takeoffGroundGrace);
 

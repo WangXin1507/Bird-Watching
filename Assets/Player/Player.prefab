@@ -151,6 +151,12 @@ MonoBehaviour:
   takeoffGroundGrace: 0.5
   gravity: 5
   maxFallSpeed: 1
+  stallSpeed: 1
+  stallDelay: 0.2
+  minLandingAngle: 20
+  landingStopSpeed: 0.5
+  walkableSlope: 45
+  frictionlessCollider: 1
   rotateTowardVelocity: 1
   turnSpeed: 720
   minTurnSpeed: 0.4
@@ -351,9 +357,13 @@ MonoBehaviour:
   probeDistance: 10
   groundStepThreshold: 0.3
   takeOffRiseSpeed: 0.5
-  landLeadTime: 0.3
+  landLeadTime: 0.1
   anticipateLanding: 1
   minDescentSpeed: 0.3
+  minLandingAngle: 20
+  landingStopSpeed: 0.5
+  walkableSlope: 45
+  groundSettleTime: 0.25
   parameterDampTime: 0.1
   inputTriggers: []
   triggerBufferTime: 0.15
@@ -512,6 +522,10 @@ MonoBehaviour:
   landLeadTime: 0.3
   anticipateLanding: 1
   minDescentSpeed: 0.3
+  minLandingAngle: 20
+  landingStopSpeed: 0.5
+  walkableSlope: 45
+  groundSettleTime: 0.25
   parameterDampTime: 0.1
   inputTriggers: []
   triggerBufferTime: 0.15
@@ -4154,6 +4168,10 @@ MonoBehaviour:
   landLeadTime: 0.3
   anticipateLanding: 1
   minDescentSpeed: 0.3
+  minLandingAngle: 20
+  landingStopSpeed: 0.5
+  walkableSlope: 45
+  groundSettleTime: 0.25
   parameterDampTime: 0.1
   inputTriggers: []
   triggerBufferTime: 0.15

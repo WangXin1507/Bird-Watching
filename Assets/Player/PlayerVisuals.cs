@@ -92,6 +92,17 @@ public class PlayerVisuals : MonoBehaviour
     [SerializeField] private bool anticipateLanding = true;
     [Tooltip("Only anticipate while closing on the ground at least this fast (m/s), so drifting low doesn't trigger it.")]
     [SerializeField] private float minDescentSpeed = 0.3f;
+    [Tooltip("Only an approach at least this steep (degrees below horizontal, from the bird's own velocity) counts " +
+             "as landing. Skimming low and level, or terrain rising under level flight, stays flying.")]
+    [SerializeField] private float minLandingAngle = 20f;
+    [Tooltip("Below this horizontal speed (m/s) any descent counts as landing, whatever the angle.")]
+    [SerializeField] private float landingStopSpeed = 0.5f;
+    [Tooltip("Steepest surface (degrees) that counts as floor. Heading into anything steeper is a wall, not a " +
+             "landing -- the wings stay open, e.g. while sliding down it.")]
+    [SerializeField] private float walkableSlope = 45f;
+    [Tooltip("Backstop: within Ground Tolerance this long counts as grounded even if the approach didn't look like " +
+             "a landing (e.g. touched down level and kept walking).")]
+    [SerializeField] private float groundSettleTime = 0.25f;
 
     [Header("Parameter smoothing")]
     [Tooltip("Damp time for Speed, Climb and Turn, so motion noise doesn't show up as twitching.")]
@@ -123,6 +134,7 @@ public class PlayerVisuals : MonoBehaviour
     // State
     private bool grounded = true;
     private bool landingCommitted;
+    private float nearGroundTime;
 
     // Animator
     private bool parametersCached;
@@ -183,7 +195,7 @@ public class PlayerVisuals : MonoBehaviour
 
         SampleMotion(dt);
         SampleGround(dt);
-        UpdateGrounded();
+        UpdateGrounded(dt);
         UpdateLandingAnticipation();
         WriteParameters(dt);
         ExpireTriggers();
@@ -274,9 +286,11 @@ public class PlayerVisuals : MonoBehaviour
 
     // ---------------------------------------------------------------- state
 
-    private void UpdateGrounded()
+    private void UpdateGrounded(float dt)
     {
         float pullingAway = VerticalSpeedFromGround;
+        bool withinTolerance = hasGround && clearance <= groundTolerance;
+        nearGroundTime = withinTolerance ? nearGroundTime + dt : 0f;
 
         if (grounded)
         {
@@ -287,13 +301,27 @@ public class PlayerVisuals : MonoBehaviour
         }
         else
         {
-            grounded = hasGround && clearance <= groundTolerance && pullingAway <= takeOffRiseSpeed;
+            // Touching down needs a landing-shaped approach, so a low pass doesn't fold the wings --
+            // unless the bird has clearly settled there anyway.
+            grounded = withinTolerance && pullingAway <= takeOffRiseSpeed &&
+                       (ApproachLooksLikeLanding() || nearGroundTime >= groundSettleTime);
         }
     }
 
+    /// <summary>Heading down steeply enough, or slow enough, to be landing rather than flying past.</summary>
+    private bool ApproachLooksLikeLanding()
+    {
+        float horizontal = new Vector2(velocity.x, velocity.z).magnitude;
+        if (horizontal <= landingStopSpeed) return velocity.y <= 0.05f;
+        if (velocity.y >= 0f) return false;
+        return Mathf.Atan2(-velocity.y, horizontal) * Mathf.Rad2Deg >= minLandingAngle;
+    }
+
     /// <summary>
-    /// Latched once touchdown is predicted within landLeadTime so it can't flicker near the ground;
-    /// levelling off or climbing away (half the trigger speed, for hysteresis) lets go of it.
+    /// Latched once a landing-shaped approach is about to meet a floor within landLeadTime, so it can't
+    /// flicker near the ground; levelling off or climbing away (half the trigger speed, for hysteresis)
+    /// lets go of it. The prediction sweeps along the actual velocity, so it finds where the bird will
+    /// really touch -- and a wall in the way is never a landing.
     /// </summary>
     private void UpdateLandingAnticipation()
     {
@@ -303,17 +331,42 @@ public class PlayerVisuals : MonoBehaviour
             return;
         }
 
-        float closing = -VerticalSpeedFromGround;
-
         if (landingCommitted)
         {
-            if (closing < minDescentSpeed * 0.5f) landingCommitted = false;
+            if (-velocity.y < minDescentSpeed * 0.5f) landingCommitted = false;
+            return;
         }
-        else if (hasGround && closing >= minDescentSpeed)
+
+        if (-velocity.y < minDescentSpeed || !ApproachLooksLikeLanding()) return;
+        landingCommitted = SweepFindsFloor(out float timeToLand) && timeToLand <= landLeadTime;
+    }
+
+    /// <summary>Casts from the feet along the velocity; true if the first thing hit is walkable floor.</summary>
+    private bool SweepFindsFloor(out float timeToLand)
+    {
+        timeToLand = float.PositiveInfinity;
+
+        float speed = velocity.magnitude;
+        if (speed < 0.01f) return false;
+
+        Vector3 direction = velocity / speed;
+        Vector3 feet = tracked.position + Vector3.down * standingHeight + Vector3.up * 0.05f;
+        float reach = speed * landLeadTime + groundTolerance + 0.1f;
+
+        int count = Physics.RaycastNonAlloc(feet, direction, hits, reach, groundMask, QueryTriggerInteraction.Ignore);
+
+        int nearest = -1;
+        for (int i = 0; i < count; i++)
         {
-            float timeToLand = Mathf.Max(0f, clearance - groundTolerance) / closing;
-            landingCommitted = timeToLand <= landLeadTime;
+            if (hits[i].collider.transform.IsChildOf(ignoreRoot)) continue;
+            if (nearest < 0 || hits[i].distance < hits[nearest].distance) nearest = i;
         }
+
+        if (nearest < 0) return false;
+        if (hits[nearest].normal.y < Mathf.Cos(walkableSlope * Mathf.Deg2Rad)) return false; // wall
+
+        timeToLand = Mathf.Max(0f, hits[nearest].distance - groundTolerance) / speed;
+        return true;
     }
 
     // ---------------------------------------------------------------- animator
@@ -446,6 +499,10 @@ public class PlayerVisuals : MonoBehaviour
         takeOffRiseSpeed = Mathf.Max(0f, takeOffRiseSpeed);
         landLeadTime = Mathf.Max(0f, landLeadTime);
         minDescentSpeed = Mathf.Max(0f, minDescentSpeed);
+        minLandingAngle = Mathf.Clamp(minLandingAngle, 0f, 90f);
+        landingStopSpeed = Mathf.Max(0f, landingStopSpeed);
+        walkableSlope = Mathf.Clamp(walkableSlope, 0f, 89f);
+        groundSettleTime = Mathf.Max(0f, groundSettleTime);
         parameterDampTime = Mathf.Max(0f, parameterDampTime);
         triggerBufferTime = Mathf.Max(0f, triggerBufferTime);
     }
