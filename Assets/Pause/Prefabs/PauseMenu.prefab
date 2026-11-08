@@ -739,7 +739,7 @@ MonoBehaviour:
   journal: {fileID: 417273803558325625}
   exit: {fileID: 1077525953158773139}
   canvas: {fileID: 5391434464779400512}
-  mainMenuScene: 
+  mainMenuScene: Main Menu
 --- !u!1 &6855669856309340384
 GameObject:
   m_ObjectHideFlags: 0
