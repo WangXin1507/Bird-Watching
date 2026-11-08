@@ -104,10 +104,7 @@ public class PlayerInteraction : MonoBehaviour
             holding.TryGetComponent<Rigidbody>(out heldRb);
             holding.TryGetComponent<Collider>(out heldCollider);
 
-            if (!(PlayerID.playerMovement.GetState() == PlayerMovement.MovementState.Flying))
-            {
-                _Hold(mouthPos);
-            }
+            _Hold(mouthPos);
         }
     }
 
