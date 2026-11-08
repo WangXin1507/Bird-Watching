@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks.Triggers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -17,6 +18,7 @@ public class DiaryUI : MonoBehaviour
     [SerializeField] private TMP_Text leftText;
     [SerializeField] private TMP_Text rightText;
     [SerializeField] private Image rightImage;
+    [SerializeField] private Button closeButton;
     
     private void Awake()
     {
@@ -54,6 +56,8 @@ public class DiaryUI : MonoBehaviour
             rightImage.enabled = true;
             rightText.enabled = false;
         }
+
+        closeButton.Select();
         
         _diaryData = context;
     }

@@ -22,6 +22,7 @@ public class PauseMenu : MonoBehaviour
     private void Pause()
     {
         canvas.enabled = true;
+        resume.Select();
         Time.timeScale = 0;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -54,6 +55,6 @@ public class PauseMenu : MonoBehaviour
 
     private void OpenJournal()
     {
-        JournalUI.Instance.OpenJournal();
+        JournalUI.Instance.OpenJournal(true);
     }
 }

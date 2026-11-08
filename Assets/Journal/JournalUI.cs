@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks.Triggers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -30,6 +31,7 @@ public class JournalUI : MonoBehaviour
     [Header("Navigation")]
     [SerializeField] private Button leftArrow;
     [SerializeField] private Button rightArrow;
+    [SerializeField] private Button exitButton;
 
     [Header("Display Options")]
     [Tooltip("If on, only missions with at least one unlocked transcript get a page.")]
@@ -87,8 +89,13 @@ public class JournalUI : MonoBehaviour
         OpenJournal();
     }
 
-    public void OpenJournal()
+    public void OpenJournal(bool overrideCursor = false)
     {
+        if (!overrideCursor && Cursor.lockState == CursorLockMode.None)
+        {
+            return;
+        }
+        
         PlayerID.LockMovement();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -202,17 +209,30 @@ public class JournalUI : MonoBehaviour
                              $"but only {transcriptSlots.Count} slots exist. Extra transcripts won't be shown.");
         }
 
+        bool firstSlot = true;
+        
         for (int i = 0; i < transcriptSlots.Count; i++)
         {
             TranscriptSlot slot = transcriptSlots[i];
             ATranscriptEntry transcript = i < mission.Transcripts.Count ? mission.Transcripts[i] : null;
             bool visible = transcript != null && Journal.Instance.IsTranscriptUnlocked(transcript);
 
+            if (visible && firstSlot)
+            {
+                firstSlot = false;
+                slot.button.Select();
+            }
+            
             SetSlotVisible(slot, visible);
             if (!visible) continue;
 
             if (slot.buttonLabel != null)
                 slot.buttonLabel.text = transcript.Title;
+        }
+
+        if (firstSlot)
+        {
+            exitButton.Select();
         }
     }
 

@@ -11,6 +11,7 @@ public class TranscriptUI : MonoBehaviour
     public static TranscriptUI Instance;
 
     [SerializeField] private TMP_Text text;
+    [SerializeField] private Button closeButton;
     
     private TranscriptEntry _transcriptEntry;
     private bool backToGame;
@@ -38,6 +39,8 @@ public class TranscriptUI : MonoBehaviour
         text.text = context.Text;
         
         _transcriptEntry = context;
+        
+        closeButton.Select();
     }
     
     public void CloseTranscript()
