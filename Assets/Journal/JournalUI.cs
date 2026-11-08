@@ -97,6 +97,7 @@ public class JournalUI : MonoBehaviour
         }
         
         PlayerID.LockMovement();
+        Time.timeScale = 0.0f;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         
@@ -110,6 +111,7 @@ public class JournalUI : MonoBehaviour
     public void CloseJournal()
     {
         PlayerID.UnlockMovement();
+        Time.timeScale = 1.0f;
         
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;

@@ -36,6 +36,7 @@ public class DiaryUI : MonoBehaviour
         backToGame = back;
         
         PlayerID.LockMovement();
+        Time.timeScale = 0.0f;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         
@@ -67,6 +68,7 @@ public class DiaryUI : MonoBehaviour
         if (backToGame)
         {
             PlayerID.UnlockMovement();
+            Time.timeScale = 1.0f;
         
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;

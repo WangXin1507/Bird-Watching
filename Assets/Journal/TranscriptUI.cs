@@ -32,6 +32,7 @@ public class TranscriptUI : MonoBehaviour
         backToGame = back;
         
         PlayerID.LockMovement();
+        Time.timeScale = 0.0f;
         Cursor.lockState = CursorLockMode.None;
         
         gameObject.GetComponent<Canvas>().enabled = true;
@@ -48,6 +49,7 @@ public class TranscriptUI : MonoBehaviour
         if (backToGame)
         {
             PlayerID.UnlockMovement();
+            Time.timeScale = 1.0f;
         
             Cursor.lockState = CursorLockMode.Locked;
         }
