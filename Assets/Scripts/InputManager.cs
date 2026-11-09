@@ -17,6 +17,10 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
 
     public Vector2 movementVector;
     public Vector2 lookVector;
+    // Look input that ignores lookInputEnabled, for menus (e.g. inspection) that rotate things
+    // while the player camera is locked. lookIsPointerDelta is true for mouse delta, false for sticks.
+    public Vector2 rawLookVector;
+    public bool lookIsPointerDelta;
     public Vector2 mousePos;
 
     // Declared as events so subscribers can only use += / -=; a stray '=' assignment
@@ -107,6 +111,9 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
 
     public void OnLook(InputAction.CallbackContext context)
     {
+        rawLookVector = context.ReadValue<Vector2>();
+        lookIsPointerDelta = context.control?.device is Pointer;
+
         if (!lookInputEnabled)
         {
             return;
