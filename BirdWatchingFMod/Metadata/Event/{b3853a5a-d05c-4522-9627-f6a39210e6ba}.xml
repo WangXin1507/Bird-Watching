@@ -69,7 +69,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{f15fe1bc-bbac-4933-ae52-e59240c44a9e}">
 		<property name="volume">
-			<value>10</value>
+			<value>-7</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{ce6531f8-9540-42e4-a8c0-a8576970d118}</destination>
@@ -86,7 +86,7 @@
 	</object>
 	<object class="MultiSound" id="{b018fd3e-2469-4c09-88e9-d32bd33d3498}">
 		<relationship name="sounds">
-			<destination>{3f817897-c471-4835-949c-5ad7c420d88f}</destination>
+			<destination>{3a5e0693-a394-45f9-b5b4-0361d9191b3b}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{b19c2568-4315-4d6b-948b-9e9bce022d6e}">
@@ -106,53 +106,38 @@
 	<object class="MixerBusEffectChain" id="{83150102-0152-4a57-8be4-62e88d484a5a}">
 		<relationship name="effects">
 			<destination>{b45a388a-da48-47bb-b717-3d4185ead993}</destination>
-			<destination>{06f68024-1605-4953-941a-4dfb28121f32}</destination>
-			<destination>{4911babf-2c93-421c-a538-5f2e8d2392f2}</destination>
+			<destination>{8910ff04-7774-4698-8cf9-50059303cc39}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{d763da22-04d0-45e4-9e65-c1e34726e777}" />
-	<object class="SingleSound" id="{3f817897-c471-4835-949c-5ad7c420d88f}">
+	<object class="SingleSound" id="{3a5e0693-a394-45f9-b5b4-0361d9191b3b}">
+		<property name="startOffset">
+			<value>17.5</value>
+		</property>
 		<relationship name="audioFile">
-			<destination>{f9cf3820-8ae8-4585-bfa5-5af4811a10f4}</destination>
+			<destination>{142cf006-564a-4f0b-a823-8edc15420c00}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{5b622c1e-b835-4c14-980d-f53fa3884dda}" />
 	<object class="MixerBusFader" id="{b45a388a-da48-47bb-b717-3d4185ead993}" />
-	<object class="ThreeEQEffect" id="{06f68024-1605-4953-941a-4dfb28121f32}">
+	<object class="ThreeEQEffect" id="{8910ff04-7774-4698-8cf9-50059303cc39}">
 		<property name="lowGain">
-			<value>-5.5</value>
+			<value>-1.5</value>
 		</property>
 		<property name="midGain">
-			<value>-6.5</value>
+			<value>-11.5</value>
 		</property>
-	</object>
-	<object class="SFXReverbEffect" id="{4911babf-2c93-421c-a538-5f2e8d2392f2}">
-		<property name="decayTime">
-			<value>900</value>
+		<property name="highGain">
+			<value>-5.5</value>
 		</property>
-		<property name="earlyDelay">
-			<value>5</value>
+		<property name="lowCrossover">
+			<value>55</value>
 		</property>
-		<property name="lateDelay">
+		<property name="highCrossover">
+			<value>7500</value>
+		</property>
+		<property name="crossoverSlope">
 			<value>0</value>
-		</property>
-		<property name="HFReference">
-			<value>20000</value>
-		</property>
-		<property name="HFDecayRatio">
-			<value>86</value>
-		</property>
-		<property name="lowShelfFrequency">
-			<value>640</value>
-		</property>
-		<property name="lowShelfGain">
-			<value>-12</value>
-		</property>
-		<property name="highCut">
-			<value>75</value>
-		</property>
-		<property name="wetLevel">
-			<value>3.5</value>
 		</property>
 	</object>
 </objects>

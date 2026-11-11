@@ -1,10 +1,9 @@
-using Unity.VisualScripting;
-using UnityEditor.SceneManagement;
+using System.Reflection;
 using UnityEngine;
-using UnityEngine.Splines;
 
 public class SplinedGrabbable : Focusable, IGrabbable
 {
+    [SerializeField] private MissionData missionCompleteOnGrab;
     [SerializeField] private Transform _grabHandle;
     private SplineFollower _splineFollower;
     public Transform grabHandle => _grabHandle;
@@ -17,7 +16,13 @@ public class SplinedGrabbable : Focusable, IGrabbable
 
     public Transform Grab()
     {
-        _splineFollower.enabled = false;
+        if (_splineFollower.enabled)
+        {
+            Debug.Log("Completed mission");
+            Journal.Instance.CompleteMission(missionCompleteOnGrab);
+
+            _splineFollower.enabled = false;
+        }
         return transform;
     }
 }

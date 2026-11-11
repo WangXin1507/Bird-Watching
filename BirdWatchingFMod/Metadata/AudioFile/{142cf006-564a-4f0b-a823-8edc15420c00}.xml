@@ -5,13 +5,13 @@
 			<value>flap2.mp3</value>
 		</property>
 		<property name="frequencyInKHz">
-			<value>44.0999985</value>
+			<value>48</value>
 		</property>
 		<property name="channelCount">
 			<value>2</value>
 		</property>
 		<property name="length">
-			<value>0.70530612244897961</value>
+			<value>0.83999999999999997</value>
 		</property>
 		<relationship name="masterAssetFolder">
 			<destination>{f8a1db07-317b-4b47-9da7-bcbe72273528}</destination>

@@ -115,10 +115,10 @@
 	<object class="MixerBusFader" id="{52732350-5af8-43dd-a65c-2fb549b45a88}" />
 	<object class="CompressorEffect" id="{4b7f3e25-70a9-4e3f-b774-62fbeb650589}">
 		<property name="threshold">
-			<value>-45</value>
+			<value>-46.5</value>
 		</property>
 		<property name="ratio">
-			<value>19.5</value>
+			<value>50</value>
 		</property>
 		<property name="releaseTime">
 			<value>4800</value>

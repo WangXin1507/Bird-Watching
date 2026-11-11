@@ -114,7 +114,7 @@
 	</object>
 	<object class="SingleSound" id="{5745db53-665a-436e-bb94-32e09bee0c2a}">
 		<property name="startOffset">
-			<value>5</value>
+			<value>16</value>
 		</property>
 		<property name="volume">
 			<value>6.5</value>
@@ -127,7 +127,7 @@
 	<object class="MixerBusFader" id="{c68e5fcf-20e3-42bf-bc23-f016a5651e8f}" />
 	<object class="PitchShifterEffect" id="{c913df8d-e591-464c-9b93-089cd27f6736}">
 		<property name="pitch">
-			<value>1.38</value>
+			<value>1.16999996</value>
 		</property>
 		<property name="fftSize">
 			<value>2660</value>
@@ -143,7 +143,7 @@
 	</object>
 	<object class="GainEffect" id="{4babb10d-6d36-4598-95c9-a3681457df69}">
 		<property name="gain">
-			<value>5.5</value>
+			<value>4.5</value>
 		</property>
 	</object>
 </objects>
