@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 namespace QuestSystem.EditorTools
 {
-    /** <summary>A quest in the web: its title, problem badges, a few facts, its kind as a colour, and a handle to draw links from.</summary> */
+    /** <summary>A quest in the web: its title, problem badges, a few facts, and a handle to draw links from.</summary> */
     public sealed class QuestNodeView : VisualElement
     {
         #region Properties
@@ -39,7 +39,7 @@ namespace QuestSystem.EditorTools
         {
             Quest = quest;
             AddToClassList("quest-graph__quest");
-            AddToClassList(KindLooks.ClassOf(quest.Kind));
+            AddToClassList("quest-graph__kind--none");
             style.width = WebLayout.NodeWidth;
             style.height = WebLayout.NodeHeight;
             focusable = true;
@@ -91,9 +91,7 @@ namespace QuestSystem.EditorTools
         private static IEnumerable<string> Facts(QuestDefinition quest)
         {
             yield return quest.Steps.Count == 1 ? "1 step" : $"{quest.Steps.Count} steps";
-            if (quest.GivenAutomatically) yield return "auto-given";
             if (quest.Repeatable) yield return "repeatable";
-            if (!quest.HiddenUntilGiven) yield return "shown early";
         }
 
         private static Label Badge(int count, QuestIssueLevel level, QuestSummary summary)

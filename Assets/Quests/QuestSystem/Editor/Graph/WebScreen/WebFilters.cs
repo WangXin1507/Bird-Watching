@@ -4,19 +4,13 @@ using System.Linq;
 
 namespace QuestSystem.EditorTools
 {
-    /** <summary>What the web shows: kinds, properties and a search, all optional. Nothing set shows every quest.</summary> */
+    /** <summary>What the web shows: properties and a search, all optional. Nothing set shows every quest.</summary> */
     public sealed class WebFilters
     {
         #region Properties
 
-        /** <summary>The kinds shown; none means every kind.</summary> */
-        public HashSet<QuestKind> Kinds { get; } = new HashSet<QuestKind>();
-
         /** <summary>True to show only repeatable quests.</summary> */
         public bool Repeatable { get; set; }
-
-        /** <summary>True to show only quests players see before they are given.</summary> */
-        public bool ShownEarly { get; set; }
 
         /** <summary>True to show only quests with problems.</summary> */
         public bool Problems { get; set; }
@@ -25,17 +19,15 @@ namespace QuestSystem.EditorTools
         public string Search { get; set; } = "";
 
         /** <summary>True when nothing filters the web.</summary> */
-        public bool IsEmpty => Kinds.Count == 0 && !Repeatable && !ShownEarly && !Problems;
+        public bool IsEmpty => !Repeatable && !Problems;
 
         #endregion
 
         #region Public API
 
-        /** <summary>True when the kind and property filters let a quest show.</summary> */
+        /** <summary>True when the property filters let a quest show.</summary> */
         public bool Shows(QuestDefinition quest, QuestSummary summary) =>
-            (Kinds.Count == 0 || (quest.Kind != null && Kinds.Contains(quest.Kind)))
-            && (!Repeatable || quest.Repeatable)
-            && (!ShownEarly || !quest.HiddenUntilGiven)
+            (!Repeatable || quest.Repeatable)
             && (!Problems || (summary != null && summary.Errors + summary.Warnings > 0));
 
         /** <summary>True when a search is set and the quest's title, a step's text or a step's id matches it.</summary> */
@@ -53,9 +45,7 @@ namespace QuestSystem.EditorTools
         /** <summary>Clears every filter and the search.</summary> */
         public void Clear()
         {
-            Kinds.Clear();
             Repeatable = false;
-            ShownEarly = false;
             Problems = false;
             Search = "";
         }

@@ -48,9 +48,6 @@ namespace QuestSystem
         [TextArea]
         [SerializeField] private string text;
 
-        [Tooltip("Hide the step from players until it starts.")]
-        [SerializeField] private bool hiddenUntilReached = true;
-
         [Tooltip("When the step starts: after the step above, after its linked steps, or with the quest.")]
         [SerializeField] private StepStart start;
 
@@ -89,9 +86,6 @@ namespace QuestSystem
 
         /** <summary>What the step is about.</summary> */
         public string Text => text;
-
-        /** <summary>True when players don't see the step until it starts.</summary> */
-        public bool HiddenUntilReached => hiddenUntilReached;
 
         /** <summary>When the step starts, before its unlock condition is asked.</summary> */
         public StepStart Start => start;
@@ -136,7 +130,6 @@ namespace QuestSystem
             failWhen = settings.FailWhen;
             completion = settings.Completion;
             endsQuest = settings.EndsQuest;
-            hiddenUntilReached = settings.HiddenUntilReached;
             text = settings.Text;
         }
 
@@ -183,9 +176,6 @@ namespace QuestSystem
 
         /** <summary>True when completing it completes the quest.</summary> */
         public bool EndsQuest;
-
-        /** <summary>True when players don't see it until it starts.</summary> */
-        public bool HiddenUntilReached;
 
         /** <summary>What the step is about.</summary> */
         public string Text;

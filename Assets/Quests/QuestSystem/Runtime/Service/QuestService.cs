@@ -151,11 +151,11 @@ namespace QuestSystem
             return givable && (quest.AvailableWhen == null || quest.AvailableWhen.Evaluate(_facts));
         }
 
-        /** <summary>True when players may see the quest: it was given, or it isn't hidden until then.</summary> */
-        public bool IsVisible(QuestDefinition quest) => quest != null && (!quest.HiddenUntilGiven || StateOf(quest) != QuestState.NotGiven);
+        /** <summary>True when players may see the quest: it was given.</summary> */
+        public bool IsVisible(QuestDefinition quest) => quest != null && StateOf(quest) != QuestState.NotGiven;
 
-        /** <summary>True when players may see the step: it started, or it isn't hidden until then.</summary> */
-        public bool IsVisible(QuestDefinition quest, QuestStep step) => step != null && (!step.HiddenUntilReached || StateOf(quest, step.Id) != StepState.Locked);
+        /** <summary>True when players may see the step: it started.</summary> */
+        public bool IsVisible(QuestDefinition quest, QuestStep step) => step != null && StateOf(quest, step.Id) != StepState.Locked;
 
         /**
          * <summary>Holds the quests still while the world they read is replaced (a load restoring the bag before the
@@ -334,8 +334,7 @@ namespace QuestSystem
         {
             var quest = record.Definition;
             var subjects = new HashSet<IConditionSubject>();
-            var known = ConditionSubjects.TryCollect(quest.AvailableWhen, subjects) & ConditionSubjects.TryCollect(quest.FailWhen, subjects)
-                & ConditionSubjects.TryCollect(quest.ExpireWhen, subjects);
+            var known = ConditionSubjects.TryCollect(quest.AvailableWhen, subjects) & ConditionSubjects.TryCollect(quest.FailWhen, subjects);
             foreach (var step in record.Steps)
                 known &= ConditionSubjects.TryCollect(step.Definition.UnlockWhen, subjects) & ConditionSubjects.TryCollect(step.Definition.FailWhen, subjects);
             foreach (var objective in record.Objectives)
@@ -460,7 +459,7 @@ namespace QuestSystem
             var quest = record.Definition;
             if (record.State == QuestState.NotGiven)
             {
-                if (quest.GivenAutomatically && (quest.AvailableWhen == null ? subject == null : Reads(quest.AvailableWhen, subject))) Give(quest);
+                if ((quest.AvailableWhen == null ? subject == null : Reads(quest.AvailableWhen, subject))) Give(quest);
                 return;
             }
             if (record.State != QuestState.Active) return;
@@ -473,8 +472,6 @@ namespace QuestSystem
                 return;
             }
             CheckFailure(record, subject);
-            if (record.State != QuestState.Active) return;
-            CheckExpiry(record, subject);
         }
 
         private void AdvanceSteps(QuestRecord record, IConditionSubject subject)
@@ -506,12 +503,6 @@ namespace QuestSystem
                 Fail(record);
                 return;
             }
-        }
-
-        private void CheckExpiry(QuestRecord record, IConditionSubject subject)
-        {
-            var quest = record.Definition;
-            if (Reads(quest.ExpireWhen, subject) && quest.ExpireWhen.Evaluate(_facts)) End(record, QuestState.Expired);
         }
 
         /** <summary>True when a locked step should start: the steps it follows allow it, and its unlock condition holds. A change only reaches steps whose condition reads it.</summary> */
@@ -583,7 +574,7 @@ namespace QuestSystem
 
         private void Fail(QuestRecord record) => End(record, QuestState.Failed);
 
-        /** <summary>Ends an active quest without its rewards, as Failed or Expired.</summary> */
+        /** <summary>Ends an active quest without its rewards, as Failed.</summary> */
         private void End(QuestRecord record, QuestState state)
         {
             if (record.State != QuestState.Active) return;

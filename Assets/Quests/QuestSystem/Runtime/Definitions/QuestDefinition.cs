@@ -8,7 +8,7 @@ using Object = UnityEngine.Object;
 
 namespace QuestSystem
 {
-    /** <summary>A quest: who gives it and where, its steps, what it rewards, and when it can be given, fails or runs out.</summary> */
+    /** <summary>A quest: its steps, what it rewards, and when it is given or fails.</summary> */
     [CreateAssetMenu(menuName = QuestMenus.Create + "Quest", fileName = "Quest")]
     public sealed class QuestDefinition : ScriptableObject, IIdentifiedAsset, IConditionSubject
     {
@@ -24,49 +24,14 @@ namespace QuestSystem
         [TextArea(2, 6)]
         [SerializeField] private string summary;
 
-        [Tooltip("The kind of quest, which decides where it is listed.")]
-        [SerializeField] private QuestKind kind;
-
-        [Tooltip("Who gives the quest: one of the game's quest givers (a person). Optional.")]
-        [AssetPicker(typeof(IQuestGiverAsset))]
-        [SerializeField] private Object giver;
-
-        [Tooltip("Where the quest is given: one of the game's quest places. Optional.")]
-        [AssetPicker(typeof(IQuestPlaceAsset))]
-        [SerializeField] private Object place;
-
-        [Tooltip("Where the quest sits among others of its kind: lower comes first.")]
-        [SerializeField] private int order;
-
-        [Tooltip("The level the quest is meant for, shown to players. 0 shows none.")]
-        [Min(0)]
-        [SerializeField] private int suggestedLevel;
-
         [Tooltip("The quest can be given again after it is done.")]
         [SerializeField] private bool repeatable;
 
-        [Tooltip("Players don't see the quest until it is given.")]
-        [SerializeField] private bool hiddenUntilGiven = true;
-
-        [Tooltip("When the quest can be given. Empty: always.")]
+        [Tooltip("When the quest can be given: it is given as soon as this holds. Empty: at once.")]
         [SerializeReference, SubclassPicker] private ICondition<IFacts> availableWhen;
-
-        [Tooltip("Give the quest as soon as it is available, instead of waiting for the game to give it.")]
-        [SerializeField] private bool givenAutomatically;
 
         [Tooltip("When the quest fails. Empty: it can't fail, except through a step.")]
         [SerializeReference, SubclassPicker] private ICondition<IFacts> failWhen;
-
-        [Tooltip("Why it failed, as players see it once it has. Optional.")]
-        [TextArea(1, 4)]
-        [SerializeField] private string failedText;
-
-        [Tooltip("When the quest runs out: it ends as Expired, with no rewards. Empty: it can't. Failing wins if both hold at once.")]
-        [SerializeReference, SubclassPicker] private ICondition<IFacts> expireWhen;
-
-        [Tooltip("Why it ran out, as players see it once it has. Optional.")]
-        [TextArea(1, 4)]
-        [SerializeField] private string expiredText;
 
         [Tooltip("The quest's steps. Order matters for steps that start after the step above.")]
         [SerializeField] private List<QuestStep> steps = new List<QuestStep>();
@@ -99,64 +64,20 @@ namespace QuestSystem
         /** <summary>What the quest is about.</summary> */
         public string Summary => summary;
 
-        /** <summary>The kind; null when unset.</summary> */
-        public QuestKind Kind => kind;
-
-        /** <summary>Who gives it; null when unset. A game's own asset type, so a portrait or a map pin can come from it.</summary> */
-        public IQuestGiverAsset Giver => DisplayNames.As<IQuestGiverAsset>(giver);
-
-        /** <summary>Where it is given; null when unset.</summary> */
-        public IQuestPlaceAsset Place => DisplayNames.As<IQuestPlaceAsset>(place);
-
-        /** <summary>Where it sits among others of its kind: lower comes first.</summary> */
-        public int Order => order;
-
-        /** <summary>The level it is meant for; 0 when none.</summary> */
-        public int SuggestedLevel => suggestedLevel;
-
         /** <summary>True when it can be given again after it is done.</summary> */
         public bool Repeatable => repeatable;
 
-        /** <summary>True when players don't see it until it is given.</summary> */
-        public bool HiddenUntilGiven => hiddenUntilGiven;
-
-        /** <summary>When it can be given; null means always.</summary> */
+        /** <summary>When it can be given; null means always. It is given as soon as this holds.</summary> */
         public ICondition<IFacts> AvailableWhen => availableWhen;
-
-        /** <summary>True when it is given as soon as it is available.</summary> */
-        public bool GivenAutomatically => givenAutomatically;
 
         /** <summary>When it fails; null means never, except through a step.</summary> */
         public ICondition<IFacts> FailWhen => failWhen;
-
-        /** <summary>Why it failed, as players see it; empty for none.</summary> */
-        public string FailedText => failedText ?? string.Empty;
-
-        /** <summary>Why it ended in <paramref name="state" />, as players see it: its failed or expired text; empty for any other state.</summary> */
-        public string EndTextFor(QuestState state) => state switch
-        {
-            QuestState.Failed => FailedText,
-            QuestState.Expired => ExpiredText,
-            _ => string.Empty,
-        };
-
-        /** <summary>When it runs out; null means never.</summary> */
-        public ICondition<IFacts> ExpireWhen => expireWhen;
-
-        /** <summary>Why it ran out, as players see it; empty for none.</summary> */
-        public string ExpiredText => expiredText ?? string.Empty;
 
         /** <summary>The steps, in order.</summary> */
         public IReadOnlyList<QuestStep> Steps => steps;
 
         /** <summary>What completing it gives.</summary> */
         public IReadOnlyList<IQuestReward> Rewards => rewards;
-
-        /** <summary>The asset that gives the quest, for editor tools; null when none.</summary> */
-        internal Object GiverAsset => giver;
-
-        /** <summary>The asset where the quest is given, for editor tools; null when none.</summary> */
-        internal Object PlaceAsset => place;
 
         /** <summary>Where the quest web draws it, when pinned; never read by the game.</summary> */
         public Vector2 WebPosition => webPosition;
@@ -171,12 +92,7 @@ namespace QuestSystem
 
         #region MonoBehaviour Callbacks
 
-        private void OnValidate()
-        {
-            AssignMissingIds();
-            if (!DisplayNames.Fits<IQuestGiverAsset>(giver)) giver = null;
-            if (!DisplayNames.Fits<IQuestPlaceAsset>(place)) place = null;
-        }
+        private void OnValidate() => AssignMissingIds();
 
         #endregion
 
@@ -189,12 +105,8 @@ namespace QuestSystem
             rewards = new List<IQuestReward>(settings.Rewards ?? Array.Empty<IQuestReward>());
             availableWhen = settings.AvailableWhen;
             failWhen = settings.FailWhen;
-            expireWhen = settings.ExpireWhen;
-            givenAutomatically = settings.GivenAutomatically;
             repeatable = settings.Repeatable;
-            hiddenUntilGiven = settings.HiddenUntilGiven;
             title = settings.Title;
-            kind = settings.Kind;
         }
 
         /** <summary>Puts a step at a place in the list, for editor tools.</summary> */
@@ -215,15 +127,6 @@ namespace QuestSystem
 
         /** <summary>Sets when the quest can be given, for editor tools.</summary> */
         internal void SetAvailableWhen(ICondition<IFacts> condition) => availableWhen = condition;
-
-        /** <summary>Sets the quest's kind, for editor tools.</summary> */
-        internal void SetKind(QuestKind questKind) => kind = questKind;
-
-        /** <summary>Sets who gives the quest, for editor tools; an asset that isn't display-named clears it.</summary> */
-        internal void SetGiver(Object asset) => giver = DisplayNames.Fits<IQuestGiverAsset>(asset) ? asset : null;
-
-        /** <summary>Sets where the quest is given, for editor tools; an asset that isn't display-named clears it.</summary> */
-        internal void SetPlace(Object asset) => place = DisplayNames.Fits<IQuestPlaceAsset>(asset) ? asset : null;
 
         /** <summary>Sets the quest's title, for editor tools.</summary> */
         internal void SetTitle(string questTitle) => title = questTitle;
@@ -288,26 +191,14 @@ namespace QuestSystem
         /** <summary>The title.</summary> */
         public string Title;
 
-        /** <summary>The kind.</summary> */
-        public QuestKind Kind;
-
         /** <summary>When it can be given; null means always.</summary> */
         public ICondition<IFacts> AvailableWhen;
-
-        /** <summary>True when it is given as soon as it is available.</summary> */
-        public bool GivenAutomatically;
 
         /** <summary>When it fails.</summary> */
         public ICondition<IFacts> FailWhen;
 
-        /** <summary>When it runs out.</summary> */
-        public ICondition<IFacts> ExpireWhen;
-
         /** <summary>True when it can be given again.</summary> */
         public bool Repeatable;
-
-        /** <summary>True when players don't see it until it is given.</summary> */
-        public bool HiddenUntilGiven;
 
         /** <summary>What completing it gives.</summary> */
         public IEnumerable<IQuestReward> Rewards;

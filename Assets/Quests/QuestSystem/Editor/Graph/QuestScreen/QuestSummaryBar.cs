@@ -42,16 +42,11 @@ namespace QuestSystem.EditorTools
             var title = new Label(QuestStates.TitleOf(quest));
             title.AddToClassList("quest-graph__summary-title");
             Add(title);
-            AddKind(quest.Kind);
-            if (quest.Giver != null) AddField("Giver", quest.Giver.DisplayName);
-            if (quest.Place != null) AddField("Place", quest.Place.DisplayName);
             AddRefs("Needs", summary.Reads.Where(link => LinkSlots.GatesAvailability(link.Slot) && link.Read != quest)
                 .Select(link => (link.Read, link.ReadStepId == null ? link.StateName : "step " + link.StateName)));
             AddRefs("Fails if", summary.Reads.Where(link => link.Slot == LinkSlot.Fails && link.Read != quest).Select(link => (link.Read, link.StateName)));
-            AddRefs("Expires if", summary.Reads.Where(link => link.Slot == LinkSlot.Expires && link.Read != quest).Select(link => (link.Read, link.StateName)));
             AddRefs("Read by", readers.Where(link => link.Reader != quest && link.ReadStepId == null).Select(link => (link.Reader, link.Label)));
             if (quest.Rewards.Count > 0) AddField("Rewards", string.Join(", ", quest.Rewards.Where(reward => reward != null).Select(reward => reward.Describe().Text)));
-            if (quest.GivenAutomatically) AddPill("Auto-given");
             if (quest.Repeatable) AddPill("Repeatable");
             if (summary.Unreadable > 0)
             {
@@ -70,14 +65,6 @@ namespace QuestSystem.EditorTools
         #endregion
 
         #region Helpers
-
-        private void AddKind(QuestKind kind)
-        {
-            var field = Field("Kind");
-            field.Add(KindLooks.Swatch(kind));
-            field.Add(new Label(QuestStates.NameOf(kind)));
-            Add(field);
-        }
 
         private void AddField(string name, string value)
         {
@@ -119,7 +106,6 @@ namespace QuestSystem.EditorTools
         {
             var button = new Button(() => OnOpenQuest(quest)) { tooltip = $"Open {QuestStates.TitleOf(quest)}" };
             button.AddToClassList("quest-graph__ref");
-            button.Add(KindLooks.Swatch(quest.Kind));
             button.Add(new Label(QuestStates.TitleOf(quest)));
             if (!string.IsNullOrEmpty(note))
             {

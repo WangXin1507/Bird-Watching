@@ -84,23 +84,11 @@ namespace QuestSystem.EditorTools
             return true;
         }
 
-        /** <summary>Sets several quests' kind, as one Undo step.</summary> */
-        public static void SetKind(IEnumerable<QuestDefinition> quests, QuestKind kind) => ChangeEach("Set Kind", quests, quest => quest.SetKind(kind));
-
-        /** <summary>Sets several quests' giver, as one Undo step; an asset that isn't a quest giver is refused.</summary> */
-        public static bool SetGiver(IEnumerable<QuestDefinition> quests, Object giver) =>
-            DisplayNames.Fits<IQuestGiverAsset>(giver) && ChangeEach("Set Giver", quests, quest => quest.SetGiver(giver));
-
-        /** <summary>Sets several quests' place, as one Undo step; an asset that isn't a quest place is refused.</summary> */
-        public static bool SetPlace(IEnumerable<QuestDefinition> quests, Object place) =>
-            DisplayNames.Fits<IQuestPlaceAsset>(place) && ChangeEach("Set Place", quests, quest => quest.SetPlace(place));
-
         /** <summary>Creates a quest asset in a folder, pinned at a web position. Undo removes it.</summary> */
-        public static QuestDefinition CreateQuest(string folder, string title, QuestKind kind, Vector2 position)
+        public static QuestDefinition CreateQuest(string folder, string title, Vector2 position)
         {
             var quest = ScriptableObject.CreateInstance<QuestDefinition>();
             quest.SetTitle(title);
-            quest.SetKind(kind);
             quest.SetWebPlacement(GraphMetrics.Snap(position), true);
             var name = new string((title ?? "Quest").Where(c => char.IsLetterOrDigit(c) || c == ' ').ToArray()).Trim();
             AssetDatabase.CreateAsset(quest, AssetDatabase.GenerateUniqueAssetPath($"{folder.TrimEnd('/')}/{(name.Length == 0 ? "Quest" : name)}.asset"));

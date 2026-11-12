@@ -230,7 +230,6 @@ namespace QuestSystem.EditorTools
             _crumbs.PushItem("Quests", () => Navigate(""));
             if (OnWeb) return;
             var quest = QuestOf(questGuid);
-            _crumbs.PushItem(QuestStates.NameOf(quest.Kind));
             _crumbs.PushItem(QuestStates.TitleOf(quest));
         }
 

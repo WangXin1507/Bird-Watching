@@ -61,7 +61,6 @@ namespace QuestSystem.EditorTools
             if (quest == null) return issues;
             if (quest.AssetId.IsEmpty) issues.Add(Error(quest, "has no asset id, so it can't be saved"));
             if (quest.Steps.Count == 0) issues.Add(Error(quest, "has no steps, so it completes the moment it is given"));
-            if (quest.Kind == null) issues.Add(Warning(quest, "has no kind"));
             if (string.IsNullOrWhiteSpace(quest.Title)) issues.Add(Warning(quest, "has no title"));
 
             for (var i = 0; i < quest.Steps.Count; i++)

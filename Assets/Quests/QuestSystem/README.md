@@ -4,6 +4,12 @@ Quests for Unity games, authored as assets. A quest has steps, steps have object
 gameplay signals and from story state, with no per-frame polling. Quests and the game share one condition system.
 Version 2; version 1 is kept on the `v1` branch and the `v1.0.0` tag.
 
+> **Bird, Watching changes.** This copy has had these removed: quest kinds (`QuestKind`), giver, place, order,
+> suggested level, hidden until given, given automatically, failed text, expire when (and the `Expired` state),
+> expired text, and a step's hidden until reached. Every quest is now given as soon as its Available When holds (or
+> at once without one), quests are hidden until given and steps until they start, and the quest graph shows one
+> band. Parts of this README below still describe those features.
+
 **Requires:**
 
 - Unity 6;

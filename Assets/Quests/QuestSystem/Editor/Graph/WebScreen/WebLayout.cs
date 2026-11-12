@@ -4,12 +4,9 @@ using UnityEngine;
 
 namespace QuestSystem.EditorTools
 {
-    /** <summary>A band of the web: every quest of one kind.</summary> */
+    /** <summary>The web's band: the area behind every quest.</summary> */
     public readonly struct WebBand
     {
-        /** <summary>The kind; null for quests with none.</summary> */
-        public QuestKind Kind { get; }
-
         /** <summary>Where the band starts.</summary> */
         public float Top { get; }
 
@@ -17,17 +14,16 @@ namespace QuestSystem.EditorTools
         public float Height { get; }
 
         /** <summary>Makes a band.</summary> */
-        public WebBand(QuestKind kind, float top, float height)
+        public WebBand(float top, float height)
         {
-            Kind = kind;
             Top = top;
             Height = height;
         }
     }
 
     /**
-     * <summary>Lays the web out: a band per kind, in the kinds' order; within each, columns by how many quests lead to
-     * a quest and rows in the order of the quests before them. Pinned quests stay where they were put. Loops are cut,
+     * <summary>Lays the web out in one band: columns by how many quests lead to a quest and rows in the order of the
+     * quests before them. Pinned quests stay where they were put. Loops are cut,
      * so this always finishes.</summary>
      */
     public static class WebLayout
@@ -77,14 +73,14 @@ namespace QuestSystem.EditorTools
             var bands = new List<WebBand>();
             var rowOf = new Dictionary<QuestDefinition, float>();
             var top = 0f;
-            foreach (var band in quests.GroupBy(quest => quest.Kind).OrderBy(group => group.Key == null ? int.MaxValue : group.Key.Order).ThenBy(group => QuestStates.NameOf(group.Key)))
+            foreach (var band in quests.Count == 0 ? Enumerable.Empty<IEnumerable<QuestDefinition>>() : new[] { quests })
             {
                 var rows = 1;
                 foreach (var column in band.GroupBy(Depth).OrderBy(group => group.Key))
                 {
                     var row = 0;
                     var ordered = column.OrderBy(quest => into[quest].Count == 0 ? 0f : into[quest].Average(before => rowOf.TryGetValue(before, out var y) ? y : 0f))
-                        .ThenBy(quest => quest.Order).ThenBy(QuestStates.TitleOf);
+                        .ThenBy(QuestStates.TitleOf);
                     foreach (var quest in ordered)
                     {
                         var at = new Vector2(Left + column.Key * ColumnWidth, top + BandHeader + row * RowHeight);
@@ -97,7 +93,7 @@ namespace QuestSystem.EditorTools
                 var height = BandHeader + rows * RowHeight + BandFooter;
                 foreach (var quest in band.Where(quest => quest.WebPinned))
                     height = Mathf.Max(height, quest.WebPosition.y - top + RowHeight + BandFooter);
-                bands.Add(new WebBand(band.Key, top, height));
+                bands.Add(new WebBand(top, height));
                 top += height;
             }
             return (positions, bands);

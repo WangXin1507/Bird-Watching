@@ -100,7 +100,6 @@ namespace QuestSystem.EditorTools
                 else
                 {
                     element.tooltip = $"Open {QuestStates.TitleOf(quest)}";
-                    element.Add(KindLooks.Swatch(quest.Kind));
                     var title = new Label(QuestStates.TitleOf(quest));
                     title.AddToClassList("quest-graph__stub-title");
                     element.Add(title);

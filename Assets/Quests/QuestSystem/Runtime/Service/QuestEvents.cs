@@ -78,7 +78,7 @@ namespace QuestSystem
         /** <summary>The quest.</summary> */
         public QuestDefinition Quest { get; }
 
-        /** <summary><see cref="QuestState.Done" />, <see cref="QuestState.Failed" /> or <see cref="QuestState.Expired" />.</summary> */
+        /** <summary><see cref="QuestState.Done" /> or <see cref="QuestState.Failed" />.</summary> */
         public QuestState State { get; }
 
         /** <summary>How many times it has been completed, this time included.</summary> */

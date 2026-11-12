@@ -16,8 +16,6 @@ namespace QuestSystem.EditorTools
         Ends,
         /** <summary>Ends the quest because nothing follows it.</summary> */
         EndsByDefault,
-        /** <summary>Shown to players before it starts.</summary> */
-        ShownEarly,
         /** <summary>Starts with the quest.</summary> */
         WithQuest,
     }
@@ -49,7 +47,6 @@ namespace QuestSystem.EditorTools
             StepTag.AnyOne => new StepTagLook($"Any 1 of {objectives}", "quest-graph__pill--any", "Any one objective completes it"),
             StepTag.Ends => new StepTagLook("Ends", "quest-graph__pill--end", "Completing it completes the quest"),
             StepTag.EndsByDefault => new StepTagLook("Ends", "quest-graph__pill--end-implicit", "Nothing follows it, so completing it completes the quest"),
-            StepTag.ShownEarly => new StepTagLook("Shown early", "quest-graph__pill--plain", "Players see it before it starts"),
             _ => new StepTagLook("With quest", "quest-graph__pill--plain", "Starts as soon as the quest is given"),
         };
     }
@@ -161,7 +158,6 @@ namespace QuestSystem.EditorTools
             if (step.Completion == StepCompletion.AnyOne) tags.Add(StepTag.AnyOne);
             if (step.EndsQuest) tags.Add(StepTag.Ends);
             else if (!marked && record.Dependants.Count == 0) tags.Add(StepTag.EndsByDefault);
-            if (!step.HiddenUntilReached) tags.Add(StepTag.ShownEarly);
             Tags = tags;
 
             Objectives = step.Objectives.Where(objective => objective != null)

@@ -10,9 +10,9 @@ using Object = UnityEngine.Object;
 namespace QuestSystem.EditorTools
 {
     /**
-     * <summary>The whole-quest web: every quest in bands by kind, wired by the conditions that read other quests. Two
+     * <summary>The whole-quest web: every quest, wired by the conditions that read other quests. Two
      * views (dependencies, story flags), a search, filters, focus on a quest's chain, and editing: drag to pin, draw a
-     * link to make a quest need another, bulk edits, and new quests.</summary>
+     * link to make a quest need another, and new quests.</summary>
      */
     public sealed class WebScreen : VisualElement
     {
@@ -39,7 +39,6 @@ namespace QuestSystem.EditorTools
         private readonly QuestIndex _index;
         private readonly WebFilterBar _bar = new WebFilterBar();
         private readonly GraphCanvas _canvas = new GraphCanvas();
-        private readonly BulkEditPanel _bulk = new BulkEditPanel();
         private readonly VisualElement _empty = new VisualElement();
         private readonly Notice _notice = new Notice();
         private readonly DeferredRebuild _rebuild;
@@ -59,7 +58,6 @@ namespace QuestSystem.EditorTools
         private readonly Dictionary<QuestDefinition, List<QuestDefinition>> _comesFrom = new Dictionary<QuestDefinition, List<QuestDefinition>>();
         private readonly HashSet<QuestDefinition> _selected = new HashSet<QuestDefinition>();
         private readonly List<Rect> _flagRects = new List<Rect>();
-        private List<QuestKind> _kinds = new List<QuestKind>();
         private List<WebBand> _bands = new List<WebBand>();
         private QuestDefinition _focus;
         private Wire _preview;
@@ -96,7 +94,6 @@ namespace QuestSystem.EditorTools
             AddToClassList("quest-graph__screen");
             Add(_bar);
             Add(_canvas);
-            Add(_bulk);
             _empty.AddToClassList("quest-graph__empty");
             _empty.pickingMode = PickingMode.Ignore;
             Add(_empty);
@@ -104,7 +101,6 @@ namespace QuestSystem.EditorTools
 
             _bar.OnFiltersChanged += ApplyFilters;
             _bar.OnViewChanged += Rebuild;
-            _bulk.OnEdited += AfterEdit;
             _canvas.OnBackgroundClicked += (_, additive) =>
             {
                 if (!additive) Select(Array.Empty<QuestDefinition>(), null);
@@ -166,8 +162,6 @@ namespace QuestSystem.EditorTools
             MapLinks(links);
             var (positions, bands) = WebLayout.Arrange(quests, links);
             _bands = bands;
-            _kinds = quests.Select(quest => quest.Kind).Where(kind => kind != null).Distinct().OrderBy(kind => kind.Order).ThenBy(QuestStates.NameOf).ToList();
-            _bar.SetKinds(_kinds);
 
             var right = Mathf.Max(positions.Count == 0 ? 0f : positions.Values.Max(position => position.x) + WebLayout.NodeWidth + BandWidthPastLastColumn, MinBandWidth);
             foreach (var band in bands)
@@ -192,7 +186,6 @@ namespace QuestSystem.EditorTools
             PlaceWires(true);
             Counts = new WebCounts(quests.Count, quests.Count, links.Count, quests.Sum(quest => _index.SummaryOf(quest)?.Errors ?? 0),
                 quests.Sum(quest => _index.SummaryOf(quest)?.Warnings ?? 0), quests.Sum(quest => _index.SummaryOf(quest)?.Unreadable ?? 0));
-            _bulk.Show(_selected, _kinds);
             ApplyFilters();
             _canvas.schedule.Execute(_canvas.Cull);
         }
@@ -293,9 +286,9 @@ namespace QuestSystem.EditorTools
             element.style.top = band.Top;
             element.style.height = band.Height;
             element.style.width = width;
-            var name = new Label(QuestStates.NameOf(band.Kind));
+            var name = new Label("Quests");
             name.AddToClassList("quest-graph__band-name");
-            name.AddToClassList(KindLooks.ClassOf(band.Kind));
+            name.AddToClassList("quest-graph__kind--none");
             element.Add(name);
             return element;
         }
@@ -579,16 +572,13 @@ namespace QuestSystem.EditorTools
                 pair.Value.SetSelected(_selected.Contains(pair.Key));
             if (_selected.Count == 1) QuestGraphFocus.Focus(_selected.First(), null);
             else if (_selected.Count > 1) Selection.objects = _selected.Cast<Object>().ToArray();
-            _bulk.Show(_selected, _kinds);
             ApplyFilters();
         }
 
         private void BuildMenu(ContextualMenuPopulateEvent evt)
         {
             var at = _canvas.ToContent(_canvas.WorldToLocal(evt.mousePosition));
-            var band = _bands.FirstOrDefault(candidate => at.y >= candidate.Top && at.y < candidate.Top + candidate.Height);
-            var kind = band.Kind;
-            evt.menu.AppendAction(kind == null ? "New Quest" : $"New {QuestStates.NameOf(kind)} Quest", _ => CreateQuest(kind, at));
+            evt.menu.AppendAction("New Quest", _ => CreateQuest(at));
             evt.menu.AppendSeparator();
             evt.menu.AppendAction("Open", _ => OnOpenQuest(_selected.First()), _selected.Count == 1 ? DropdownMenuAction.Status.Normal : DropdownMenuAction.Status.Disabled);
             evt.menu.AppendAction("Unpin", _ => UnpinSelection(), _selected.Any(quest => quest.WebPinned) ? DropdownMenuAction.Status.Normal : DropdownMenuAction.Status.Disabled);
@@ -603,12 +593,12 @@ namespace QuestSystem.EditorTools
             evt.StopPropagation();
         }
 
-        /** <summary>Makes a quest of a kind, in the folder of another quest of that kind (or any quest), where the menu opened.</summary> */
-        private void CreateQuest(QuestKind kind, Vector2 at)
+        /** <summary>Makes a quest in the folder of another quest, where the menu opened.</summary> */
+        private void CreateQuest(Vector2 at)
         {
-            var sibling = _index.Quests.FirstOrDefault(quest => quest != null && quest.Kind == kind) ?? _index.Quests.FirstOrDefault(quest => quest != null);
+            var sibling = _index.Quests.FirstOrDefault(quest => quest != null);
             var folder = sibling == null ? "Assets" : Path.GetDirectoryName(AssetDatabase.GetAssetPath(sibling))?.Replace('\\', '/') ?? "Assets";
-            var quest = QuestEdits.CreateQuest(folder, kind == null ? "New Quest" : $"New {QuestStates.NameOf(kind)}", kind, at);
+            var quest = QuestEdits.CreateQuest(folder, "New Quest", at);
             _index.Refresh(quest);
             Rebuild();
             Select(new[] { quest }, quest);

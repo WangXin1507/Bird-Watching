@@ -2,21 +2,11 @@ using UnityEngine;
 
 namespace QuestSystem
 {
-    /** <summary>An asset with a name to show, such as the person who gives a quest or the place it is given.</summary> */
+    /** <summary>An asset with a name to show.</summary> */
     public interface IDisplayNamed
     {
         /** <summary>The name to show.</summary> */
         string DisplayName { get; }
-    }
-
-    /** <summary>Someone who can give a quest: a quest's giver is one (a game's person, a guild).</summary> */
-    public interface IQuestGiverAsset : IDisplayNamed
-    {
-    }
-
-    /** <summary>Somewhere a quest can be given: a quest's place is one (a game's town, a shrine).</summary> */
-    public interface IQuestPlaceAsset : IDisplayNamed
-    {
     }
 
     /** <summary>The one place that asks what role a named asset plays.</summary> */

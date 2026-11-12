@@ -27,7 +27,6 @@ namespace QuestSystem.EditorTools
             {
                 Start = afterStepId == null ? StepStart.AfterStepAbove : StepStart.AfterLinkedSteps,
                 After = afterStepId == null ? null : new[] { afterStepId },
-                HiddenUntilReached = true,
             });
             step.SetGraphPosition(GraphMetrics.Snap(position));
             EditScope.Run("Add Step", new Object[] { quest }, () =>

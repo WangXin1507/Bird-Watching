@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 namespace QuestSystem.EditorTools
 {
-    /** <summary>The quest screen's sidebar: every quest, grouped by kind, with problem badges and a search.</summary> */
+    /** <summary>The quest screen's sidebar: every quest by title, with problem badges and a search.</summary> */
     public sealed class QuestList : VisualElement
     {
         #region Private Fields
@@ -55,20 +55,13 @@ namespace QuestSystem.EditorTools
             _rebuild.Cancel();
             _list.Clear();
             var filter = _search.value?.Trim() ?? "";
-            var groups = _index.Quests.Where(quest => quest != null && (filter.Length == 0 || QuestStates.TitleOf(quest).IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0))
-                .GroupBy(quest => quest.Kind)
-                .OrderBy(group => group.Key == null ? int.MaxValue : group.Key.Order).ThenBy(group => QuestStates.NameOf(group.Key));
+            var quests = _index.Quests.Where(quest => quest != null && (filter.Length == 0 || QuestStates.TitleOf(quest).IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0))
+                .OrderBy(QuestStates.TitleOf);
             var any = false;
-            foreach (var group in groups)
             {
-                any = true;
-                var heading = new VisualElement();
-                heading.AddToClassList("quest-graph__group");
-                heading.Add(KindLooks.Swatch(group.Key));
-                heading.Add(new Label(QuestStates.NameOf(group.Key)));
-                _list.Add(heading);
-                foreach (var quest in group.OrderBy(quest => quest.Order).ThenBy(QuestStates.TitleOf))
+                foreach (var quest in quests)
                 {
+                    any = true;
                     var item = new Button(() => OnPicked(quest));
                     item.AddToClassList("quest-graph__list-item");
                     item.EnableInClassList("quest-graph__list-item--current", quest == _current);

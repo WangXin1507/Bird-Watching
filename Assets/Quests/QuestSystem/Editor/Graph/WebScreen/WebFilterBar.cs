@@ -26,15 +26,11 @@ namespace QuestSystem.EditorTools
         private readonly ToolbarToggle _dependencies = new ToolbarToggle { text = "Dependencies", tooltip = "Quests wired by the conditions that read other quests" };
         private readonly ToolbarToggle _flags = new ToolbarToggle { text = "Story flags", tooltip = "Story flags wired to the quests that read them" };
         private readonly ToolbarSearchField _search = new ToolbarSearchField { tooltip = "Search quest titles, step text and step ids" };
-        private readonly VisualElement _kinds = new VisualElement();
         private readonly ToolbarToggle _repeatable = new ToolbarToggle { text = "Repeatable" };
-        private readonly ToolbarToggle _shownEarly = new ToolbarToggle { text = "Shown early", tooltip = "Players see it before it is given" };
         private readonly ToolbarToggle _problems = new ToolbarToggle { text = "Problems", tooltip = "Has errors or warnings" };
         private readonly VisualElement _depth = new VisualElement();
         private readonly ToolbarToggle _direct = new ToolbarToggle { text = "Direct", tooltip = "Show the focused quest's own links" };
         private readonly ToolbarToggle _chain = new ToolbarToggle { text = "Chain", tooltip = "Show everything the focused quest leads to and comes from" };
-        private readonly List<ToolbarToggle> _kindChips = new List<ToolbarToggle>();
-        private List<QuestKind> _shownKinds = new List<QuestKind>();
 
         #endregion
 
@@ -75,11 +71,8 @@ namespace QuestSystem.EditorTools
                 OnFiltersChanged();
             });
             Add(_search);
-            _kinds.AddToClassList("quest-graph__chips");
-            Add(_kinds);
             Add(new ToolbarSpacer());
             AddChip(_repeatable, on => Filters.Repeatable = on);
-            AddChip(_shownEarly, on => Filters.ShownEarly = on);
             AddChip(_problems, on => Filters.Problems = on);
             Add(new ToolbarSpacer { flex = true });
             _depth.AddToClassList("quest-graph__chips");
@@ -92,32 +85,6 @@ namespace QuestSystem.EditorTools
             ShowFocusDepth(false);
         }
 
-        /** <summary>Shows a chip for each kind given; chips for kinds no longer given are dropped from the filter.</summary> */
-        public void SetKinds(IEnumerable<QuestKind> kinds)
-        {
-            var list = kinds.ToList();
-            if (list.SequenceEqual(_shownKinds)) return;
-            _shownKinds = list;
-            Filters.Kinds.IntersectWith(list);
-            _kinds.Clear();
-            _kindChips.Clear();
-            foreach (var kind in list)
-            {
-                var chip = new ToolbarToggle { text = QuestStates.NameOf(kind) };
-                chip.AddToClassList("quest-graph__kind-chip");
-                chip.Insert(0, KindLooks.Swatch(kind));
-                chip.SetValueWithoutNotify(Filters.Kinds.Contains(kind));
-                chip.RegisterValueChangedCallback(evt =>
-                {
-                    if (evt.newValue) Filters.Kinds.Add(kind);
-                    else Filters.Kinds.Remove(kind);
-                    OnFiltersChanged();
-                });
-                _kinds.Add(chip);
-                _kindChips.Add(chip);
-            }
-        }
-
         /** <summary>Shows or hides the focus depth, which only means something while a quest has the focus.</summary> */
         public void ShowFocusDepth(bool shown) => _depth.style.display = shown ? DisplayStyle.Flex : DisplayStyle.None;
 
@@ -126,7 +93,7 @@ namespace QuestSystem.EditorTools
         {
             Filters.Clear();
             _search.SetValueWithoutNotify("");
-            foreach (var chip in _kindChips.Append(_repeatable).Append(_shownEarly).Append(_problems))
+            foreach (var chip in new[] { _repeatable, _problems })
                 chip.SetValueWithoutNotify(false);
             OnFiltersChanged();
         }
