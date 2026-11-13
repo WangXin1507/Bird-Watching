@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class InteractInFocus : MonoBehaviour
 {
-    [SerializeField] private FocusingInteract focusableManager;
+    [SerializeField] protected FocusingInteract focusableManager;
     [SerializeField] private GameObject appearOnFocus;
 
-    private void Update()
+    protected virtual void Update()
     {
-        appearOnFocus.SetActive(focusableManager.isFocused);
+        if (appearOnFocus != null && focusableManager != null)
+            appearOnFocus.SetActive(focusableManager.isFocused);
     }
     
     public void Interact()
@@ -20,7 +21,7 @@ public class InteractInFocus : MonoBehaviour
         }
     }
     
-    public void InteractWhileFocus()
+    public virtual void InteractWhileFocus()
     {
         Debug.Log("Interact test: Clicked " + gameObject.name);
     }
