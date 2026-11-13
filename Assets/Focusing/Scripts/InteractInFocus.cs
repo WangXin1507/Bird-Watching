@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InteractInFocus : MonoBehaviour
 {
-    [SerializeField] protected FocusingInteract focusableManager;
+    [SerializeField] public FocusingInteract focusableManager;
     [SerializeField] private GameObject appearOnFocus;
 
     protected virtual void Update()

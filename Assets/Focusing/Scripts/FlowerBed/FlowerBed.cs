@@ -11,12 +11,15 @@ using UnityEngine;
 [RequireComponent(typeof(FocusingInteract))]
 public class FlowerBed : MonoBehaviour
 {
-    [SerializeField] private List<FlowerSlot> slots = new List<FlowerSlot>();
+    public List<FlowerSlot> slots = new List<FlowerSlot>();
 
     public IReadOnlyList<FlowerSlot> Slots => slots;
     public FocusingInteract Focus { get; private set; }
 
     public event Action<FlowerBed> BedChanged;
+
+    [SerializeField] private FlowerType[] neededFlowerTypes;
+    [SerializeField] private MissionData missionData;
 
     public bool IsFull => slots.All(s => s.IsOccupied);
     public int PlantedCount => slots.Count(s => s.IsOccupied);
@@ -39,5 +42,24 @@ public class FlowerBed : MonoBehaviour
 
     public int CountOf(FlowerType type) => slots.Count(s => s.IsOccupied && s.PlantedFlower == type);
 
-    private void OnSlotChanged(FlowerSlot slot) => BedChanged?.Invoke(this);
+    private void OnSlotChanged(FlowerSlot slot)
+    {
+        for (int i = 0; i < slots.Count; i++)
+        {
+            if (neededFlowerTypes.Length <= i)
+            {
+                break;
+            }
+            if (slots[i].PlantedFlower != neededFlowerTypes[i])
+            {
+                break;
+            }
+
+            if (i == slots.Count - 1)
+            {
+                Journal.Instance.CompleteMission(missionData);
+            }
+        }
+        BedChanged?.Invoke(this);
+    }
 }
