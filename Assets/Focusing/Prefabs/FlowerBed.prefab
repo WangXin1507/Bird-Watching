@@ -438,72 +438,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   neededFlowerTypes: 
   missionData: {fileID: 0}
 --- !u!114 &6731498519171748850
@@ -520,8 +454,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CreateFlowerSlotGrid
   FlowerSlot: {fileID: 2229571512400090047, guid: 0eb073353edad124dbe533733e05a2b0, type: 3}
   flowerSlotParent: {fileID: 8204279913068063451}
-  bounds: {x: 2.25, y: 1, z: 0.75}
-  offset: {x: 0, y: 1.5, z: 0}
+  bounds: {x: 2.25, y: 0.01, z: 0.75}
+  offset: {x: 0, y: 0.5, z: 0}
   flowerBed: {fileID: 8912968217516861340}
   focusingInteract: {fileID: 5745272956716201374}
   numberOfSlots: {x: 4, y: 1, z: 3}

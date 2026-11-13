@@ -19,7 +19,7 @@ public class CreateFlowerSlotGrid : MonoBehaviour
     [ContextMenu("Create Flower Slot")]
     private void CreateFlowerSlot()
     {
-        for (int i = flowerSlotParent.transform.childCount - 1; i > 0; i--)
+        for (int i = flowerSlotParent.transform.childCount - 1; i >= 0; i--)
         {
             DestroyImmediate(flowerSlotParent.transform.GetChild(i).gameObject);
         }
