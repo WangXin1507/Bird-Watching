@@ -35,7 +35,7 @@ public class CreateFlowerSlotGrid : MonoBehaviour
                     float tx = i / Mathf.Max((numberOfSlots.x - 1), 1);
                     float ty = j / Mathf.Max((numberOfSlots.y - 1), 1);
                     float tz = h / Mathf.Max((numberOfSlots.z - 1), 1);
-                    flowerSlot.transform.position = new Vector3(Mathf.Lerp(-bounds.x, bounds.x, tx), Mathf.Lerp(-bounds.y, bounds.y, ty), Mathf.Lerp(-bounds.z, bounds.z, tz)) + offset;
+                    flowerSlot.transform.position = new Vector3(Mathf.Lerp(-bounds.x, bounds.x, tx), Mathf.Lerp(-bounds.y, bounds.y, ty), Mathf.Lerp(-bounds.z, bounds.z, tz)) + offset + transform.position;
                     FlowerSlot fSlot = flowerSlot.GetComponent<FlowerSlot>();
                     fSlot.focusableManager = focusingInteract;
                     if (flowerBed != null)
