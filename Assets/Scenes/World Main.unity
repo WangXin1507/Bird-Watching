@@ -13498,10 +13498,10 @@ MonoBehaviour:
         z: 2.8263047
       Rotation:
         value:
-          x: 0.025583878
-          y: 0.95936954
-          z: 0.16731767
-          w: -0.22574417
+          x: 0.005911195
+          y: 0.9791401
+          z: 0.16915877
+          w: -0.11240562
     - Position:
         x: -22.2
         y: 6.04
@@ -13509,17 +13509,17 @@ MonoBehaviour:
       TangentIn:
         x: 0
         y: 0
-        z: -3.057008
+        z: -2.686075
       TangentOut:
         x: 0
         y: 0
-        z: 3.057008
+        z: 2.686075
       Rotation:
         value:
-          x: 0.15318753
-          y: 0.7569484
-          z: 0.06633901
-          w: 0.63179255
+          x: 0.158241
+          y: 0.8073396
+          z: 0.0532903
+          w: 0.5659705
     - Position:
         x: -16.85
         y: 4.34
@@ -34614,7 +34614,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2188626570381399317, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -18514504
+      value: -18578276
       objectReference: {fileID: 0}
     - target: {fileID: 2204938772551962573, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
