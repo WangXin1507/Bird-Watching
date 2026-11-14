@@ -13331,9 +13331,9 @@ MonoBehaviour:
         y: 0.0018100739
         z: -4.658285
       TangentOut:
-        x: -0.0005528927
-        y: 0.0009799637
-        z: 1.8964502
+        x: -0.0034332275
+        y: 0.006307125
+        z: 4.9095364
       Rotation:
         value:
           x: 0.059872493
@@ -34614,7 +34614,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2188626570381399317, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -18614080
+      value: -18643574
       objectReference: {fileID: 0}
     - target: {fileID: 2204938772551962573, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
