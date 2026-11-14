@@ -48,8 +48,8 @@ public class CreateFlowerSlotGrid : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.darkRed;
-        Vector3 newOffset = new Vector3(offset.x * transform.localScale.x, offset.y * transform.localScale.y, offset.z * transform.localScale.z);
-        Vector3 newBounds = new Vector3(bounds.x * transform.localScale.x, bounds.y * transform.localScale.y, bounds.z * transform.localScale.z);
+        Vector3 newOffset = new Vector3(offset.x * transform.lossyScale.x, offset.y * transform.lossyScale.y, offset.z * transform.lossyScale.z);
+        Vector3 newBounds = new Vector3(bounds.x * transform.lossyScale.x, bounds.y * transform.lossyScale.y, bounds.z * transform.lossyScale.z);
         Gizmos.DrawWireCube(transform.position + newOffset, newBounds * 2);
     }
 }
