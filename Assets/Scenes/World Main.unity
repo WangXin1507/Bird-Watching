@@ -22149,9 +22149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SplineFollowTrigger
   spline: {fileID: 561145854}
-  followSpeed: 0.02
-  randomDeviation: 0.3
-  driftRadius: 5
+  followSpeed: 0.015
 --- !u!114 &834948395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36111,7 +36109,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2188626570381399317, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -19044920
+      value: -19175446
       objectReference: {fileID: 0}
     - target: {fileID: 2204938772551962573, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
