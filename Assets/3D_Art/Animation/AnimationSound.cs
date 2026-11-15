@@ -9,7 +9,7 @@ public class AnimationSound : MonoBehaviour
         {
             return;
         }
-        EventReference audio = EventReference.Find(path);
+        EventReference audio = FMODUnity.RuntimeManager.PathToEventReference(path);
         if (!audio.IsNull) AudioManager.PlayOneShot(audio, transform.position);
     }
 }

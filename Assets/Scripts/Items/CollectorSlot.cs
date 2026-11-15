@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.ComponentModel;
-using UnityEditor.U2D.Sprites;
 using UnityEngine;
 
 public class CollectorSlot : Interactable
