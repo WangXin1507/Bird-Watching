@@ -8,7 +8,8 @@ using UnityEngine;
 public class Focusable : MonoBehaviour, IFocusable
 {
     [SerializeField] private List<ATranscriptEntry> requiredTranscripts = new List<ATranscriptEntry>();
-
+    [SerializeField] private bool appearOnRequired = false;
+    
     // Highlight behavior
     [SerializeField] private Material highlightMaterial;
     private Renderer[] renderers;
@@ -32,6 +33,14 @@ public class Focusable : MonoBehaviour, IFocusable
         {
             SetupDynamicMaterials();
             SetOutlineIntensity(0f);
+        }
+    }
+
+    private void Update()
+    {
+        if (appearOnRequired)
+        {
+            gameObject.SetActive(CanFocus());
         }
     }
 
