@@ -3782,6 +3782,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemCollector
   requiredTranscripts: []
   appearOnRequired: 0
+  meshRenderers: []
   highlightMaterial: {fileID: 2100000, guid: b0572dddfe2661444953b7cb980e4e16, type: 2}
   interactSound:
     Guid:
@@ -9558,6 +9559,7 @@ MonoBehaviour:
   requiredTranscripts:
   - {fileID: 11400000, guid: 1f216b6bcc1b4fc49bbe1bb26e19f103, type: 2}
   appearOnRequired: 0
+  meshRenderers: []
   highlightMaterial: {fileID: 2100000, guid: b0572dddfe2661444953b7cb980e4e16, type: 2}
   interactSound:
     Guid:
@@ -13008,6 +13010,7 @@ MonoBehaviour:
   requiredTranscripts:
   - {fileID: 11400000, guid: 1f216b6bcc1b4fc49bbe1bb26e19f103, type: 2}
   appearOnRequired: 0
+  meshRenderers: []
   highlightMaterial: {fileID: 2100000, guid: b0572dddfe2661444953b7cb980e4e16, type: 2}
   interactSound:
     Guid:
@@ -20993,6 +20996,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DiaryInteractable
   requiredTranscripts: []
   appearOnRequired: 0
+  meshRenderers: []
   highlightMaterial: {fileID: 2100000, guid: b0572dddfe2661444953b7cb980e4e16, type: 2}
   interactSound:
     Guid:
@@ -22147,7 +22151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SplineFollowTrigger
   spline: {fileID: 561145854}
-  followSpeed: 0.015
+  followSpeed: 0.002
 --- !u!114 &834948395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22163,6 +22167,7 @@ MonoBehaviour:
   requiredTranscripts:
   - {fileID: 11400000, guid: 1b9a35f63705a5e49aab6518b0be6ef8, type: 2}
   appearOnRequired: 1
+  meshRenderers: []
   highlightMaterial: {fileID: 2100000, guid: 12c58374b3e176b4386867769b9c3663, type: 2}
   missionCompleteOnGrab: {fileID: 11400000, guid: 8c719be39ce71654dad46fa3a0a7cd2e, type: 2}
   _grabHandle: {fileID: 1284440709}
@@ -35664,7 +35669,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2188626570381399317, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -26187684
+      value: -26293518
       objectReference: {fileID: 0}
     - target: {fileID: 2204938772551962573, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -50263,6 +50268,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DiaryInteractable
   requiredTranscripts: []
   appearOnRequired: 0
+  meshRenderers: []
   highlightMaterial: {fileID: 2100000, guid: b0572dddfe2661444953b7cb980e4e16, type: 2}
   interactSound:
     Guid:
@@ -53124,6 +53130,7 @@ MonoBehaviour:
   requiredTranscripts:
   - {fileID: 11400000, guid: 1f216b6bcc1b4fc49bbe1bb26e19f103, type: 2}
   appearOnRequired: 0
+  meshRenderers: []
   highlightMaterial: {fileID: 2100000, guid: b0572dddfe2661444953b7cb980e4e16, type: 2}
   interactSound:
     Guid:
