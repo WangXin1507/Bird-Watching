@@ -71,105 +71,66 @@ MonoBehaviour:
   - speaker: Friend
     text: Hey, anything change between you and Chelsea?
     isFromPhone: 1
-    timeStamp: 6
+    timeStamp: 3
   - speaker: Luke
     text: "Oof yeah, sorry I haven\u2019t kept you updated\u2026 we\u2019re on a
       break, I guess."
     isFromPhone: 0
+    timeStamp: 9
+  - speaker: Friend
+    text: Oh... What happened?
+    isFromPhone: 1
     timeStamp: 12
+  - speaker: Luke
+    text: She said she's mad at me because it feels like she's been the only one
+      putting in the effort to make plans for us lately.
+    isFromPhone: 0
+    timeStamp: 18
+  - speaker: Luke
+    text: She says I haven't been reaching out much anymore. And honestly, she's
+      not wrong...
+    isFromPhone: 0
+    timeStamp: 23
+  - speaker: Luke
+    text: I guess I just got used to her making plans for us, y'know?
+    isFromPhone: 0
+    timeStamp: 27
   - speaker: Friend
-    text: "Oh\u2026 do you um\u2026 mean like a good break? Like a \u201Cwe both
-      needed this\u201D kind of break?"
+    text: Ahh, I see. So, you guys gonna talk soon? Patch up?
     isFromPhone: 1
-    timeStamp: 19
+    timeStamp: 32
   - speaker: Luke
-    text: Uhh, not really...
+    text: Well, the issue is, I'm not sure how to approach her. Or if approaching
+      her right now is even a good move.
     isFromPhone: 0
-    timeStamp: 21
+    timeStamp: 39
   - speaker: Luke
-    text: "More like a \u201CI\u2019ve been the only one putting in the effort of
-      making plans for us this summer and I\u2019m mad at you\u201D kind of break."
+    text: "Like, I have an idea, I just\u2026 I don't know if it\u2019s good enough,
+      you know?"
     isFromPhone: 0
-    timeStamp: 29
+    timeStamp: 43
   - speaker: Friend
-    text: Yikes, sorry to hear that man.
+    text: "Look man, whatever it is, it\u2019s probably worth a shot. I mean, we\u2019re
+      still trying to have that party before we all leave, right?"
     isFromPhone: 1
-    timeStamp: 31
-  - speaker: Luke
-    text: "Yeahh, it sucks. To be honest, she isn\u2019t wrong."
-    isFromPhone: 0
-    timeStamp: 35
-  - speaker: Luke
-    text: I guess I just got used to her making the plans for us, you know?
-    isFromPhone: 0
-    timeStamp: 38
-  - speaker: Luke
-    text: "Like even when I\u2019d forget or get busy she\u2019d always reach out."
-    isFromPhone: 0
-    timeStamp: 42
-  - speaker: Luke
-    text: "And I just got really used to that\u2026"
-    isFromPhone: 0
-    timeStamp: 45
-  - speaker: Friend
-    text: Huh.
-    isFromPhone: 1
-    timeStamp: 47
-  - speaker: Luke
-    text: "It\u2019s not great, I know."
-    isFromPhone: 0
     timeStamp: 49
   - speaker: Friend
-    text: So you guys are gonna patch up, right?
+    text: Might wanna try and talk to her before that.
     isFromPhone: 1
     timeStamp: 52
   - speaker: Luke
-    text: "Well, the issue is I\u2019m\u2026 not sure how to approach her. Or if
-      approaching her right now is even a good move. "
+    text: "I know, it\u2019s just everything I think of sounds stupid to me."
+    isFromPhone: 0
+    timeStamp: 56
+  - speaker: Luke
+    text: "I\u2019ll think of something good eventually though\u2026 I hope\u2026"
     isFromPhone: 0
     timeStamp: 59
-  - speaker: Luke
-    text: "Like, I have an idea, I just\u2026 I don't know if it\u2019s good enough,
-      you know? "
-    isFromPhone: 0
-    timeStamp: 64
-  - speaker: Luke
-    text: "What if she thinks it\u2019s stupid, and then what if that\u2019s it?
-      What if I\u2019ve fumbled my chance to fix things?"
-    isFromPhone: 0
-    timeStamp: 70
-  - speaker: Friend
-    text: "Look man, whatever it is, it\u2019s probably worth a shot. "
-    isFromPhone: 1
-    timeStamp: 73
-  - speaker: Friend
-    text: "I mean, we\u2019re still trying to have that get-together before we all
-      leave, right?"
-    isFromPhone: 1
-    timeStamp: 77
-  - speaker: Friend
-    text: Might wanna try and talk to her before that. Could be the last night you
-      two spend together for a while.
-    isFromPhone: 1
-    timeStamp: 82
-  - speaker: Luke
-    text: "I know, that\u2019s what makes me even more nervous."
-    isFromPhone: 0
-    timeStamp: 85
-  - speaker: Luke
-    text: "Every time I think of some solution to maybe get us talking again, I just
-      think about actually doing it and realize it\u2019s probably dumb."
-    isFromPhone: 0
-    timeStamp: 93
-  - speaker: Luke
-    text: "I\u2019ll think of something good though, eventually\u2026 I hope\u2026"
-    isFromPhone: 0
-    timeStamp: 97
   audio:
     Guid:
-      Data1: -1966723864
-      Data2: 1102036264
-      Data3: -1518796362
-      Data4: -1584923040
-    Path: event:/Conversation/Luke Convo_Test
+      Data1: 1120637172
+      Data2: 1342058908
+      Data3: 1099916963
+      Data4: 1660387402
+    Path: event:/Conversation/Luke Convo 2
   startDelay: 0
