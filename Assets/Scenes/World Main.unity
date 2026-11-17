@@ -22029,6 +22029,7 @@ GameObject:
   - component: {fileID: 834948394}
   - component: {fileID: 834948395}
   - component: {fileID: 834948396}
+  - component: {fileID: 834948397}
   m_Layer: 7
   m_Name: Kite
   m_TagString: Untagged
@@ -22069,7 +22070,7 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.714907
   m_Center: {x: 0.010009644, y: 0, z: 0.01981276}
@@ -22188,6 +22189,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &834948397
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 834948387}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.1321608, y: 17.508097, z: 1.1094913}
+  m_Center: {x: 0.0058557387, y: 0.6061277, z: 0.005215943}
 --- !u!1001 &836746215
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -35659,7 +35681,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2188626570381399317, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -27259028
+      value: -27338306
       objectReference: {fileID: 0}
     - target: {fileID: 2204938772551962573, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
