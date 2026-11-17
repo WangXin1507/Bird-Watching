@@ -1845,7 +1845,7 @@ Transform:
   m_GameObject: {fileID: 103822112}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.14882828, z: -0, w: 0.98886305}
-  m_LocalPosition: {x: -8.551001, y: 2.5599995, z: -1.2930002}
+  m_LocalPosition: {x: -8.197091, y: 2.664575, z: -1.1896725}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1887,7 +1887,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineSplineDolly
   m_SplineSettings:
     Spline: {fileID: 1964605542}
-    Position: 0
+    Position: 0.49916667
     Units: 1
   SplineOffset: {x: 0, y: 0, z: 0}
   CameraRotation: 0
@@ -26666,7 +26666,7 @@ Transform:
   m_GameObject: {fileID: 1067336249}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.79126847, z: 0, w: 0.6114689}
-  m_LocalPosition: {x: -8.2973, y: 3.145854, z: -2.4201002}
+  m_LocalPosition: {x: -7.8780856, y: 3.0747976, z: -2.6448412}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -26708,7 +26708,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineSplineDolly
   m_SplineSettings:
     Spline: {fileID: 630498868}
-    Position: 0
+    Position: 0.42332393
     Units: 1
   SplineOffset: {x: 0, y: 0, z: 0}
   CameraRotation: 0
@@ -31090,7 +31090,7 @@ Transform:
   m_GameObject: {fileID: 1264037256}
   serializedVersion: 2
   m_LocalRotation: {x: -0.000000057533132, y: -0.00096563704, z: -5.5556146e-11, w: 0.9999995}
-  m_LocalPosition: {x: -5.0360003, y: -0.755, z: -1.8520002}
+  m_LocalPosition: {x: -5.344815, y: -0.34435904, z: -1.5618343}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -31132,7 +31132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineSplineDolly
   m_SplineSettings:
     Spline: {fileID: 102082812}
-    Position: 0
+    Position: 0.43058822
     Units: 1
   SplineOffset: {x: 0, y: 0, z: 0}
   CameraRotation: 0
@@ -34858,7 +34858,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2188626570381399317, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -30970984
+      value: -31066454
       objectReference: {fileID: 0}
     - target: {fileID: 2204938772551962573, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
