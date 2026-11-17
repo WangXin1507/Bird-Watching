@@ -1,3 +1,5 @@
+using System;
+using Unity.AppUI.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -5,7 +7,7 @@ public class PlayerInteraction : MonoBehaviour
 {
     [Header("Detection")]
     [SerializeField] private LayerMask mask = ~0;
-    [SerializeField] private float focusRadius = 0.25f;
+    [SerializeField] private float focusRadius = 0.40f;
     [SerializeField] private int maxTargets = 5;
 
     [Header("Holding")]
@@ -15,7 +17,9 @@ public class PlayerInteraction : MonoBehaviour
     private Rigidbody rb;
 
     private IFocusable focusedTarget;
+    private Transform focusedTransform;
     private Collider[] targets;
+    private int targetCount;
 
     public Transform holding;
     private Rigidbody heldRb;
@@ -46,38 +50,47 @@ public class PlayerInteraction : MonoBehaviour
 
     private void CheckProximity()
     {
-        int count = Physics.OverlapSphereNonAlloc(transform.position, focusRadius, targets, mask);
+        targetCount = Physics.OverlapSphereNonAlloc(transform.position, focusRadius, targets, mask);
 
         IFocusable closest = null;
+        Transform closestTransform = null;
         float minDistance = float.MaxValue;
+        float bias = 1.5f;
 
         // Calculate closest focusables
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < targetCount; i++)
         {
             Collider col = targets[i];
             if (col == null) continue;
 
             if (holding != null && col.transform == holding) continue;
             if (!col.TryGetComponent<IFocusable>(out var focusable)) continue;
+            if (!focusable.CanFocus()) continue;
             if (!focusable.enabled) continue;
             if (holding != null && focusable is IGrabbable) continue;
 
             float dist = Vector3.Distance(transform.position, col.transform.position);
-            if (dist < minDistance && focusable.CanFocus())
+            if (focusedTransform && col.transform == focusedTransform)
+            {
+                dist -= bias;
+            }
+            
+            if (dist < minDistance)
             {
                 minDistance = dist;
                 closest = focusable;
+                closestTransform = col.transform;
             }
         }
 
-        if (closest != focusedTarget)
+        if (closestTransform != focusedTransform)
         {
+            Debug.Log("Changing focused target");
             focusedTarget?.LoseFocus();
             focusedTarget = closest;
+            focusedTransform = closestTransform;
             closest?.GainFocus();
         }
-
-        for (int i = 0; i < targets.Length; i++) targets[i] = null;
     }
 
     private void TryInteract()

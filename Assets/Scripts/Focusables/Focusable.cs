@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class Focusable : MonoBehaviour, IFocusable
 {
-    [SerializeField] private List<ATranscriptEntry> requiredTranscripts = new List<ATranscriptEntry>();
+    public List<ATranscriptEntry> requiredTranscripts = new List<ATranscriptEntry>();
     
     // Highlight behavior
     [SerializeField] private Material highlightMaterial;

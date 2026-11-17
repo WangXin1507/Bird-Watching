@@ -1,4 +1,5 @@
 using System.Reflection;
+using UnityEditor.UI;
 using UnityEngine;
 
 public class SplinedGrabbable : Focusable, IGrabbable
@@ -15,6 +16,27 @@ public class SplinedGrabbable : Focusable, IGrabbable
         if (!_splineFollower) Debug.Log("No spline follower on SplinedGrabbable object");
 
         _collider = GetComponent<Collider>();
+
+        Journal.Instance.OnTranscriptUnlocked += CheckKiteRequirements;
+    }
+
+    // Check if all the required transcipts are unlocked and enable the spline follower
+    private void CheckKiteRequirements()
+    {
+        bool unlock = true;
+        foreach (ATranscriptEntry transcript in requiredTranscripts)
+        {
+            if (!Journal.Instance.IsTranscriptUnlocked(transcript))
+            {
+                unlock = false;
+            }
+        }
+
+        if (unlock && _splineFollower.enabled == false)
+        {
+            _splineFollower.enabled = true;
+            Journal.Instance.OnTranscriptUnlocked -= CheckKiteRequirements;
+        }
     }
 
     public Transform Grab()
