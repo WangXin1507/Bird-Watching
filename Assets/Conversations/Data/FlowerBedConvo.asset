@@ -1,0 +1,126 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d63668583f5bb3046b1d6fd9e8bfc5e2, type: 3}
+  m_Name: FlowerBedConvo
+  m_EditorClassIdentifier: Assembly-CSharp::BirdWatching.Conversation.ConversationObject
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects:
+    - {fileID: 21300000, guid: fa98672c5462f0746bbca5146c9c37e7, type: 3}
+    - {fileID: 21300000, guid: a8fe74ace8ac0c4419f1ca5d26c00a00, type: 3}
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: charSprites
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[UnityEngine.Sprite,
+        UnityEngine.CoreModule]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+        mscorlib]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 2
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 1
+      Data: Amanda's Grandpa
+    - Name: $v
+      Entry: 10
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 1
+      Data: Friend
+    - Name: $v
+      Entry: 10
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  lines:
+  - speaker: Friend
+    text: "What? But you love gardening. It\u2019s always been so nice seeing you
+      decorate for our gatherings."
+    isFromPhone: 1
+    timeStamp: 5
+  - speaker: Amanda's Grandpa
+    text: "I know, and I\u2019m still planning on flowers."
+    isFromPhone: 0
+    timeStamp: 8
+  - speaker: Amanda's Grandpa
+    text: "It\u2019s just, the kids are all graduating, some of them are even leaving
+      home, I feel like I should be making something more special for them."
+    isFromPhone: 0
+    timeStamp: 17
+  - speaker: Friend
+    text: Well, have you thought of doing something with your flowers that would
+      represent something to them?
+    isFromPhone: 1
+    timeStamp: 22
+  - speaker: Friend
+    text: "Maybe you can use the flowers to write out a message, like you did for
+      the one New Year\u2019s party."
+    isFromPhone: 1
+    timeStamp: 27
+  - speaker: Amanda's Grandpa
+    text: "Of course I\u2019ve thought of it. That\u2019s what I\u2019ve planned,
+      it\u2019s just\u2026 all more difficult now."
+    isFromPhone: 0
+    timeStamp: 32
+  - speaker: Amanda's Grandpa
+    text: "My hands grow less steady with each year, my wrists ache at the sight
+      of basic tasks, and it\u2019s already twice as hard getting used to doing everything
+      in this wheelchair."
+    isFromPhone: 0
+    timeStamp: 41
+  - speaker: Amanda's Grandpa
+    text: "I\u2019d still love to decorate for the party, it may just have to be
+      a bit simpler than what I\u2019ve done before, is all."
+    isFromPhone: 0
+    timeStamp: 47
+  - speaker: Friend
+    text: "I see. Well hey, whatever you end up doing, we\u2019ll love it."
+    isFromPhone: 1
+    timeStamp: 52
+  - speaker: Friend
+    text: "Don\u2019t strain yourself too much, alright?"
+    isFromPhone: 1
+    timeStamp: 55
+  audio:
+    Guid:
+      Data1: 1731721997
+      Data2: 1171551491
+      Data3: -1043468905
+      Data4: -1703932429
+    Path: event:/Conversation/Flower Bed Convo
+  startDelay: 0
