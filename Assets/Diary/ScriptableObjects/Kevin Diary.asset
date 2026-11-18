@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfcb6f5650c6eaf4ea7f7b2a94f0b5cc, type: 3}
   m_Name: Kevin Diary
   m_EditorClassIdentifier: Assembly-CSharp::DiaryData
-  transcriptId: 6c67b7cc-b7f1-4fd5-bc43-875451294e03
-  title: Diary Entry 1
-  mission: {fileID: 11400000, guid: 8a619ff05acad9d43a566640fcd02f31, type: 2}
+  transcriptId: 11d81361-c944-477e-b656-eff056cd85c3
+  title: Kevin's Diary
+  mission: {fileID: 11400000, guid: 8c719be39ce71654dad46fa3a0a7cd2e, type: 2}
   OnTranscriptClosed:
     m_PersistentCalls:
       m_Calls: []
@@ -27,11 +27,11 @@ MonoBehaviour:
     of course, I can't wait to finally be studying what I actually want to. But a
     whole new state, whole new group of people, living with roommates for the first
     time, it\u2019s a lot. It\u2019d be nice to have a little piece of home, of my
-    childhood, to take with me.\r\n\r\nIt was stupid trying to fly it around the
-    neighborhood one last time. Especially with how windy it was. Honestly, I wouldn\u2019t
-    be surprised if it\u2019s just blown away. Ugh, but I\u2019m sure I saw it\u2026
-    I might check one last time later today. But for now, I gotta pack. I really
-    hope it\u2019s not gone."
-  rightTextBox: 
+    childhood, to take with me.\r\n\r\n"
+  rightTextBox: "It was stupid trying to fly it around the neighborhood one last
+    time. Especially with how windy it was. Honestly, I wouldn\u2019t be surprised
+    if it\u2019s just blown away. Ugh, but I\u2019m sure I saw it\u2026 I might check
+    one last time later today. But for now, I gotta pack. I really hope it\u2019s
+    not gone."
   imageToShow: {fileID: 0}
   imageSize: {x: 215, y: 215}

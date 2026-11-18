@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Chelsea Diary
   m_EditorClassIdentifier: Assembly-CSharp::DiaryData
   transcriptId: 6c67b7cc-b7f1-4fd5-bc43-875451294e03
-  title: Diary Entry 1
+  title: Chelsea's Diary
   mission: {fileID: 11400000, guid: 8a619ff05acad9d43a566640fcd02f31, type: 2}
   OnTranscriptClosed:
     m_PersistentCalls:
