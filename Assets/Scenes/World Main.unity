@@ -21663,7 +21663,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SplineFollowTrigger
   spline: {fileID: 561145854}
-  followSpeed: 0.018
+  followSpeed: 0.004
 --- !u!114 &834948395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34858,7 +34858,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2188626570381399317, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -31890738
+      value: -31962940
       objectReference: {fileID: 0}
     - target: {fileID: 2204938772551962573, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -36516,6 +36516,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -17.531443
       objectReference: {fileID: 0}
+    - target: {fileID: 6548632358545950348, guid: 7b945834a0911864f9023aee8044449d, type: 3}
+      propertyPath: missions.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6548632358545950348, guid: 7b945834a0911864f9023aee8044449d, type: 3}
+      propertyPath: 'missions.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 8c719be39ce71654dad46fa3a0a7cd2e, type: 2}
     - target: {fileID: 6564355368814725338, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 42.425797
