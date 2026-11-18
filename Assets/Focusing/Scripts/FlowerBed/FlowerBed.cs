@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FMODUnity;
 using UnityEngine;
 
 /// <summary>
@@ -20,6 +21,7 @@ public class FlowerBed : MonoBehaviour
 
     [SerializeField] private FlowerType[] neededFlowerTypes;
     [SerializeField] private MissionData missionData;
+    [SerializeField] private EventReference flowerPickingSound;
 
     public bool IsFull => slots.All(s => s.IsOccupied);
     public int PlantedCount => slots.Count(s => s.IsOccupied);
@@ -44,6 +46,8 @@ public class FlowerBed : MonoBehaviour
 
     private void OnSlotChanged(FlowerSlot slot)
     {
+        AudioManager.PlayOneShot(flowerPickingSound, transform.position);
+        
         for (int i = 0; i < slots.Count; i++)
         {
             if (neededFlowerTypes.Length <= i)
