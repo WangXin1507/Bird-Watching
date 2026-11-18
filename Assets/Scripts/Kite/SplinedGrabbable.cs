@@ -47,7 +47,8 @@ public class SplinedGrabbable : Focusable, IGrabbable
             {
                 // Go from only focus to everything to avoid collision while following
                 // if excluded in editor
-                _collider.excludeLayers = 0;
+                //_collider.excludeLayers = 0;
+                _collider.enabled = false;
             }
 
             Debug.Log("Completed mission");
