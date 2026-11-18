@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c25f145f37d0df4f835bd2fe8d80eca, type: 3}
   m_Name: Photo1
   m_EditorClassIdentifier: Assembly-CSharp::InspectableData
-  transcriptId: 
+  transcriptId: 72487006-63b7-490e-8633-b0105461375b
   title: 
-  mission: {fileID: 0}
+  mission: {fileID: 11400000, guid: 09eb080ac835dcc4aaf8742b422cdc4d, type: 2}
   OnTranscriptClosed:
     m_PersistentCalls:
       m_Calls: []
-  prefab: {fileID: 7695803332894096846, guid: 6f29ff45258c6314fa68fcbba71d723d, type: 3}
+  prefab: {fileID: 7695803332894096846, guid: c4b1f06e3b8e6a64aa7ff9206067e23e, type: 3}
   initialRotation: {x: 0, y: 0, z: 0}
   framingDistance: 1
