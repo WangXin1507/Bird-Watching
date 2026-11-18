@@ -85,7 +85,7 @@ public class ItemCollector : Interactable
         {
             
             Debug.Log("Completed mission");
-            Journal.Instance.CompleteMission(mission);
+            Journal.instance.CompleteMission(mission);
         }
         else
         {

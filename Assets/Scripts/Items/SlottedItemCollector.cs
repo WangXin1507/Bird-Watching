@@ -23,7 +23,7 @@ public class SlottedItemCollector : MonoBehaviour
         if (full && correct)
         {
             Debug.Log("Completed mission");
-            if (mission) Journal.Instance.CompleteMission(mission);
+            if (mission) Journal.instance.CompleteMission(mission);
         }
         else if (full)
         {

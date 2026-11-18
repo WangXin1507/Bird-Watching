@@ -51,7 +51,7 @@ public class SplinedGrabbable : Focusable, IGrabbable
             }
 
             Debug.Log("Completed mission");
-            Journal.Instance.CompleteMission(missionCompleteOnGrab);
+            Journal.instance.CompleteMission(missionCompleteOnGrab);
 
             _splineFollower.enabled = false;
         }

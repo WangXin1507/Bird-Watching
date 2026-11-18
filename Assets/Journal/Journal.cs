@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using Unity.Cinemachine;
 
-public class Journal : MonoBehaviour
+public class Journal : SingletonBehaviour<Journal>
 {
-    [SerializeField] private List<MissionData> missions = new List<MissionData>();
+    [SerializeField] private List<MissionInScene> missions = new();
 
     private readonly HashSet<string> unlockedTranscriptIds = new HashSet<string>();
     private readonly HashSet<string> completedMissionIDs = new HashSet<string>();
@@ -14,18 +15,14 @@ public class Journal : MonoBehaviour
     public event Action OnTranscriptUnlocked;
 
     [DoNotSerialize] public MissionData lastMissionChanged = null;
-    public IReadOnlyList<MissionData> AllMissions => missions;
-    public IEnumerable<MissionData> UnlockedMissions => missions.Where(IsMissionUnlocked);
-    
-    public static Journal Instance { get; private set; }
+    public IReadOnlyList<MissionData> AllMissions => missions.Keys.ToList();
+
+    //public IEnumerable<MissionData> UnlockedMissions => missions.Where(IsMissionUnlocked);
+    public IEnumerable<MissionData> UnlockedMissions => missions.Keys.ToList();
+
 
     private bool afterLoad = false;
 
-    private void Awake()
-    {
-        Instance = this;
-    }
-    
     private void Start()
     {
         LoadUnlocks();
@@ -179,4 +176,12 @@ public class Journal : MonoBehaviour
             completedMissionIDs.Add(id);
         
     }
+}
+
+[Serializable]
+public struct MissionInScene
+{
+    public MissionData mission;
+    public Trinket reward;
+    public CinemachineCamera focusRewardCam;
 }

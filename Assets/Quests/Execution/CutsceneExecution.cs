@@ -69,7 +69,7 @@ namespace BirdWatching.Quests
                 }
                 StopCutscene();
                 EnableInput();
-                Journal.Instance.UnlockTranscript(transcriptEntry);
+                Journal.instance.UnlockTranscript(transcriptEntry);
             }
         }
 

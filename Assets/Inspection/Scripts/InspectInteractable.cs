@@ -10,6 +10,6 @@ public class InspectInteractable : Interactable
     public override void Interact()
     {
         InspectionManager.Instance.Open(inspectable);
-        Journal.Instance.UnlockTranscript(inspectable);
+        Journal.instance.UnlockTranscript(inspectable);
     }
 }

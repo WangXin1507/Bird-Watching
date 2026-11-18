@@ -2,14 +2,15 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewMission", menuName = "Bird Watching/Mission")]
+[CreateAssetMenu(fileName = "NewMission", menuName = "Bird Watching/Mission"), Serializable]
 public class MissionData : ScriptableObject
 {
     [SerializeField] private string missionName;
     [SerializeField] public Sprite missionPicture;
     [SerializeField] public Sprite trinket;
     [SerializeField] private List<ATranscriptEntry> transcripts = new List<ATranscriptEntry>();
-    
+
+    [SerializeField] private Trinket trinketReward;
     
     public string MissionName => missionName;
     public IReadOnlyList<ATranscriptEntry> Transcripts => transcripts;

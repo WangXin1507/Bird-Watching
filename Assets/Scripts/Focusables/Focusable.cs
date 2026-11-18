@@ -86,7 +86,7 @@ public class Focusable : MonoBehaviour, IFocusable
         bool canFocus = true;
         foreach (ATranscriptEntry requiredTranscript in requiredTranscripts)
         {
-            canFocus = canFocus && Journal.Instance.IsTranscriptUnlocked(requiredTranscript);
+            canFocus = canFocus && Journal.instance.IsTranscriptUnlocked(requiredTranscript);
         }
         return canFocus;
     }

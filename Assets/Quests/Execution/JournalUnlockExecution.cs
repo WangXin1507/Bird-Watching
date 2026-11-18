@@ -15,6 +15,6 @@ public class JournalUnlockExecution : IQuestExecutionStrategy
 
     protected override void OnInitialize()
     {
-        Journal.Instance.UnlockTranscript(transcriptToUnlock.missionData, transcriptToUnlock.index);
+        Journal.instance.UnlockTranscript(transcriptToUnlock.missionData, transcriptToUnlock.index);
     }
 }

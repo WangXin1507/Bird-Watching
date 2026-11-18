@@ -48,7 +48,7 @@ public class JournalUI : MonoBehaviour
     {
         leftArrow.onClick.AddListener(PreviousPage);
         rightArrow.onClick.AddListener(NextPage);
-        Journal.Instance.OnTranscriptUnlocked += Refresh;
+        Journal.instance.OnTranscriptUnlocked += Refresh;
         
         for (int i = 0; i < transcriptSlots.Count; i++)
         {
@@ -104,8 +104,8 @@ public class JournalUI : MonoBehaviour
         gameObject.GetComponent<Canvas>().enabled = true;
         AudioManager.PlayOneShot(AudioEvents.Journal.JournalOpen);
         
-        if (Journal.Instance.lastMissionChanged != null)
-            GoToMission(Journal.Instance.lastMissionChanged);
+        if (Journal.instance.lastMissionChanged != null)
+            GoToMission(Journal.instance.lastMissionChanged);
     }
     
     public void CloseJournal()
@@ -132,10 +132,10 @@ public class JournalUI : MonoBehaviour
         MissionData previousMission = HasPages ? pages[currentPage] : null;
 
         pages.Clear();
-        foreach (MissionData mission in Journal.Instance.AllMissions)
-            if (Journal.Instance.IsMissionUnlocked(mission)) pages.Add(mission);
-        foreach (MissionData mission in Journal.Instance.AllMissions) 
-            if (!Journal.Instance.IsMissionUnlocked(mission)) pages.Add(mission);
+        foreach (MissionData mission in Journal.instance.AllMissions)
+            if (Journal.instance.IsMissionUnlocked(mission)) pages.Add(mission);
+        foreach (MissionData mission in Journal.instance.AllMissions) 
+            if (!Journal.instance.IsMissionUnlocked(mission)) pages.Add(mission);
 
         int previousIndex = previousMission != null ? pages.IndexOf(previousMission) : -1;
         currentPage = previousIndex >= 0 ? previousIndex : Mathf.Clamp(currentPage, 0, Mathf.Max(0, pages.Count - 1));
@@ -186,7 +186,7 @@ public class JournalUI : MonoBehaviour
         MissionData mission = pages[currentPage];
 
         trinketImage.sprite = mission.trinket;
-        if (Journal.Instance.IsMissionCompleted(mission))
+        if (Journal.instance.IsMissionCompleted(mission))
             trinketImage.color = Color.white;
         else
             trinketImage.color = Color.black;
@@ -217,7 +217,7 @@ public class JournalUI : MonoBehaviour
         {
             TranscriptSlot slot = transcriptSlots[i];
             ATranscriptEntry transcript = i < mission.Transcripts.Count ? mission.Transcripts[i] : null;
-            bool visible = transcript != null && Journal.Instance.IsTranscriptUnlocked(transcript);
+            bool visible = transcript != null && Journal.instance.IsTranscriptUnlocked(transcript);
 
             if (visible && firstSlot)
             {
@@ -257,7 +257,7 @@ public class JournalUI : MonoBehaviour
         if (slotIndex >= mission.Transcripts.Count) return;
 
         ATranscriptEntry transcript = mission.Transcripts[slotIndex];
-        if (transcript == null || !Journal.Instance.IsTranscriptUnlocked(transcript)) return;
+        if (transcript == null || !Journal.instance.IsTranscriptUnlocked(transcript)) return;
 
         transcript.OpenUI();
         openedTranscript = true;
