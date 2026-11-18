@@ -22402,6 +22402,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43999c511a596754fb989ff074c5955d, type: 3}
+--- !u!4 &825483563 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 152376775002851595, guid: 7b945834a0911864f9023aee8044449d, type: 3}
+  m_PrefabInstance: {fileID: 1356394708}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &826224242
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22712,6 +22717,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemComponent
   data: {fileID: 11400000, guid: 6894994b8995cb54abb812a2a09c7488, type: 2}
+  overrideHandlePos: 0
 --- !u!1001 &836746215
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33358,13 +33364,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1284440708}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.574, y: 0, z: 0.574}
+  m_LocalRotation: {x: 0.27059805, y: 0.6532815, z: 0.27059805, w: 0.6532815}
+  m_LocalPosition: {x: 0.5, y: 0, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 834948388}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 45}
 --- !u!1001 &1285457702
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36600,7 +36606,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2188626570381399317, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -34428004
+      value: -33299006
       objectReference: {fileID: 0}
     - target: {fileID: 2204938772551962573, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -38174,6 +38180,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 15.461998
       objectReference: {fileID: 0}
+    - target: {fileID: 6347492823387426490, guid: 7b945834a0911864f9023aee8044449d, type: 3}
+      propertyPath: mouthPos
+      value: 
+      objectReference: {fileID: 825483563}
     - target: {fileID: 6347492823387426490, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: focusRadius
       value: 0.5

@@ -34,6 +34,7 @@ public class SplinedGrabbable : Focusable, IGrabbable
 
         if (unlock && _splineFollower.enabled == false)
         {
+            Debug.Log("Unlocked SplineFollower");
             _splineFollower.enabled = true;
             Journal.Instance.OnTranscriptUnlocked -= CheckKiteRequirements;
         }
