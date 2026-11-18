@@ -36396,7 +36396,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2188626570381399317, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -33263952
+      value: -33605876
       objectReference: {fileID: 0}
     - target: {fileID: 2204938772551962573, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -53876,8 +53876,8 @@ MonoBehaviour:
       type: {class: CutsceneExecution, ns: BirdWatching.Quests, asm: Assembly-CSharp}
       data:
         playableDirector: {fileID: 1260843611}
-        conversationObject: {fileID: 11400000, guid: 4b6ee03412c150445ae3155622a94dad, type: 2}
-        transcriptEntry: {fileID: 11400000, guid: 3b2efcacc9f86db46b1c8df1536abba1, type: 2}
+        conversationObject: {fileID: 11400000, guid: f9d2cf8a51f2e3e489435aca80ad45cd, type: 2}
+        transcriptEntry: {fileID: 11400000, guid: 195a38a471938834e8e36d03932625a3, type: 2}
 --- !u!1 &1832670088
 GameObject:
   m_ObjectHideFlags: 0

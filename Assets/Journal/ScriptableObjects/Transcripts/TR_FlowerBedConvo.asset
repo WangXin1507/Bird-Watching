@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c06971f1ed145889cea67e6bc5aa391, type: 3}
+  m_Name: TR_FlowerBedConvo
+  m_EditorClassIdentifier: Assembly-CSharp::TranscriptEntry
+  transcriptId: 
+  title: Flower Bed Convo
+  mission: {fileID: 0}
+  OnTranscriptClosed:
+    m_PersistentCalls:
+      m_Calls: []
+  text: "Friend: What? But you love gardening. It\u2019s always been so nice seeing
+    you decorate for our gatherings.\r\n\r\nGrandpa: I know, and I\u2019m still planning
+    on flowers. It\u2019s just, the kids are all graduating, some of them are even
+    leaving home, I feel like I should be making something more special for them.\r\n\r\nFriend:
+    Well, have you thought of doing something with your flowers that would represent
+    something to them? Maybe you can use the flowers to write out a message, like
+    you did for the one New Year\u2019s party.\r\n\r\nGrandpa: Of course I\u2019ve
+    thought of it. That\u2019s what I\u2019ve planned, it\u2019s just\u2026 all more
+    difficult now. My hands grow less steady with each year, my wrists ache at the
+    sight of basic tasks, and it\u2019s already twice as hard getting used to doing
+    everything in this wheelchair. I\u2019d still love to decorate for the party,
+    it may just have to be a bit simpler than what I\u2019ve done before, is all.\r\n\r\nFriend:
+    I see. Well hey, whatever you end up doing, we\u2019ll love it. Don\u2019t strain
+    yourself too much, alright?\r\n"
