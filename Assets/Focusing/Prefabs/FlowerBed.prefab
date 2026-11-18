@@ -2140,6 +2140,13 @@ MonoBehaviour:
   - {fileID: 3641472958877012208}
   neededFlowerTypes: 
   missionData: {fileID: 0}
+  flowerPickingSound:
+    Guid:
+      Data1: -2117012699
+      Data2: 1237152701
+      Data3: 850438843
+      Data4: 328919632
+    Path: event:/Environment/BushRustle
 --- !u!114 &6731498519171748850
 MonoBehaviour:
   m_ObjectHideFlags: 0
