@@ -125,8 +125,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57a1e8f76caa6404dbd15f2cbbe5d650, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InspectInteractable
-  requiredTranscripts: []
-  highlightMaterial: {fileID: 0}
+  requiredTranscripts:
+  - {fileID: 11400000, guid: 195a38a471938834e8e36d03932625a3, type: 2}
+  highlightMaterial: {fileID: 2100000, guid: b0572dddfe2661444953b7cb980e4e16, type: 2}
   interactSound:
     Guid:
       Data1: 0
@@ -134,7 +135,7 @@ MonoBehaviour:
       Data3: 0
       Data4: 0
     Path: 
-  inspectable: {fileID: 11400000, guid: 38698f4ab27571146b9b51b355c11ee9, type: 2}
+  inspectable: {fileID: 11400000, guid: f20b8195c2b802745a7db9ee753b3898, type: 2}
 --- !u!1 &7695803332894096846
 GameObject:
   m_ObjectHideFlags: 0
