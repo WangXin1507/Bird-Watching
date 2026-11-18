@@ -36486,7 +36486,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2188626570381399317, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -34147796
+      value: -34212428
       objectReference: {fileID: 0}
     - target: {fileID: 2204938772551962573, guid: 7b945834a0911864f9023aee8044449d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -58085,6 +58085,58 @@ PrefabInstance:
       propertyPath: missionData
       value: 
       objectReference: {fileID: 11400000, guid: 09eb080ac835dcc4aaf8742b422cdc4d, type: 2}
+    - target: {fileID: 8912968217516861340, guid: bfa28d4115647b84b842b35693b4858f, type: 3}
+      propertyPath: neededFlowerTypes.Array.size
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 8912968217516861340, guid: bfa28d4115647b84b842b35693b4858f, type: 3}
+      propertyPath: 'neededFlowerTypes.Array.data[0]'
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8912968217516861340, guid: bfa28d4115647b84b842b35693b4858f, type: 3}
+      propertyPath: 'neededFlowerTypes.Array.data[1]'
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8912968217516861340, guid: bfa28d4115647b84b842b35693b4858f, type: 3}
+      propertyPath: 'neededFlowerTypes.Array.data[2]'
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8912968217516861340, guid: bfa28d4115647b84b842b35693b4858f, type: 3}
+      propertyPath: 'neededFlowerTypes.Array.data[4]'
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8912968217516861340, guid: bfa28d4115647b84b842b35693b4858f, type: 3}
+      propertyPath: 'neededFlowerTypes.Array.data[5]'
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8912968217516861340, guid: bfa28d4115647b84b842b35693b4858f, type: 3}
+      propertyPath: 'neededFlowerTypes.Array.data[7]'
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8912968217516861340, guid: bfa28d4115647b84b842b35693b4858f, type: 3}
+      propertyPath: 'neededFlowerTypes.Array.data[8]'
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8912968217516861340, guid: bfa28d4115647b84b842b35693b4858f, type: 3}
+      propertyPath: 'neededFlowerTypes.Array.data[10]'
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8912968217516861340, guid: bfa28d4115647b84b842b35693b4858f, type: 3}
+      propertyPath: 'neededFlowerTypes.Array.data[11]'
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8912968217516861340, guid: bfa28d4115647b84b842b35693b4858f, type: 3}
+      propertyPath: 'neededFlowerTypes.Array.data[13]'
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8912968217516861340, guid: bfa28d4115647b84b842b35693b4858f, type: 3}
+      propertyPath: 'neededFlowerTypes.Array.data[14]'
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8912968217516861340, guid: bfa28d4115647b84b842b35693b4858f, type: 3}
+      propertyPath: 'neededFlowerTypes.Array.data[15]'
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
