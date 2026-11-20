@@ -17,9 +17,19 @@ public class Focusable : MonoBehaviour, IFocusable
     private static readonly int BaseTextureID = Shader.PropertyToID("_BaseTexture");
     private float highlightStrength = 1.0f;
 
+    [Tooltip("Swap renderers to highlight materials at Awake. Turn off when another script " +
+             "(e.g. Trinket) owns the materials first and calls RefreshMaterials() later.")]
+    [SerializeField] private bool setupMaterialsOnAwake = true;
+
+    public bool SetupMaterialsOnAwake
+    {
+        get => setupMaterialsOnAwake;
+        set => setupMaterialsOnAwake = value;
+    }
+
     private void Awake()
     {
-        if (!highlightMaterial) return;
+        if (!highlightMaterial || !setupMaterialsOnAwake) return;
         renderers = GetComponentsInChildren<Renderer>();
         SetupDynamicMaterials();
         SetOutlineIntensity(0f);
@@ -27,7 +37,7 @@ public class Focusable : MonoBehaviour, IFocusable
 
     private void Start()
     {
-        if (!highlightMaterial) return;
+        if (!highlightMaterial || !setupMaterialsOnAwake) return;
         if (dynamicMaterials.Count == 0)
         {
             SetupDynamicMaterials();
@@ -37,6 +47,7 @@ public class Focusable : MonoBehaviour, IFocusable
 
     public void RefreshMaterials()
     {
+        if (!highlightMaterial) return;
         dynamicMaterials.Clear();
         renderers = GetComponentsInChildren<Renderer>();
         SetupDynamicMaterials();

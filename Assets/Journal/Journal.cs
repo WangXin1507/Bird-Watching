@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 using Unity.Cinemachine;
@@ -13,12 +14,16 @@ public class Journal : SingletonBehaviour<Journal>
     private readonly HashSet<string> completedMissionIDs = new HashSet<string>();
 
     public event Action OnTranscriptUnlocked;
+    public event Action<MissionData> OnMissionCompleted;
 
     [DoNotSerialize] public MissionData lastMissionChanged = null;
-    public IReadOnlyList<MissionData> AllMissions => missions.Keys.ToList();
+    public IReadOnlyList<MissionData> AllMissions => missions
+        .Where(entry => entry.mission != null)
+        .Select(entry => entry.mission)
+        .ToList();
 
-    //public IEnumerable<MissionData> UnlockedMissions => missions.Where(IsMissionUnlocked);
-    public IEnumerable<MissionData> UnlockedMissions => missions.Keys.ToList();
+    //public IEnumerable<MissionData> UnlockedMissions => AllMissions.Where(IsMissionUnlocked);
+    public IEnumerable<MissionData> UnlockedMissions => AllMissions;
 
 
     private bool afterLoad = false;
@@ -26,8 +31,35 @@ public class Journal : SingletonBehaviour<Journal>
     private void Start()
     {
         LoadUnlocks();
+        RestoreCompletedTrinkets();
         OnTranscriptUnlocked?.Invoke();
         afterLoad = true;
+    }
+
+    /// <summary>Finds the scene entry (trinket + reward camera) for a mission.</summary>
+    public bool TryGetMissionInScene(MissionData mission, out MissionInScene entry)
+    {
+        foreach (MissionInScene candidate in missions)
+        {
+            if (candidate.mission != null && candidate.mission == mission)
+            {
+                entry = candidate;
+                return true;
+            }
+        }
+
+        entry = default;
+        return false;
+    }
+
+    // Missions completed in an earlier session skip the cutscene: their trinket is simply there.
+    private void RestoreCompletedTrinkets()
+    {
+        foreach (MissionInScene entry in missions)
+        {
+            if (entry.reward != null && IsMissionCompleted(entry.mission))
+                entry.reward.ShowRevealedInstant();
+        }
     }
 
     public bool IsTranscriptUnlocked(ATranscriptEntry transcript)
@@ -62,8 +94,18 @@ public class Journal : SingletonBehaviour<Journal>
         if (!ValidateMission(mission)) return false;
         
         if (!TryComplete(mission)) return false;
-        
+
         SaveManager.Instance.data.completedMissionIds = completedMissionIDs.ToList();
+        OnMissionCompleted?.Invoke(mission);
+
+        if (!afterLoad) return true;
+
+        // The reward cutscene plays first; the "journal updated" popup shows once it ends.
+        if (TryGetMissionInScene(mission, out MissionInScene entry) && entry.reward != null)
+            TrinketRewardSequence.Play(entry, ShowJournalPopup).Forget();
+        else
+            ShowJournalPopup();
+
         return true;
     }
 
@@ -131,7 +173,7 @@ public class Journal : SingletonBehaviour<Journal>
 
     private bool ValidateMission(MissionData mission)
     {
-        if (mission != null && missions.Contains(mission)) return true;
+        if (mission != null && missions.Any(entry => entry.mission == mission)) return true;
 
         Debug.LogWarning($"[Journal] Mission isn't in the journal: {mission}");
         return false;
@@ -151,12 +193,18 @@ public class Journal : SingletonBehaviour<Journal>
     
     private bool TryComplete(MissionData mission)
     {
+        // Already completed: no second reward, no second cutscene.
+        if (!completedMissionIDs.Add(mission.MissionID)) return false;
+
         lastMissionChanged = mission;
-        completedMissionIDs.Add(mission.MissionID);
         OnTranscriptUnlocked?.Invoke();
-        if (afterLoad)
-            JournalUpdateUI.Instance.Show();
         return true;
+    }
+
+    private static void ShowJournalPopup()
+    {
+        if (JournalUpdateUI.Instance != null)
+            JournalUpdateUI.Instance.Show();
     }
 
     private void LoadUnlocks()
@@ -182,6 +230,8 @@ public class Journal : SingletonBehaviour<Journal>
 public struct MissionInScene
 {
     public MissionData mission;
+    [Tooltip("Scene object that fades in when the mission is completed.")]
     public Trinket reward;
+    [Tooltip("Camera that frames the trinket during the reward cutscene. Leave its priority at 0.")]
     public CinemachineCamera focusRewardCam;
 }

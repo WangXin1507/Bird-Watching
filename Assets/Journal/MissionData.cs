@@ -10,8 +10,6 @@ public class MissionData : ScriptableObject
     [SerializeField] public Sprite trinket;
     [SerializeField] private List<ATranscriptEntry> transcripts = new List<ATranscriptEntry>();
 
-    [SerializeField] private Trinket trinketReward;
-    
     public string MissionName => missionName;
     public IReadOnlyList<ATranscriptEntry> Transcripts => transcripts;
     public string MissionID;

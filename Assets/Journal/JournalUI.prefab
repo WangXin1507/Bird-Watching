@@ -1296,7 +1296,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Journal
   missions:
-  - {fileID: 11400000, guid: 8a619ff05acad9d43a566640fcd02f31, type: 2}
+  - mission: {fileID: 11400000, guid: 8a619ff05acad9d43a566640fcd02f31, type: 2}
+    reward: {fileID: 0}
+    focusRewardCam: {fileID: 0}
   lastMissionChanged: {fileID: 0}
 --- !u!1 &7721330382612303095
 GameObject:

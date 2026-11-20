@@ -57,7 +57,7 @@ public class FlowerBed : MonoBehaviour
 
             if (i == slots.Count - 1)
             {
-                Journal.Instance.CompleteMission(missionData);
+                Journal.instance.CompleteMission(missionData);
             }
         }
         BedChanged?.Invoke(this);

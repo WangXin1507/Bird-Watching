@@ -17,7 +17,7 @@ public class SplinedGrabbable : Focusable, IGrabbable
 
         _collider = GetComponent<Collider>();
 
-        Journal.Instance.OnTranscriptUnlocked += CheckKiteRequirements;
+        Journal.instance.OnTranscriptUnlocked += CheckKiteRequirements;
     }
 
     // Check if all the required transcipts are unlocked and enable the spline follower
@@ -26,7 +26,7 @@ public class SplinedGrabbable : Focusable, IGrabbable
         bool unlock = true;
         foreach (ATranscriptEntry transcript in requiredTranscripts)
         {
-            if (!Journal.Instance.IsTranscriptUnlocked(transcript))
+            if (!Journal.instance.IsTranscriptUnlocked(transcript))
             {
                 unlock = false;
             }
@@ -35,7 +35,7 @@ public class SplinedGrabbable : Focusable, IGrabbable
         if (unlock && _splineFollower.enabled == false)
         {
             _splineFollower.enabled = true;
-            Journal.Instance.OnTranscriptUnlocked -= CheckKiteRequirements;
+            Journal.instance.OnTranscriptUnlocked -= CheckKiteRequirements;
         }
     }
 
