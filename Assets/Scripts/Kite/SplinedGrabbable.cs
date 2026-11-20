@@ -34,6 +34,7 @@ public class SplinedGrabbable : Focusable, IGrabbable
 
         if (unlock && _splineFollower.enabled == false)
         {
+            Debug.Log("Unlocked SplineFollower");
             _splineFollower.enabled = true;
             Journal.instance.OnTranscriptUnlocked -= CheckKiteRequirements;
         }
@@ -47,7 +48,8 @@ public class SplinedGrabbable : Focusable, IGrabbable
             {
                 // Go from only focus to everything to avoid collision while following
                 // if excluded in editor
-                _collider.excludeLayers = 0;
+                //_collider.excludeLayers = 0;
+                _collider.enabled = false;
             }
 
             Debug.Log("Completed mission");

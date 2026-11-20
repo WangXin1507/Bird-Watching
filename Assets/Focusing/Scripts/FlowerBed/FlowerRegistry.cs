@@ -10,8 +10,9 @@ using UnityEngine;
 public enum FlowerType
 {
     RedFlower,
+    PinkFlower,
+    WhiteFlower,
     BlueFlower,
-    GreenFlower,
 }
 
 public class FlowerRegistry : MonoBehaviour

@@ -15,4 +15,9 @@ MonoBehaviour:
   missionName: Mission Three
   missionPicture: {fileID: 0}
   trinket: {fileID: 0}
-  transcripts: []
+  transcripts:
+  - {fileID: 11400000, guid: 195a38a471938834e8e36d03932625a3, type: 2}
+  - {fileID: 11400000, guid: f20b8195c2b802745a7db9ee753b3898, type: 2}
+  - {fileID: 11400000, guid: 7c19bf111f933d24f86396ac6ee684f6, type: 2}
+  - {fileID: 11400000, guid: b3f5b29cc8010534d88e7af0de6a6541, type: 2}
+  MissionID: fbe7e226-6176-465e-b6c1-50e032483d34

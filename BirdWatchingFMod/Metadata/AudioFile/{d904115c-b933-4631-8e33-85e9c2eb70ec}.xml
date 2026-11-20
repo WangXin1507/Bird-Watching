@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{d904115c-b933-4631-8e33-85e9c2eb70ec}">
+		<property name="assetPath">
+			<value>close-journal2.mp3</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>1.619591836734694</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{f8a1db07-317b-4b47-9da7-bcbe72273528}</destination>
+		</relationship>
+	</object>
+</objects>

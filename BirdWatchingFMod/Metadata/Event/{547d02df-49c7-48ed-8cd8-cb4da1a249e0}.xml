@@ -83,8 +83,12 @@
 		</relationship>
 	</object>
 	<object class="MultiSound" id="{3fcb9632-9028-4c0d-8169-d0543746d91f}">
+		<property name="playbackMode">
+			<value>1</value>
+		</property>
 		<relationship name="sounds">
 			<destination>{54654a84-3890-461a-85b3-f905086cefc4}</destination>
+			<destination>{b9f23031-5ff4-4aad-80ed-702bdaf647fd}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{393d9652-78f5-4b06-9b0e-539fd42beb64}">
@@ -95,9 +99,8 @@
 	<object class="MixerBusPanner" id="{7b98ae29-1f11-43f0-87ed-e61e8647e4db}" />
 	<object class="MixerBusEffectChain" id="{61f2a772-6eff-43fa-91c5-456fcd504517}">
 		<relationship name="effects">
-			<destination>{011bdeaf-5a9d-44d0-8f4a-416d82566bf1}</destination>
 			<destination>{9f970a8a-f392-4b3b-b409-3e34644e4f2e}</destination>
-			<destination>{eb6175bc-896c-4a7e-84b4-8d85c245bca9}</destination>
+			<destination>{b9870436-f949-4dec-9cc1-49ab35818165}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{d6ae0c8e-5e18-42bc-ac92-b1b9dbcacede}" />
@@ -105,32 +108,29 @@
 		<property name="startOffset">
 			<value>25</value>
 		</property>
+		<property name="volume">
+			<value>-80</value>
+		</property>
 		<relationship name="audioFile">
 			<destination>{e2b018be-0300-46db-adf1-dfa85572574e}</destination>
 		</relationship>
 	</object>
-	<object class="MixerBusFader" id="{e935ce62-c265-4a98-b413-ff220ce3635a}" />
-	<object class="ThreeEQEffect" id="{011bdeaf-5a9d-44d0-8f4a-416d82566bf1}">
-		<property name="lowGain">
-			<value>-5.5</value>
+	<object class="SingleSound" id="{b9f23031-5ff4-4aad-80ed-702bdaf647fd}">
+		<property name="startOffset">
+			<value>31</value>
 		</property>
+		<relationship name="audioFile">
+			<destination>{9a63765b-df00-42f5-9fbf-ca2a6d3e12b4}</destination>
+		</relationship>
 	</object>
+	<object class="MixerBusFader" id="{e935ce62-c265-4a98-b413-ff220ce3635a}" />
 	<object class="MixerBusFader" id="{9f970a8a-f392-4b3b-b409-3e34644e4f2e}" />
-	<object class="CompressorEffect" id="{eb6175bc-896c-4a7e-84b4-8d85c245bca9}">
-		<property name="threshold">
-			<value>-38.5</value>
+	<object class="ThreeEQEffect" id="{b9870436-f949-4dec-9cc1-49ab35818165}">
+		<property name="midGain">
+			<value>2.5</value>
 		</property>
-		<property name="ratio">
-			<value>5.80000019</value>
-		</property>
-		<property name="attackTime">
-			<value>0.100000001</value>
-		</property>
-		<property name="releaseTime">
-			<value>700</value>
-		</property>
-		<property name="gain">
-			<value>-3</value>
+		<property name="highGain">
+			<value>-2.5</value>
 		</property>
 	</object>
 </objects>

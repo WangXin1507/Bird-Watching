@@ -12,8 +12,12 @@ public class CreateFlowerSlotGrid : MonoBehaviour
 
     private void OnValidate()
     {
-        focusingInteract = GetComponent<FocusingInteract>();
-        flowerBed = GetComponent<FlowerBed>();
+        if (GetComponent<FocusingInteract>() != null || GetComponent<FlowerBed>() != null)
+        {
+            focusingInteract = GetComponent<FocusingInteract>();
+            flowerBed = GetComponent<FlowerBed>();
+        }
+        
     }
     
     [ContextMenu("Create Flower Slot")]
@@ -25,6 +29,9 @@ public class CreateFlowerSlotGrid : MonoBehaviour
         }
         flowerBed.slots.Clear();
         
+        Vector3 newOffset = new Vector3(offset.x * transform.lossyScale.x, offset.y * transform.lossyScale.y, offset.z * transform.lossyScale.z);
+        Vector3 newBounds = new Vector3(bounds.x * transform.lossyScale.x, bounds.y * transform.lossyScale.y, bounds.z * transform.lossyScale.z);
+        
         for (int i = 0; i < numberOfSlots.x; i++)
         {
             for (int j = 0; j < numberOfSlots.y; j++)
@@ -35,7 +42,7 @@ public class CreateFlowerSlotGrid : MonoBehaviour
                     float tx = i / Mathf.Max((numberOfSlots.x - 1), 1);
                     float ty = j / Mathf.Max((numberOfSlots.y - 1), 1);
                     float tz = h / Mathf.Max((numberOfSlots.z - 1), 1);
-                    flowerSlot.transform.position = new Vector3(Mathf.Lerp(-bounds.x, bounds.x, tx), Mathf.Lerp(-bounds.y, bounds.y, ty), Mathf.Lerp(-bounds.z, bounds.z, tz)) + offset + transform.position;
+                    flowerSlot.transform.position = new Vector3(Mathf.Lerp(-newBounds.x, newBounds.x, tx), Mathf.Lerp(-newBounds.y, newBounds.y, ty), Mathf.Lerp(-newBounds.z, newBounds.z, tz)) + newOffset + transform.position;
                     FlowerSlot fSlot = flowerSlot.GetComponent<FlowerSlot>();
                     fSlot.focusableManager = focusingInteract;
                     if (flowerBed != null)

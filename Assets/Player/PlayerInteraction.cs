@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using Unity.AppUI.UI;
 using UnityEngine;
@@ -41,6 +42,10 @@ public class PlayerInteraction : MonoBehaviour
     {
         SubscribeToInteract();
         SubscribeToHold();
+    }
+
+    private void FixedUpdate()
+    {
     }
 
     private void Update()
@@ -152,22 +157,29 @@ public class PlayerInteraction : MonoBehaviour
         ItemComponent itemComponent = heldRb.GetComponent<ItemComponent>();
 
         Vector3 targetPos = pos.position;
-        Quaternion targetRot = grabbable.grabHandle.localRotation;
+        Quaternion targetRot = pos.localRotation;
 
-        if (itemComponent && itemComponent.data)
+        //To make calculations easier(like centering the kite on the corner) you can just move the handle around and set
+        //overrideHandlePos to false.Otherwise it will just move the handle with the data offset.
+        if (itemComponent && itemComponent.overrideHandlePos && itemComponent.data)
         {
-            targetPos += itemComponent.data.grabOffset;
-            targetRot *= Quaternion.Euler(itemComponent.data.grabRotation);
+            if (grabbable.grabHandle) grabbable.grabHandle.localRotation = Quaternion.Euler(itemComponent.data.grabRotation);
+            if (grabbable.grabHandle) grabbable.grabHandle.localPosition = itemComponent.data.grabOffset;
         }
 
-        heldRb.transform.SetParent(transform, true);
-        heldRb.transform.localRotation = targetRot;
-        heldRb.transform.position = targetPos;
-
-        if (heldCollider is BoxCollider box)
+        if (grabbable.grabHandle)
         {
-            Vector3 objCenter = box.transform.TransformPoint(box.center);
-            heldRb.transform.position += pos.position - objCenter;
+            heldRb.transform.SetParent(pos);
+            heldRb.transform.localRotation = Quaternion.Inverse(grabbable.grabHandle.localRotation);
+
+            Vector3 posOffset = heldRb.transform.position - grabbable.grabHandle.position;
+            heldRb.transform.position = targetPos + posOffset;
+        }
+        else
+        {
+            heldRb.transform.SetParent(pos);
+            heldRb.transform.localRotation = targetRot;
+            heldRb.transform.position = targetPos;
         }
     }
 

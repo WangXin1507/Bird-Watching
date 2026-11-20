@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c25f145f37d0df4f835bd2fe8d80eca, type: 3}
+  m_Name: Photo3
+  m_EditorClassIdentifier: Assembly-CSharp::InspectableData
+  transcriptId: 26194829-4b91-4468-811b-433b03f0ba9f
+  title: 
+  mission: {fileID: 11400000, guid: 09eb080ac835dcc4aaf8742b422cdc4d, type: 2}
+  OnTranscriptClosed:
+    m_PersistentCalls:
+      m_Calls: []
+  prefab: {fileID: 2968806042807062837, guid: ac35b72b5d9464445a444d447d8aa5ca, type: 3}
+  initialRotation: {x: 0, y: 0, z: 0}
+  framingDistance: 1

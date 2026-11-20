@@ -121,7 +121,7 @@
 			<value>-5.5</value>
 		</property>
 		<property name="midGain">
-			<value>-25.5</value>
+			<value>-16</value>
 		</property>
 		<property name="highGain">
 			<value>3</value>

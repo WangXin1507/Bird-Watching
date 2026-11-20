@@ -60,6 +60,7 @@ public class ItemCollector : Interactable
                     }
 
                     PlayerID.playerInteraction.ForceRemove();
+                    AudioManager.PlayOneShot(interactSound, transform.position);
 
                     // Check if the items match
                     if (GetItemCount() >= totalItems) _EvaluateItems();
