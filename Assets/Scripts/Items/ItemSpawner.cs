@@ -58,8 +58,8 @@ public class ItemSpawner : Interactable
 
             if (item.itemMaterial)
             {
-                MeshRenderer meshRenderer = newItem.GetComponent<MeshRenderer>();
-                meshRenderer.material = item.itemMaterial;
+                Renderer renderer = newItem.GetComponent<Renderer>();
+                renderer.material = item.itemMaterial;
 
                 Focusable focusable = newItem.GetComponent<Focusable>();
                 if (focusable) focusable.RefreshMaterials();

@@ -12,7 +12,7 @@ public class Focusable : MonoBehaviour, IFocusable
     // Highlight behavior
     [SerializeField] private Material highlightMaterial;
     private Renderer[] renderers;
-    private List<Material> dynamicMaterials = new List<Material>(); // per renderer
+    private List<Material> highlightMaterials = new List<Material>(); // per renderer
     private static readonly int OutlineIntensityID = Shader.PropertyToID("_OutlineIntensity");
     private static readonly int BaseTextureID = Shader.PropertyToID("_BaseTexture");
     private float highlightStrength = 1.0f;
@@ -28,7 +28,7 @@ public class Focusable : MonoBehaviour, IFocusable
     private void Start()
     {
         if (!highlightMaterial) return;
-        if (dynamicMaterials.Count == 0)
+        if (highlightMaterials.Count == 0)
         {
             SetupDynamicMaterials();
             SetOutlineIntensity(0f);
@@ -37,7 +37,7 @@ public class Focusable : MonoBehaviour, IFocusable
 
     public void RefreshMaterials()
     {
-        dynamicMaterials.Clear();
+        highlightMaterials.Clear();
         renderers = GetComponentsInChildren<Renderer>();
         SetupDynamicMaterials();
         SetOutlineIntensity(0f);
@@ -48,36 +48,33 @@ public class Focusable : MonoBehaviour, IFocusable
         foreach (var rend in renderers)
         {
             Material originalMat = rend.sharedMaterial;
-            if (originalMat != null)
+            if (!originalMat) continue;
+
+            Material newMat = new Material(highlightMaterial);
+
+            // Find what kind of texture the original uses
+            Texture tex = null;
+            if (originalMat.HasTexture("_DiffuseColorMap")) tex = originalMat.GetTexture("_DiffuseColorMap");
+            else if (originalMat.HasTexture("_BaseColorMap")) tex = originalMat.GetTexture("_BaseColorMap");
+            else if (originalMat.HasTexture("_MainTex")) tex = originalMat.GetTexture("_MainTex");
+
+            if (!tex && originalMat.HasColor("_BaseColor"))
             {
-                Material dynamicMat = new Material(highlightMaterial);
-
-                // Get the original texture
-                Texture tex = null;
-                if (originalMat.HasTexture("_DiffuseColorMap"))
-                    tex = originalMat.GetTexture("_DiffuseColorMap");
-                else if (originalMat.HasTexture("_BaseColorMap"))
-                    tex = originalMat.GetTexture("_BaseColorMap");
-                else if (originalMat.HasTexture("_MainTex"))
-                    tex = originalMat.GetTexture("_MainTex");
-
-                // If there is no default texture (color only material), mostly for testing
-                if (!tex && originalMat.HasColor("_BaseColor"))
-                {
-                    Color solidColor = originalMat.GetColor("_BaseColor");
-
-                    Texture2D colorTex = new Texture2D(1, 1);
-                    colorTex.SetPixel(0, 0, solidColor);
-                    colorTex.Apply();
-                    tex = colorTex;
-                }
-
-                // Give the original texture to the highlight material
-                dynamicMat.SetTexture(BaseTextureID, tex);
-
-                rend.material = dynamicMat;
-                dynamicMaterials.Add(rend.material);
+                Color solidColor = originalMat.GetColor("_BaseColor");
+                Texture2D colorTex = new Texture2D(1, 1);
+                colorTex.SetPixel(0, 0, solidColor);
+                colorTex.Apply();
+                tex = colorTex;
             }
+
+            // Copy any original properties to the new material
+            if (originalMat.HasFloat("_Smoothness")) newMat.SetFloat("_Smoothness", originalMat.GetFloat("_Smoothness"));
+            if (originalMat.HasFloat("_Metallic")) newMat.SetFloat("_Metallic", originalMat.GetFloat("_Metallic"));
+
+            newMat.SetTexture(BaseTextureID, tex);
+
+            rend.material = newMat;
+            highlightMaterials.Add(newMat);
         }
     }
 
@@ -107,7 +104,7 @@ public class Focusable : MonoBehaviour, IFocusable
 
     private void SetOutlineIntensity(float intensity)
     {
-        foreach (var mat in dynamicMaterials)
+        foreach (var mat in highlightMaterials)
         {
             mat.SetFloat(OutlineIntensityID, intensity);
         }

@@ -60,7 +60,7 @@ public class PlayerInteraction : MonoBehaviour
         IFocusable closest = null;
         Transform closestTransform = null;
         float minDistance = float.MaxValue;
-        float bias = 1.5f;
+        float bias = 0.5f;
 
         // Calculate closest focusables
         for (int i = 0; i < targetCount; i++)
