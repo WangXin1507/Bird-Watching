@@ -90,7 +90,6 @@ public class PlayerInteraction : MonoBehaviour
 
         if (closestTransform != focusedTransform)
         {
-            Debug.Log("Changing focused target");
             focusedTarget?.LoseFocus();
             focusedTarget = closest;
             focusedTransform = closestTransform;
@@ -148,7 +147,7 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (!heldRb) return;
 
-        IgnorePlayerCollision(true);
+        IgnoreHeldCollision(true);
 
         heldRb.isKinematic = true;
         heldRb.useGravity = false;
@@ -190,7 +189,7 @@ public class PlayerInteraction : MonoBehaviour
         Vector3 releaseVelocity = Vector3.zero;
         if (rb) releaseVelocity = rb.linearVelocity;
 
-        IgnorePlayerCollision(false);
+        IgnoreHeldCollision(false);
 
         if (heldRb) // Drop any held object
         {
@@ -205,10 +204,10 @@ public class PlayerInteraction : MonoBehaviour
         heldRb = null;
         holding = null;
     }
-    void IgnorePlayerCollision(bool value)
+    void IgnoreHeldCollision(bool value)
     {
-        if (!playerCollider || !heldCollider) return;
-        Physics.IgnoreCollision(playerCollider, heldCollider, value);
+        if (!heldCollider) return;
+        heldCollider.enabled = !value;
     }
 
     // Subscribe and unsubscribe from inputs, copied from PlayerMovement
