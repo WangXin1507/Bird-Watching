@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -39,6 +40,8 @@ public class PlayerVisuals : MonoBehaviour
     private static readonly int ClimbId = Animator.StringToHash("Climb");
     private static readonly int IsFlyingId = Animator.StringToHash("IsFlying");
     private static readonly int TurnId = Animator.StringToHash("Turn");
+    private static readonly string InteractId = "Interact";
+    private static readonly string RandomFloatId = "RandomIdle";
 
     // The ground ray starts this far above the tracked point so it still finds ground the bird is sunk into.
     private const float ProbeLift = 0.5f;
@@ -177,7 +180,23 @@ public class PlayerVisuals : MonoBehaviour
             }
         }
 
+        StartCoroutine(RandomIdleCoroutine());
+        InputManager.Instance.InteractClicked += Interact;
+        InputManager.Instance.HoldClicked += Interact;
         BindInput();
+    }
+
+    private IEnumerator RandomIdleCoroutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(2f);
+            float random =  UnityEngine.Random.Range(0f, 1f);
+            if (random < 0.01f)
+            {
+                RandomIdle();
+            }
+        }
     }
 
     private void OnEnable()
@@ -414,6 +433,17 @@ public class PlayerVisuals : MonoBehaviour
         pendingTriggers[id] = Time.time + triggerBufferTime;
     }
 
+    public void Interact()
+    {
+        Debug.Log("Interacting");
+        Trigger(InteractId);
+    }
+
+    public void RandomIdle()
+    {
+        Trigger(RandomFloatId);
+    }
+
     private void ExpireTriggers()
     {
         if (pendingTriggers.Count == 0 || animator == null) return;
@@ -438,6 +468,9 @@ public class PlayerVisuals : MonoBehaviour
         if (inputBound || inputTriggers.Count == 0) return;
         if (InputManager.Instance == null || InputManager.Instance.Actions == null) return;
 
+        InputManager.Instance.InteractClicked += Interact;
+        InputManager.Instance.HoldClicked += Interact;
+        
         InputActionAsset asset = InputManager.Instance.Actions.asset;
         foreach (InputTrigger entry in inputTriggers)
         {
@@ -472,6 +505,9 @@ public class PlayerVisuals : MonoBehaviour
             entry.handler = null;
         }
 
+        InputManager.Instance.InteractClicked -= Interact;
+        InputManager.Instance.HoldClicked -= Interact;
+        
         inputBound = false;
     }
 
