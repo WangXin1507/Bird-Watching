@@ -4657,6 +4657,9 @@ MonoBehaviour:
   parameterDampTime: 0.1
   inputTriggers: []
   triggerBufferTime: 0.15
+  eyeMaterial: {fileID: 2100000, guid: e7cd98070920231419be8979bfda38f8, type: 2}
+  eyeWhiteMaterial: {fileID: 2100000, guid: 65183b3b924935d4d8df80db414d27d0, type: 2}
+  blinkTime: 0.1
 --- !u!95 &5694955085058549791
 Animator:
   serializedVersion: 7

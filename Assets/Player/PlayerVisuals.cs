@@ -116,6 +116,11 @@ public class PlayerVisuals : MonoBehaviour
     [Tooltip("Seconds a trigger waits to be used before it is cleared, so a press the graph can't act on " +
              "right now (e.g. a ground-only action mid-air) doesn't fire later by surprise.")]
     [SerializeField] private float triggerBufferTime = 0.15f;
+    
+    [Header("Blink Materials")]
+    [SerializeField] private Material eyeMaterial;
+    [SerializeField] private Material eyeWhiteMaterial;
+    [SerializeField] private float blinkTime;
 
     // Motion
     private bool hasPrevious;
@@ -181,6 +186,7 @@ public class PlayerVisuals : MonoBehaviour
         }
 
         StartCoroutine(RandomIdleCoroutine());
+        StartCoroutine(RandomBlinkCoroutine());
         InputManager.Instance.InteractClicked += Interact;
         InputManager.Instance.HoldClicked += Interact;
         BindInput();
@@ -192,11 +198,45 @@ public class PlayerVisuals : MonoBehaviour
         {
             yield return new WaitForSeconds(2f);
             float random =  UnityEngine.Random.Range(0f, 1f);
-            if (random < 0.01f)
+            if (random < 0.5f)
             {
                 RandomIdle();
             }
         }
+    }
+    
+    private IEnumerator RandomBlinkCoroutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1f);
+            float random =  UnityEngine.Random.Range(0f, 1f);
+            if (random < 0.7f)
+            {
+                StartCoroutine(BlinkCoroutine());
+            }
+        }
+    }
+
+    private IEnumerator BlinkCoroutine()
+    {
+        SetEyeBlink(0f);
+        yield return new WaitForSeconds(blinkTime/6f);
+        SetEyeBlink(0.33f);
+        yield return new WaitForSeconds(blinkTime/6f);
+        SetEyeBlink(0.6f);
+        yield return new WaitForSeconds(blinkTime/6f);
+        yield return new WaitForSeconds(blinkTime/6f);
+        SetEyeBlink(0.33f);
+        yield return new WaitForSeconds(blinkTime/6f);
+        SetEyeBlink(0f);
+        yield return new WaitForSeconds(blinkTime/6f);
+    }
+
+    private void SetEyeBlink(float scale)
+    {
+        eyeMaterial.mainTextureOffset = new Vector2(scale, 0f);
+        eyeWhiteMaterial.mainTextureOffset = new Vector2(scale, 0f);
     }
 
     private void OnEnable()
@@ -435,7 +475,7 @@ public class PlayerVisuals : MonoBehaviour
 
     public void Interact()
     {
-        Debug.Log("Interacting");
+        Debug.Log("Interactingdawdwawadd");
         Trigger(InteractId);
     }
 
